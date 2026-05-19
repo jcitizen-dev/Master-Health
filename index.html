@@ -88,7 +88,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;
   text-transform:uppercase;color:var(--muted);margin:20px 0 8px;
 }
-.marker-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.marker-grid{display:grid;grid-template-columns:1fr;gap:7px}
+.sort-row{display:flex;gap:6px;padding:10px 0 4px}
+.sort-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:11px;font-family:'DM Mono',monospace;padding:4px 12px;border-radius:20px;cursor:pointer;letter-spacing:0.04em}
+.sort-btn.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
 .marker-card{
   background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
   padding:11px 12px;position:relative;overflow:hidden;
@@ -268,9 +271,15 @@ let btReady = false;
 let activeBtView = 'latest';
 let activeTrendMarker = null;
 let latestFilter = null;
+let latestSort = 'grouped';
 
 document.getElementById('s-stack').innerHTML =
   `<iframe id="stack-frame" src="stack-app/index.html" title="Stack" style="width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block"></iframe>`;
+
+function setLatestSort(s) {
+  latestSort = s;
+  renderLatest();
+}
 
 function setLatestFilter(f) {
   latestFilter = (latestFilter === f) ? null : f;
@@ -503,26 +512,43 @@ function renderLatest() {
     return true;
   };
 
-  let html = '';
-  GROUPS.forEach(g => {
-    const markers = g.ids.map(id => mMap[id]).filter(Boolean).filter(m => m.value !== null).filter(filterFn);
-    if (!markers.length) return;
-    html += `<div class="grp-label">${g.label}</div><div class="marker-grid">`;
-    markers.forEach(m => {
-      const cls = sc(m.status);
-      const disp = m.us_value !== undefined ? `${m.us_value} <span class="mk-unit">${m.us_unit}</span>` : `${m.value} <span class="mk-unit">${m.unit}</span>`;
-      const dateStr = m._panelDate ? new Date(m._panelDate + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
-      html += `<div class="marker-card ${cls}">
-        <div class="mk-name">${m.name}</div>
-        <div class="mk-val">${disp}</div>
-        <div class="mk-badge ${cls}">${sl(m.status)}</div>
-        ${mkRange(m)}
-        ${m.note ? `<div class="mk-note">${m.note}</div>` : ''}
-        ${dateStr ? `<div class="mk-note" style="margin-top:3px;opacity:0.5">${dateStr}</div>` : ''}
-      </div>`;
+  const mkCard = m => {
+    const cls = sc(m.status);
+    const disp = m.us_value !== undefined ? `${m.us_value} <span class="mk-unit">${m.us_unit}</span>` : `${m.value} <span class="mk-unit">${m.unit}</span>`;
+    const dateStr = m._panelDate ? new Date(m._panelDate + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+    return `<div class="marker-card ${cls}">
+      <div class="mk-name">${m.name}</div>
+      <div class="mk-val">${disp}</div>
+      <div class="mk-badge ${cls}">${sl(m.status)}</div>
+      ${mkRange(m)}
+      ${m.note ? `<div class="mk-note">${m.note}</div>` : ''}
+      ${dateStr ? `<div class="mk-note" style="margin-top:3px;opacity:0.5">${dateStr}</div>` : ''}
+    </div>`;
+  };
+
+  let html = `<div class="sort-row">
+    <button class="sort-btn ${latestSort==='grouped'?'active':''}" onclick="setLatestSort('grouped')">Grouped</button>
+    <button class="sort-btn ${latestSort==='alpha'?'active':''}" onclick="setLatestSort('alpha')">A–Z</button>
+  </div>`;
+
+  if (latestSort === 'alpha') {
+    const allMarkers = Object.values(mMap).filter(m => m.value !== null).filter(filterFn);
+    allMarkers.sort((a, b) => a.name.localeCompare(b.name));
+    if (allMarkers.length) {
+      html += '<div class="marker-grid">';
+      allMarkers.forEach(m => { html += mkCard(m); });
+      html += '</div>';
+    }
+  } else {
+    GROUPS.forEach(g => {
+      const markers = g.ids.map(id => mMap[id]).filter(Boolean).filter(m => m.value !== null).filter(filterFn);
+      if (!markers.length) return;
+      html += `<div class="grp-label">${g.label}</div><div class="marker-grid">`;
+      markers.forEach(m => { html += mkCard(m); });
+      html += '</div>';
     });
-    html += '</div>';
-  });
+  }
+
   document.getElementById('bt-latest-view').innerHTML = html;
 }
 
