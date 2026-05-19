@@ -264,6 +264,13 @@ function launchGameTab() {
     : 'My Health Game/health-stack-academy/index.html';
   window.open(url, '_blank');
 }
+
+// ── Blood Tests ───────────────────────────────────────────────────────────────
+let btReady = false;
+let activeBtView = 'latest';
+let activeTrendMarker = null;
+let latestFilter = null;
+
 (function() {
   if (location.protocol !== 'http:') {
     // GitHub Pages / remote: Blood is the useful tab — start there
@@ -282,12 +289,6 @@ function launchGameTab() {
     document.getElementById('game-hint').textContent = 'Local server required';
   }
 })();
-
-// ── Blood Tests ───────────────────────────────────────────────────────────────
-let btReady = false;
-let activeBtView = 'latest';
-let activeTrendMarker = null;
-let latestFilter = null;
 
 function setLatestFilter(f) {
   latestFilter = (latestFilter === f) ? null : f;
