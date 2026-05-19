@@ -21,7 +21,7 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Fasted morning — only on training days (Mon–Fri)',
     rarity: 'uncommon', category: 'liver',
     whatItIs: 'A building block your body uses to make glutathione — your cells\' main defence against damage.',
-    whyITakeIt: 'ALT at 67 U/L (elevated, ref <45) signals mild liver stress. NAC is one of the two primary liver-protective supplements in the stack alongside TUDCA. Skipped on rest days to avoid blunting training adaptation signaling from reactive oxygen species.',
+    whyITakeIt: 'Previously taken to address ALT 67 (elevated) in April 2026 — ALT is now 26 (optimal) confirming protocol worked. Maintained for hepatoprotection and glutathione support during high training loads. Skipped on rest days to avoid blunting training adaptation signaling from reactive oxygen species.',
     mechanism: 'Your liver uses NAC to produce glutathione, a molecule that neutralises harmful waste products before they can damage cells. Think of glutathione as a cleanup crew — NAC gives the crew the materials it needs to work.',
     relatedMarkers: ['alt', 'ast', 'ggt'],
     timing: 'Fasted, training days only (Mon–Fri)',
@@ -119,13 +119,13 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Post-workout shake — can be taken any time of day, timing is flexible',
     rarity: 'uncommon', category: 'training',
     whatItIs: 'The most well-researched performance supplement — helps your muscles recharge faster during intense exercise and supports brain function.',
-    whyITakeIt: 'Creatine is found only in animal muscle — a vegan diet provides essentially zero. 5 g/day saturates muscle stores for strength, power, and cognitive function. Note: creatine raises serum creatinine as a lab artefact — my eGFR of 62.2 may partly reflect this, NOT true kidney damage.',
+    whyITakeIt: 'Creatine is found only in animal muscle — a vegan diet provides essentially zero. 5 g/day saturates muscle stores for strength, power, and cognitive function. Cystatin C eGFR of 111 (May 2026) definitively confirms excellent kidney function — the prior borderline eGFR of 62.2 (Serbia April 2026) was entirely creatine artifact. Creatine is safe to continue.',
     mechanism: 'During explosive movements like lifting or sprinting, your muscles burn through their main energy currency (ATP) almost instantly. Creatine acts as a rapid energy backup — it donates a phosphate to recharge used-up ATP so your muscles can keep going. It\'s like a turbo boost for short, intense efforts. Vegans see an especially big difference because they start from near-zero.',
     relatedMarkers: ['creatinine', 'egfr'],
     timing: 'Post-workout shake (daily)',
     veganRelevance: 'Essential vegan gap supplement. No plant sources of creatine. Vegans have significantly lower muscle creatine stores at baseline, explaining lower power output until supplemented.',
     risks: 'Extremely safe — 30+ years of research. Raises serum creatinine (lab artefact) — always disclose to clinicians. Can cause water retention. Avoid loading phase if GI sensitive.',
-    expertNotes: 'The creatinine/eGFR lab artefact is the most important clinical context in this stack. Creatine → creatinine is a normal metabolic byproduct filtered by kidneys. Higher creatine intake = higher creatinine output = lower calculated eGFR despite normal actual filtration.',
+    expertNotes: 'The creatinine/eGFR artifact is now definitively resolved. eGFR 79 (May 2026, creatinine-based) and Cystatin C eGFR 111 — both confirming excellent kidney function. Cystatin C is unaffected by creatine intake, making it the gold-standard confirmation.',
     xpValue: 20, unlockLevel: 1
   },
   {
@@ -138,8 +138,8 @@ window.HSA.SUPPLEMENTS = [
     relatedMarkers: ['vitd_bm', 'calcium'],
     timing: 'Post-workout shake (daily, with fat)',
     veganRelevance: 'D3 is traditionally animal-derived (from wool). Vegan D3 from lichen exists — use if strictly vegan. Essential gap for plant-based eaters with limited sun.',
-    risks: 'Fat-soluble — accumulates. My level (136.4) is near the top of reference — do not increase. Toxicity causes dangerously high blood calcium.',
-    expertNotes: 'Calcium at 2.55 mmol/L is right at the upper limit. This is another signal not to push D3 higher — elevated D3 increases calcium absorption, which is already at ceiling.',
+    risks: 'Fat-soluble — accumulates. My level (136.4) is near the top of reference — do not increase. Calcium improved from 2.55 to 2.47 mmol/L (now safely in range) but still in the upper third — increasing D3 would push it higher. Toxicity causes dangerously high blood calcium.',
+    expertNotes: 'Calcium improved to 2.47 mmol/L (9.9 mg/dL) by May 2026 — safely in range. Still: do not increase D3, as D3 drives calcium absorption and 2.47 is still in the upper third of the reference range.',
     xpValue: 15, unlockLevel: 0
   },
   {
@@ -153,7 +153,7 @@ window.HSA.SUPPLEMENTS = [
     timing: 'Post-workout shake (daily with D3)',
     veganRelevance: 'K2 MK-7 is derived from natto (fermented soy) — vegan-friendly. MK-7 has a longer half-life and is more potent per mcg.',
     risks: 'Very safe. May interact with warfarin/anticoagulants — do not use without medical supervision if on blood thinners.',
-    expertNotes: 'The D3+K2 protocol is especially important given Calcium at 2.55 (upper limit). K2 is the safety valve ensuring elevated calcium absorption goes to skeleton, not vasculature.',
+    expertNotes: 'Calcium improved from 2.55 to 2.47 mmol/L — K2\'s routing of calcium to bone is working. Continue at current dose. The D3+K2 protocol remains essential to keep calcium safely directed away from arterial walls.',
     xpValue: 15, unlockLevel: 0
   },
   {
@@ -161,13 +161,13 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Post-workout shake — with fat-containing meal for absorption',
     rarity: 'uncommon', category: 'vegan',
     whatItIs: 'Marine-sourced omega-3 fatty acids — the most potent natural anti-inflammatory compounds you can supplement.',
-    whyITakeIt: 'CRP at 1.0 mg/L (borderline inflammation). Rarely eat fish → omega-3 gap is real. EPA and DHA are potent anti-inflammatories. The only non-vegan supplement in the stack — used pragmatically for efficacy.',
+    whyITakeIt: 'CRP is now <0.2 mg/L (essentially zero) — down from 1.0 in April 2026. Fish oil is a core contributor. Continued for omega-3 anti-inflammatory maintenance and TG/HDL support. The only non-vegan supplement in the stack — used pragmatically for efficacy.',
     mechanism: 'Your body uses fats to make signalling molecules that control inflammation. Omega-3s (from fish oil) push this system toward anti-inflammatory signals, while omega-6s (found in most vegetable oils) push it toward pro-inflammatory ones. EPA and DHA compete with the pro-inflammatory fats, reducing overall inflammation. They also lower triglycerides and support heart and brain function.',
     relatedMarkers: ['crp', 'triglycerides', 'apo_b'],
     timing: 'Post-workout shake (daily)',
     veganRelevance: 'The key pragmatic exception in the stack. Algae-based DHA+EPA exists (where fish get omega-3s from) — consider switching. ALA from flax converts to EPA/DHA at <5% efficiency in humans.',
     risks: 'High doses (>3 g/day) may increase bleeding time. Can oxidise if not refrigerated — buy fresh, store cold.',
-    expertNotes: 'Triglycerides at 0.78 mmol/L are excellent — fish oil is contributing. Apo-B at 89 mg/dL is borderline; omega-3s have strong triglyceride reduction effects.',
+    expertNotes: 'Triglycerides at 0.68 mmol/L (60 mg/dL) — even better than April 2026 (0.78). Apo-B dropped from borderline 89 to optimal 80. Fish oil is a primary contributor to both improvements.',
     xpValue: 20, unlockLevel: 1
   },
   {
@@ -181,7 +181,7 @@ window.HSA.SUPPLEMENTS = [
     timing: 'Post-workout shake (daily)',
     veganRelevance: 'Zero dietary taurine on a plant-based diet. Evidence shows vegans have significantly lower plasma taurine. Critical to supplement.',
     risks: 'Extremely safe even at high doses. No known toxicity.',
-    expertNotes: 'Taurine\'s role in bile production is directly relevant given elevated liver enzymes (AST 39, ALT 67) — taurine supports liver bile flow and detoxification pathways alongside NAC and TUDCA.',
+    expertNotes: 'Taurine\'s role in bile production is directly relevant to liver health — liver enzymes have since normalised (AST 34, ALT 26 in May 2026) — taurine\'s bile flow support likely contributing alongside NAC and TUDCA.',
     xpValue: 15, unlockLevel: 1
   },
   {
@@ -203,7 +203,7 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Lunch — with food',
     rarity: 'common', category: 'gut',
     whatItIs: 'An essential vitamin your body can\'t make itself — needed for immune defence, collagen production, and absorbing plant-based iron.',
-    whyITakeIt: 'CRP at 1.0 (borderline inflammation). Vitamin C enhances plant-iron absorption (important given Iron at 12.3, low-normal on plant-based diet), supports immune function, and regenerates other antioxidants.',
+    whyITakeIt: 'Iron is now 136 mcg/dL (solidly optimal), with iron saturation at 40%. CRP dropped to <0.2 — Vitamin C contributing to both outcomes. Continued for plant-iron absorption optimisation, immune support, and antioxidant regeneration.',
     mechanism: 'Vitamin C does several things at once: it helps your immune cells fight infections, it\'s essential for building collagen (the protein that holds your skin, tendons, and blood vessels together), and it converts plant-based iron into a form your gut can actually absorb. This last point is especially important on a vegan diet, where iron from food is much harder to absorb than iron from meat.',
     relatedMarkers: ['iron', 'crp', 'uibc'],
     timing: 'Lunch (Mon–Fri)',
@@ -217,13 +217,13 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Lunch — cycled (Mon, Tue, Thu; skipped Wed, Fri, Sat, Sun)',
     rarity: 'rare', category: 'hormones',
     whatItIs: 'A root extract from Southeast Asia with evidence for freeing up testosterone that\'s being held inactive by a binding protein.',
-    whyITakeIt: 'SHBG at 53.42 nmol/L (high-normal) binds free testosterone, reducing bioavailability despite excellent total T of 25.9 nmol/L. Tongkat Ali has evidence for modestly reducing SHBG, increasing free testosterone. Cycled to prevent tolerance.',
+    whyITakeIt: 'SHBG dropped from 53.42 to 30 (a 44% reduction) by May 2026 — Tongkat Ali protocol confirmed effective. Free testosterone improved to 89.7 pg/mL. Continued for SHBG maintenance and HPG axis support. Cycled to prevent tolerance.',
     mechanism: 'Most of your testosterone travels through your bloodstream bound to a protein called SHBG. When it\'s bound, it\'s inactive — your cells can\'t use it. Tongkat Ali appears to reduce SHBG levels, freeing up more testosterone to actually reach your cells. It also has stress-reducing effects, which indirectly supports hormone balance.',
     relatedMarkers: ['shbg', 'testosterone', 'free_testosterone', 'cortisol'],
     timing: 'Lunch, cycled (Mon, Tue, Thu)',
     veganRelevance: 'Plant-derived root extract — fully vegan.',
     risks: 'Generally safe. May increase irritability at high doses. Avoid if history of hormone-sensitive cancers. Cycle to avoid tolerance.',
-    expertNotes: 'Free T at 8.63 pg/mL is mid-range — has room to optimise given the SHBG picture. Tongkat + Boron are the dual-pronged SHBG strategy.',
+    expertNotes: 'SHBG goal achieved: 53.42 → 30 confirmed by May 2026. Free T improved on both assay methods. Tongkat + Boron dual-pronged SHBG strategy confirmed effective.',
     xpValue: 25, unlockLevel: 2
   },
   {
@@ -231,13 +231,13 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Lunch — same days as NAC (training days: Mon, Tue, Thu)',
     rarity: 'rare', category: 'liver',
     whatItIs: 'A natural bile acid that protects liver cells from damage — especially useful when liver enzymes are elevated.',
-    whyITakeIt: 'ALT at 67 U/L and AST at 39 U/L are both elevated — the clearest abnormality in the panel. TUDCA specifically protects liver cells from stress and damage. Cycled with NAC to provide comprehensive liver protection on high-load training days.',
+    whyITakeIt: 'Targeted the April 2026 elevation: ALT 67 + AST 39. By May 2026, ALT dropped to 26 and AST to 34 — both now optimal. Continued for hepatoprotection during intense training cycles. Cycled with NAC to provide comprehensive liver protection on high-load training days.',
     mechanism: 'Your liver produces bile acids to help digest fats. When these bile acids build up or become too concentrated, they can damage the liver cells that make them. TUDCA is a gentler, water-soluble bile acid that dilutes and displaces the more damaging ones — like replacing harsh cleaning chemicals with gentler ones. It also helps liver cells handle cellular stress better, reducing the chance of cell death.',
     relatedMarkers: ['alt', 'ast', 'ggt', 'bilirubin'],
     timing: 'Lunch, training days only (Mon, Tue, Thu)',
     veganRelevance: 'TUDCA is derived from bear bile traditionally — synthetic versions are available and preferred.',
     risks: 'Very safe. May cause loose stools at high doses. Avoid in complete bile duct obstruction.',
-    expertNotes: 'The doctor flagged AST 39 and ALT 67 as the clearest abnormality — likely training/supplement load stress. NAC + TUDCA are specifically chosen for this liver pattern.',
+    expertNotes: 'Protocol validated: AST dropped from 39 to 34 and ALT from 67 to 26 by May 2026. NAC + TUDCA combination confirmed effective for training-related hepatocellular stress.',
     xpValue: 30, unlockLevel: 2
   },
   {
@@ -259,7 +259,7 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Lunch — with food',
     rarity: 'uncommon', category: 'hormones',
     whatItIs: 'A trace mineral that can modestly lower SHBG — the protein that binds and inactivates testosterone.',
-    whyITakeIt: 'SHBG at 53.42 nmol/L is high-normal — reducing it even modestly frees more testosterone. Boron has been shown to reduce SHBG and increase free testosterone in human studies. Works synergistically with Tongkat Ali.',
+    whyITakeIt: 'SHBG dropped from 53.42 to 30 by May 2026 — Boron + Tongkat Ali dual strategy confirmed effective. Continued to maintain SHBG at this lower level and support free testosterone bioavailability.',
     mechanism: 'SHBG is a protein your liver makes that latches onto testosterone and carries it through the bloodstream — while it\'s attached, testosterone can\'t enter your cells. Boron appears to reduce how much SHBG your body produces, meaning more testosterone stays in the "free" active form that your cells can actually use.',
     relatedMarkers: ['shbg', 'testosterone', 'free_testosterone'],
     timing: 'Lunch (daily)',
@@ -357,7 +357,7 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Lunch — with food',
     rarity: 'common', category: 'gut',
     whatItIs: 'A food-as-medicine staple with proven benefits for gut health, inflammation, and cardiovascular health.',
-    whyITakeIt: 'CRP at 1.0 mg/L (borderline). Garlic has anti-inflammatory, prebiotic, and cardiovascular effects. Active compounds have antimicrobial effects against harmful gut bacteria while supporting beneficial species. Taken Mon–Fri as part of the gut/inflammation protocol.',
+    whyITakeIt: 'CRP is now <0.2 mg/L (near-zero) — anti-inflammatory stack delivered. Continued for cardiovascular, gut, and anti-inflammatory maintenance. Active compounds have antimicrobial effects against harmful gut bacteria while supporting beneficial species. Taken Mon–Fri as part of the gut/inflammation protocol.',
     mechanism: 'When you crush or chop garlic, a reaction produces allicin — a compound with antimicrobial properties that can reduce harmful bacteria in the gut. Garlic also acts as a prebiotic, meaning it feeds the beneficial bacteria in your intestines. On top of that, its compounds help relax blood vessels and have modest anti-inflammatory effects, making it useful for both gut health and heart health.',
     relatedMarkers: ['crp', 'total_chol', 'ldl'],
     timing: 'Lunch (Mon–Fri)',
@@ -371,13 +371,13 @@ window.HSA.SUPPLEMENTS = [
     dosageNote: 'Lunch — with food',
     rarity: 'common', category: 'gut',
     whatItIs: 'A root with potent anti-inflammatory and digestive benefits — a natural alternative to over-the-counter anti-inflammatory drugs.',
-    whyITakeIt: 'CRP at 1.0 mg/L (borderline). Ginger\'s active compounds are potent anti-inflammatories. Also improves gastric emptying and motility, supporting nutrient absorption from a high-supplement diet.',
+    whyITakeIt: 'CRP is now <0.2 mg/L (essentially undetectable) — the multi-pronged anti-inflammatory protocol worked. Continued for gut motility and anti-inflammatory maintenance. Also improves gastric emptying, supporting nutrient absorption from a high-supplement diet.',
     mechanism: 'Inflammation is partly driven by enzymes that produce inflammatory signalling molecules. Ginger\'s active compounds (gingerols and shogaols) block these enzymes — similar to how ibuprofen works, but gentler and without side effects at normal doses. Ginger also speeds up how quickly food moves through your stomach, which helps with nutrient absorption and digestive comfort.',
     relatedMarkers: ['crp'],
     timing: 'Lunch (Mon–Fri)',
     veganRelevance: 'Fully plant-based. Anti-inflammatory agent that supports the gut lining and microbiome.',
     risks: 'Generally very safe. High doses can increase bleeding risk — caution with anticoagulants. May cause heartburn in sensitive individuals.',
-    expertNotes: 'Ginger + garlic + fish oil + fisetin form a multi-mechanism anti-inflammatory layer targeting borderline CRP of 1.0. Together they address inflammation from different angles.',
+    expertNotes: 'Ginger + garlic + fish oil + fisetin form a multi-mechanism anti-inflammatory layer. CRP <0.2 — near-zero inflammation confirmed. Protocol delivered the intended result.',
     xpValue: 10, unlockLevel: 0
   },
   {
@@ -405,7 +405,7 @@ window.HSA.SUPPLEMENTS = [
     timing: 'Post-workout shake (daily)',
     veganRelevance: 'Fully plant-based. The fat source of choice in the stack — enables fat-soluble vitamin absorption and provides its own anti-inflammatory benefit.',
     risks: 'High calorie density — be mindful of total caloric intake. Quality matters: many "EVOO" products are adulterated with cheaper oils. Buy certified authentic.',
-    expertNotes: 'HDL at 1.61 mmol/L is right at the lower optimal boundary — EVOO and fish oil are the primary dietary tools supporting HDL.',
+    expertNotes: 'HDL at 52 mg/dL (1.34 mmol/L) — just below optimal threshold of 1.4 mmol/L. EVOO and fish oil are the primary dietary levers for improving this.',
     xpValue: 10, unlockLevel: 0
   },
   {
