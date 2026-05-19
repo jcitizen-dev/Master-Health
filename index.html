@@ -420,26 +420,32 @@ function drawChart(markerId) {
 }
 
 // ── Latest panel grouped render ───────────────────────────────────────────────
-const LATEST_PANEL_ID = 'medlab_serbia_2026_04_14';
+// Uses the most recent value for each marker across ALL panels
 const GROUPS = [
-  { label:'Glucose & Insulin', ids:['glucose','hba1c','insulin','homa_ir'] },
-  { label:'Lipids & Cardiovascular', ids:['total_chol','triglycerides','hdl','ldl','lpa','apo_b','apo_a1','fibrinogen'] },
-  { label:'Liver', ids:['ast','alt','ggt','alp','bilirubin','albumin','ldh','ck'] },
-  { label:'Kidney', ids:['creatinine','egfr','urea','uric_acid'] },
-  { label:'Minerals', ids:['magnesium','zinc','calcium','potassium','sodium','phosphate'] },
-  { label:'Iron Status', ids:['iron','ferritin','transferrin_sat','uibc','tibc'] },
-  { label:'Hormones', ids:['testosterone','free_testosterone','shbg','dht','estradiol','lh','fsh','prolactin','dhea_s','igf1','cortisol'] },
+  { label:'Glucose & Insulin', ids:['glucose','hba1c','insulin','homa_ir','c_peptide'] },
+  { label:'Lipids & Cardiovascular', ids:['total_chol','triglycerides','hdl','ldl','apo_b','lpa','apo_a1','fibrinogen','non_hdl'] },
+  { label:'Liver', ids:['ast','alt','ggt','alp','bilirubin','albumin'] },
+  { label:'Kidney', ids:['creatinine','egfr','egfr_cystatin','cystatin_c','urea','bun','uric_acid','urine_acr'] },
+  { label:'Minerals', ids:['magnesium_bm','zinc_bm','calcium','potassium','sodium','phosphate'] },
+  { label:'Iron Status', ids:['iron','ferritin','transferrin_sat','iron_sat','uibc','tibc'] },
+  { label:'Hormones', ids:['testosterone','free_testosterone','bioavail_t','shbg','dht','estradiol','lh','fsh','prolactin','dhea_s','igf1','cortisol'] },
   { label:'Thyroid', ids:['tsh','free_t3','free_t4','anti_tpo','anti_tg'] },
-  { label:'Vitamins & Methylation', ids:['vitd','b12','folate','homocysteine'] },
-  { label:'Inflammation', ids:['crp'] },
+  { label:'Vitamins & Methylation', ids:['vitd_bm','b12_bm','folate','homocysteine'] },
+  { label:'Inflammation', ids:['crp','fibrinogen'] },
 ];
 
 function renderLatest() {
   const BD = window.BLOOD_TESTS;
-  const panel = BD.panels.find(p => p.id === LATEST_PANEL_ID);
-  if (!panel) { document.getElementById('bt-latest-view').innerHTML='<div class="no-data">Panel not found.</div>'; return; }
+  // Build a map of the most recent value for each marker across all panels
   const mMap = {};
-  panel.markers.forEach(m => { mMap[m.id] = m; });
+  const sortedPanels = [...BD.panels].sort((a,b) => new Date(a.date) - new Date(b.date));
+  sortedPanels.forEach(panel => {
+    panel.markers.forEach(m => {
+      if (m.value !== null && m.value !== undefined && typeof m.value === 'number') {
+        mMap[m.id] = { ...m, _panelDate: panel.date, _panelLab: panel.lab };
+      }
+    });
+  });
 
   let html = '';
   GROUPS.forEach(g => {
