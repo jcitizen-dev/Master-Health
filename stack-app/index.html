@@ -613,13 +613,17 @@ auth.onAuthStateChanged(async user => {
 // --- Boot ---
 (async () => {
   try { await openDB(); } catch(e) { console.warn('IDB unavailable, using localStorage'); }
-  // If opened standalone with ?signin=1, trigger redirect sign-in
-  if (window.location.search.includes('signin=1') && !currentUser) {
+  // Handle completed redirect result FIRST — must run before checking ?signin=1
+  // to avoid re-triggering a redirect on the return trip from Google OAuth
+  try { await auth.getRedirectResult(); } catch(e) { console.warn('Redirect result error', e); }
+  // If opened standalone with ?signin=1 and still not signed in, trigger redirect sign-in.
+  // Strip ?signin=1 from the URL before calling signInWithRedirect so Firebase stores
+  // the clean URL as the post-auth redirect target, breaking the redirect loop.
+  if (window.location.search.includes('signin=1') && !auth.currentUser) {
+    history.replaceState(null, '', window.location.pathname);
     const provider = new firebase.auth.GoogleAuthProvider();
     try { await auth.signInWithRedirect(provider); return; } catch(e) {}
   }
-  // Handle completed redirect result
-  try { await auth.getRedirectResult(); } catch(e) { console.warn('Redirect result error', e); }
   await loadAll();
   render();
 })();
