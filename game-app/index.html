@@ -361,6 +361,10 @@ function QuizCard({ quiz, onAnswer, answered, combo, multiplier, hearts }) {
   const [shake, setShake] = useState$c(false);
   const [showXP, setShowXP] = useState$c(false);
   useEffect$c(() => { setSelected(null); setShake(false); setShowXP(false); }, [quiz && quiz.id]);
+  const shuffledOptions = React.useMemo(function() {
+    if (!quiz || !quiz.options) return [];
+    return quiz.options.slice().sort(function() { return Math.random() - 0.5; });
+  }, [quiz && quiz.id]);
   const handleSelect = (opt) => {
     if (answered !== null || selected) return;
     setSelected(opt);
@@ -387,7 +391,7 @@ function QuizCard({ quiz, onAnswer, answered, combo, multiplier, hearts }) {
         {multiplier > 1 && <div style={{ marginTop:8, fontFamily:'DM Mono, monospace', fontSize:10, color:'var(--xp-gold)' }}>+{xpEarned} XP ({multiplier}×)</div>}
       </div>
       <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-        {(quiz.options || []).map((opt, i) => {
+        {shuffledOptions.map((opt, i) => {
           const isSelected = selected === opt;
           const isCorrect = opt === quiz.answer;
           let bg = 'var(--surface)', border = 'var(--border)', color = 'var(--text)';
@@ -946,7 +950,7 @@ function QuizScreen({ progressHook }) {
     if (params.get('type')) { return allQ.filter(function(q){return q.type===params.get('type');}).slice(0,10).map(function(q){return q.id;}); }
     if (params.get('category')) { return allQ.filter(function(q){return q.category===params.get('category');}).slice(0,15).map(function(q){return q.id;}); }
     return allQ.slice().sort(function(){return Math.random()-0.5;}).slice(0,10).map(function(q){return q.id;});
-  }, []);
+  }, [location.search]);
 
   const [idx, setIdx] = useState(0);
   const [answered, setAnswered] = useState(null);
@@ -969,12 +973,19 @@ function QuizScreen({ progressHook }) {
     if (isDaily && correct) update(function(p){return Object.assign({},p,{dailyChallengeCompletedDate:new Date().toISOString().slice(0,10)});});
     setAnswered(correct ? 'correct' : 'wrong');
     setResults(function(r){return r.concat([{correct:correct,earned:earned}]);});
-    setTimeout(function() {
-      if (heartsEmpty && !correct) { setDone(true); return; }
-      if (idx + 1 >= quizzes.length) { setDone(true); var allCorrect = results.concat([{correct:correct}]).every(function(r){return r.correct;}); if (allCorrect) setShowParticles(true); }
-      else { setIdx(function(i){return i+1;}); setAnswered(null); }
-    }, 1300);
-  }, [current, answered, idx, quizzes.length, multiplier, heartsEmpty, results, answerQuestion, update, incrementCombo, resetCombo, consumeHeart]);
+  }, [current, answered, multiplier, answerQuestion, update, incrementCombo, resetCombo, consumeHeart]);
+
+  var handleContinue = useCallback(function() {
+    if (heartsEmpty && answered === 'wrong') { setDone(true); return; }
+    if (idx + 1 >= quizzes.length) {
+      var allCorrect = results.every(function(r){return r.correct;});
+      setDone(true);
+      if (allCorrect) setShowParticles(true);
+    } else {
+      setIdx(function(i){return i+1;});
+      setAnswered(null);
+    }
+  }, [heartsEmpty, answered, idx, quizzes.length, results]);
 
   if (!hasParams) return <QuizTopicPicker progressHook={progressHook} navigate={navigate} />;
 
@@ -1009,6 +1020,11 @@ function QuizScreen({ progressHook }) {
         </div>
       </div>
       {current && <QuizCard quiz={current} onAnswer={handleAnswer} answered={answered} combo={combo} multiplier={multiplier} hearts={hearts} />}
+      {answered !== null && (
+        <button onClick={handleContinue} style={{ width:'100%', marginTop:16, padding:'16px', borderRadius:'var(--radius)', background:'var(--accent)', color:'#0e0e0f', border:'none', fontFamily:'DM Mono, monospace', fontSize:13, fontWeight:500, letterSpacing:'0.06em', cursor:'pointer' }}>
+          {idx + 1 >= quizzes.length ? 'FINISH →' : 'CONTINUE →'}
+        </button>
+      )}
     </div>
   );
 }
