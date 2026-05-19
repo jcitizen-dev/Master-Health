@@ -493,11 +493,13 @@ function renderLatest() {
     markers.forEach(m => {
       const cls = sc(m.status);
       const disp = m.us_value !== undefined ? `${m.us_value} <span class="mk-unit">${m.us_unit}</span>` : `${m.value} <span class="mk-unit">${m.unit}</span>`;
+      const dateStr = m._panelDate ? new Date(m._panelDate + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
       html += `<div class="marker-card ${cls}">
         <div class="mk-name">${m.name}</div>
         <div class="mk-val">${disp}</div>
         <div class="mk-badge ${cls}">${sl(m.status)}</div>
         ${m.note ? `<div class="mk-note">${m.note}</div>` : ''}
+        ${dateStr ? `<div class="mk-note" style="margin-top:3px;opacity:0.5">${dateStr}</div>` : ''}
       </div>`;
     });
     html += '</div>';

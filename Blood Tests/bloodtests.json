@@ -256,6 +256,7 @@
         { "id": "dhea_s",           "name": "DHEA-Sulfate",           "value": 120,   "unit": "mcg/dL",    "ref_low": 61,    "ref_high": 442,   "status": "borderline", "note": "Low-normal for age 46 — at 27th percentile of range. DHEA naturally declines ~10%/decade after 30; worth monitoring." },
         { "id": "ferritin",         "name": "Ferritin",               "value": 71,    "unit": "ng/mL",     "ref_low": 38,    "ref_high": 380,   "status": "normal" },
         { "id": "insulin",          "name": "Insulin (Fasting)",      "value": 4.1,   "unit": "uIU/mL",    "ref_low": null,  "ref_high": 18.4,  "status": "normal" },
+        { "id": "homa_ir",          "name": "HOMA-IR",                "value": 0.9,   "unit": "",          "ref_low": 0,     "ref_high": 2.0,   "status": "normal", "note": "Calculated: (89 mg/dL × 0.05551 × 4.1 µIU/mL) ÷ 22.5 = 0.90" },
         { "id": "prolactin",        "name": "Prolactin",              "value": 6.7,   "unit": "ng/mL",     "ref_low": 2.0,   "ref_high": 18.0,  "status": "normal" },
         { "id": "estradiol",        "name": "Estradiol",              "value": 30,    "unit": "pg/mL",     "ref_low": null,  "ref_high": 39,    "status": "normal", "flag": "<30", "note": "Reported as <30 — well within range for men" },
         { "id": "psa",              "name": "PSA, Total",             "value": 0.22,  "unit": "ng/mL",     "ref_low": null,  "ref_high": 4.0,   "status": "normal" },
