@@ -1,0 +1,22 @@
+# Inner apps have their own git repos — track them independently
+Stack/
+My Health Game/health-stack-academy/
+
+# Health data — PDFs contain personal medical information, keep off GitHub
+Blood Tests/Quest/*.pdf
+Blood Tests/Cedars/*.pdf
+Blood Tests/Medlab/*.pdf
+Blood Tests/**/*.pdf
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc

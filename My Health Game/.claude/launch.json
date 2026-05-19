@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "health-stack-academy",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-c", "import os; os.chdir('/Users/jordan/Desktop/My Health Game/health-stack-academy'); from http.server import HTTPServer, SimpleHTTPRequestHandler; HTTPServer(('', 3747), SimpleHTTPRequestHandler).serve_forever()"],
+      "port": 3747
+    }
+  ]
+}

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Health">
+<title>Health Master</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1c1c1e; --surface: #2c2c2e; --surface2: #3a3a3c;
+  --border: rgba(255,255,255,0.08); --text: #f0f0ee;
+  --muted: rgba(240,240,238,0.45); --accent: #c8f542;
+  --accent-dim: rgba(200,245,66,0.12); --danger: #FF4444;
+  --gold: #FFD700; --blue: #60A5FA; --radius: 14px;
+  --nav-h: 60px; --safe-top: env(safe-area-inset-top,0px);
+  --safe-bot: env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100dvh;overflow:hidden}
+
+/* ── Sections ── */
+.section{
+  position:fixed;inset:0;bottom:calc(var(--nav-h) + var(--safe-bot));
+  display:none;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+}
+.section.active{display:block}
+
+/* Stack iframe */
+#s-stack iframe{width:100%;height:100%;border:none;display:block}
+
+/* ── Bottom nav ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + var(--safe-bot));
+  display:flex;background:rgba(28,28,30,0.96);backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border);
+  padding-bottom:var(--safe-bot);z-index:100;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;background:transparent;border:none;cursor:pointer;
+  color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;
+  letter-spacing:0.06em;text-transform:uppercase;padding-bottom:2px;transition:color .18s;
+}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn.active{color:var(--accent)}
+
+/* ── Blood Tests shared ── */
+#s-blood{padding:0 0 16px 0}
+.bt-top{padding:calc(var(--safe-top) + 20px) 16px 0}
+.bt-title{font-size:28px;font-weight:300;letter-spacing:-0.02em}
+.bt-subtitle{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-top:4px}
+.stat-row{display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.stat-row::-webkit-scrollbar{display:none}
+.stat-card{flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;min-width:90px}
+.stat-val{font-family:'DM Mono',monospace;font-size:18px;font-weight:500}
+.stat-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-top:2px}
+.stat-card.ok .stat-val{color:var(--accent)}
+.stat-card.warn .stat-val{color:var(--gold)}
+.stat-card.high .stat-val{color:var(--danger)}
+.stat-card.low .stat-val{color:var(--blue)}
+
+/* Sub-nav */
+.subnav{
+  display:flex;gap:6px;padding:14px 16px 12px;position:sticky;
+  top:0;background:rgba(28,28,30,0.95);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);z-index:10;
+}
+.subnav-btn{
+  padding:6px 16px;border-radius:40px;border:1px solid var(--border);
+  font-size:12px;font-family:'DM Mono',monospace;letter-spacing:0.04em;
+  cursor:pointer;background:transparent;color:var(--muted);transition:all .15s;
+}
+.subnav-btn.active{background:var(--accent);color:#0e0e0f;border-color:var(--accent);font-weight:500}
+.bt-view{display:none;padding:0 16px}
+.bt-view.active{display:block}
+
+/* ── Group / Marker cards ── */
+.grp-label{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--muted);margin:20px 0 8px;
+}
+.marker-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.marker-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:11px 12px;position:relative;overflow:hidden;
+}
+.marker-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--border);
+}
+.marker-card.ok::before{background:var(--accent)}
+.marker-card.warn::before{background:var(--gold)}
+.marker-card.hi::before{background:var(--danger)}
+.marker-card.lo::before{background:var(--blue)}
+.mk-name{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.03em;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mk-val{font-size:17px;font-weight:500;letter-spacing:-0.01em}
+.mk-unit{font-size:10px;font-weight:300;color:var(--muted)}
+.mk-badge{display:inline-block;margin-top:5px;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.06em;padding:2px 7px;border-radius:20px}
+.mk-badge.ok{color:var(--accent);background:var(--accent-dim);border:1px solid rgba(200,245,66,0.3)}
+.mk-badge.warn{color:var(--gold);background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3)}
+.mk-badge.hi{color:var(--danger);background:rgba(255,68,68,0.12);border:1px solid rgba(255,68,68,0.3)}
+.mk-badge.lo{color:var(--blue);background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.3)}
+.mk-note{font-size:9px;color:var(--muted);margin-top:4px;line-height:1.3;font-family:'DM Mono',monospace}
+
+/* ── Timeline ── */
+.tl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
+.tl-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px;cursor:pointer}
+.tl-left{display:flex;flex-direction:column;gap:3px}
+.tl-date{font-family:'DM Mono',monospace;font-size:13px;font-weight:500}
+.tl-lab{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.04em}
+.tl-right{display:flex;align-items:center;gap:10px}
+.tl-flag-count{font-family:'DM Mono',monospace;font-size:12px}
+.tl-flag-count.ok{color:var(--accent)}
+.tl-flag-count.warn{color:var(--gold)}
+.tl-flag-count.hi{color:var(--danger)}
+.tl-chevron{font-size:14px;color:var(--muted);transition:transform .2s}
+.tl-card.open .tl-chevron{transform:rotate(90deg)}
+.tl-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
+.tl-body.open{display:block}
+.tl-mk-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.tl-mk-row:last-child{border-bottom:none}
+.tl-mk-name{font-size:12px;color:var(--muted)}
+.tl-mk-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:500}
+.tl-mk-val.ok{color:var(--accent)}
+.tl-mk-val.warn{color:var(--gold)}
+.tl-mk-val.hi{color:var(--danger)}
+.tl-mk-val.lo{color:var(--blue)}
+
+/* ── Trends ── */
+.trend-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.trend-chip{
+  padding:6px 14px;border-radius:40px;border:1px solid var(--border);
+  font-size:11px;font-family:'DM Mono',monospace;cursor:pointer;
+  background:transparent;color:var(--muted);transition:all .15s;
+}
+.trend-chip.active{background:var(--accent);color:#0e0e0f;border-color:var(--accent);font-weight:500}
+.trend-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.trend-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:12px}
+.trend-svg-wrap{width:100%;overflow:visible}
+.trend-table{width:100%;border-collapse:collapse;margin-top:12px}
+.trend-table th{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;text-align:left;padding:4px 8px;border-bottom:1px solid var(--border)}
+.trend-table td{font-size:11px;padding:7px 8px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.trend-table td:nth-child(2){font-family:'DM Mono',monospace;font-weight:500}
+.trend-table .ok{color:var(--accent)}.trend-table .warn{color:var(--gold)}
+.trend-table .hi{color:var(--danger)}.trend-table .lo{color:var(--blue)}
+.no-data{text-align:center;padding:32px 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
+
+/* ── Game section ── */
+#s-game.active{display:flex;align-items:center;justify-content:center}
+.game-card{text-align:center;padding:32px 24px;max-width:340px;width:100%}
+.game-icon{font-size:64px;margin-bottom:20px}
+.game-title{font-size:26px;font-weight:300;letter-spacing:-0.02em;margin-bottom:8px}
+.game-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px}
+.game-stat-row{display:flex;justify-content:center;gap:24px;margin-bottom:28px}
+.game-stat{text-align:center}
+.game-stat-val{font-family:'DM Mono',monospace;font-size:20px;color:var(--accent)}
+.game-stat-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px}
+.launch-btn{
+  width:100%;padding:15px;border-radius:var(--radius);background:var(--accent);
+  color:#0e0e0f;border:none;font-size:15px;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:opacity .15s;
+}
+.launch-btn:active{opacity:0.85}
+.launch-hint{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:12px;letter-spacing:0.04em}
+.or-divider{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin:16px 0}
+.launch-btn-secondary{
+  width:100%;padding:13px;border-radius:var(--radius);background:transparent;
+  color:var(--muted);border:1px solid var(--border);font-size:13px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Stack ── -->
+<section class="section active" id="s-stack">
+  <iframe id="stack-frame" src="Stack/index.html" title="Stack"></iframe>
+</section>
+
+<!-- ── Blood Tests ── -->
+<section class="section" id="s-blood">
+  <div class="bt-top">
+    <h1 class="bt-title">Blood Tests</h1>
+    <div class="bt-subtitle" id="bt-subtitle">Loading...</div>
+    <div class="stat-row" id="bt-stats"></div>
+  </div>
+  <div class="subnav">
+    <button class="subnav-btn active" onclick="btView('latest')">Latest</button>
+    <button class="subnav-btn" onclick="btView('timeline')">Timeline</button>
+    <button class="subnav-btn" onclick="btView('trends')">Trends</button>
+  </div>
+  <div class="bt-view active" id="bt-latest-view"></div>
+  <div class="bt-view" id="bt-timeline-view"></div>
+  <div class="bt-view" id="bt-trends-view"></div>
+</section>
+
+<!-- ── Game ── -->
+<section class="section" id="s-game">
+  <div class="game-card">
+    <div class="game-icon">🎮</div>
+    <h1 class="game-title">My Health Game</h1>
+    <p class="game-desc">Health Stack Academy — quiz your way through your biomarkers and learn exactly why each supplement is in your stack.</p>
+    <div class="game-stat-row">
+      <div class="game-stat"><div class="game-stat-val">52</div><div class="game-stat-label">Biomarkers</div></div>
+      <div class="game-stat"><div class="game-stat-val">28</div><div class="game-stat-label">Supplements</div></div>
+      <div class="game-stat"><div class="game-stat-val">7</div><div class="game-stat-label">Ranks</div></div>
+    </div>
+    <button class="launch-btn" onclick="launchGame()">Launch Game →</button>
+    <div class="launch-hint" id="game-hint">Opens in browser at localhost:8080</div>
+    <div class="or-divider">— or —</div>
+    <button class="launch-btn-secondary" onclick="launchGameTab()">Open in new tab</button>
+  </div>
+</section>
+
+<!-- ── Bottom nav ── -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-stack" onclick="showSection('stack')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Stack
+  </button>
+  <button class="nav-btn" id="nav-blood" onclick="showSection('blood')">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8 7 5 10.5 5 14a7 7 0 0014 0c0-3.5-3-7-7-12z"/></svg>
+    Blood
+  </button>
+  <button class="nav-btn" id="nav-game" onclick="showSection('game')">
+    <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 12h.01M18 12h.01"/></svg>
+    Game
+  </button>
+</nav>
+
+<script src="Blood%20Tests/bloodtests.js"></script>
+<script>
+// ── Navigation ────────────────────────────────────────────────────────────────
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  if (id === 'blood' && !btReady) initBloodTests();
+}
+
+// ── Game launcher ─────────────────────────────────────────────────────────────
+function launchGame() {
+  const isLocal = location.protocol === 'http:';
+  if (isLocal) {
+    window.location.href = '/My%20Health%20Game/health-stack-academy/index.html';
+  } else {
+    launchGameTab();
+  }
+}
+function launchGameTab() {
+  const isLocal = location.protocol === 'http:';
+  const url = isLocal
+    ? `${location.protocol}//${location.hostname}:${location.port}/My%20Health%20Game/health-stack-academy/index.html`
+    : 'My Health Game/health-stack-academy/index.html';
+  window.open(url, '_blank');
+}
+(function() {
+  const hint = document.getElementById('game-hint');
+  if (location.protocol !== 'http:') {
+    hint.textContent = 'Run serve.py to enable in-app navigation';
+  }
+})();
+
+// ── Blood Tests ───────────────────────────────────────────────────────────────
+let btReady = false;
+let activeBtView = 'latest';
+let activeTrendMarker = null;
+
+const STATUS_CLASS = { normal:'ok', optimal:'ok', negative:'ok', low_normal:'warn',
+  borderline:'warn', see_report:'warn', high:'hi', elevated:'hi', low:'lo' };
+const STATUS_LABEL = { normal:'✓ NORMAL', optimal:'✓ OPTIMAL', negative:'✓ NEGATIVE',
+  low_normal:'~ LOW NORMAL', borderline:'⚠ BORDERLINE', see_report:'SEE REPORT',
+  high:'↑ HIGH', elevated:'↑ ELEVATED', low:'↓ LOW' };
+
+function sc(status) { return STATUS_CLASS[status] || 'ok'; }
+function sl(status) { return STATUS_LABEL[status] || status.toUpperCase(); }
+
+function btView(v) {
+  activeBtView = v;
+  document.querySelectorAll('.subnav-btn').forEach((b,i) => b.classList.toggle('active', ['latest','timeline','trends'][i]===v));
+  document.querySelectorAll('.bt-view').forEach(el => el.classList.remove('active'));
+  document.getElementById('bt-'+v+'-view').classList.add('active');
+}
+
+// ── CANONICAL UNITS for cross-panel trends ────────────────────────────────────
+const CONV = {
+  glucose:      { unit:'mg/dL',  f:{'mmol/L':18.016} },
+  total_chol:   { unit:'mg/dL',  f:{'mmol/L':38.67} },
+  triglycerides:{ unit:'mg/dL',  f:{'mmol/L':88.57} },
+  hdl:          { unit:'mg/dL',  f:{'mmol/L':38.67} },
+  ldl:          { unit:'mg/dL',  f:{'mmol/L':38.67} },
+  creatinine:   { unit:'mg/dL',  f:{'µmol/L':0.01131,'mg/dL':1} },
+  uric_acid:    { unit:'mg/dL',  f:{'µmol/L':0.01681,'mg/dL':1} },
+  calcium:      { unit:'mg/dL',  f:{'mmol/L':4.0078,'mg/dL':1} },
+  magnesium:    { unit:'mg/dL',  f:{'mmol/L':2.4305,'mg/dL':1} },
+  albumin:      { unit:'g/dL',   f:{'g/L':0.1,'g/dL':1} },
+  testosterone: { unit:'ng/dL',  f:{'nmol/L':28.818,'ng/dL':1} },
+  vitd:         { unit:'ng/mL',  f:{'nmol/L':0.4006,'ng/mL':1} },
+  free_t3:      { unit:'pg/mL',  f:{'pmol/L':0.6511,'pg/mL':1} },
+  free_t4:      { unit:'ng/dL',  f:{'pmol/L':0.07772,'ng/dL':1} },
+  bilirubin:    { unit:'mg/dL',  f:{'µmol/L':0.05848,'mg/dL':1} },
+  iron:         { unit:'µg/dL',  f:{'µmol/L':5.585,'mcg/dL':1,'µg/dL':1} },
+  cortisol:     { unit:'µg/dL',  f:{'nmol/L':0.03625} },
+  urea_bun:     { unit:'mg/dL',  f:{'mmol/L':2.801,'mg/dL':1} },
+};
+
+function normalizeMarker(marker) {
+  const can = CONV[marker.id];
+  let v = marker.value, u = marker.unit;
+  let rl = marker.ref_low, rh = marker.ref_high;
+  if (can && can.f[u] !== undefined) {
+    const fac = can.f[u];
+    v = v * fac;
+    if (rl !== null && rl !== undefined) rl = rl * fac;
+    if (rh !== null && rh !== undefined) rh = rh * fac;
+    u = can.unit;
+  }
+  return { value: v, unit: u, ref_low: rl, ref_high: rh };
+}
+
+// ── Collect trend data for a marker ──────────────────────────────────────────
+function collectTrendData(markerId) {
+  const BD = window.BLOOD_TESTS;
+  const points = [];
+  let refLow = null, refHigh = null, displayUnit = null;
+
+  for (const panel of BD.panels) {
+    const m = panel.markers.find(mk => mk.id === markerId && mk.value !== null && typeof mk.value === 'number');
+    if (!m) continue;
+    const norm = normalizeMarker(m);
+    if (!displayUnit) displayUnit = norm.unit;
+    if (refLow === null && norm.ref_low !== null && norm.ref_low !== undefined) refLow = norm.ref_low;
+    if (refHigh === null && norm.ref_high !== null && norm.ref_high !== undefined) refHigh = norm.ref_high;
+    const dateMs = new Date(panel.date).getTime();
+    const lbl = new Date(panel.date).toLocaleDateString('en-US', {month:'short', year:'2-digit'});
+    points.push({ value: norm.value, unit: norm.unit, status: m.status, date: panel.date, dateMs, label: lbl, lab: panel.lab, title: panel.title });
+  }
+  points.sort((a,b) => a.dateMs - b.dateMs);
+  return { points, refLow, refHigh, unit: displayUnit };
+}
+
+// ── SVG Trend Chart ───────────────────────────────────────────────────────────
+function drawChart(markerId) {
+  const d = collectTrendData(markerId);
+  if (d.points.length < 2) {
+    return d.points.length === 1
+      ? `<div class="no-data">Only 1 data point — add more panels to see a trend.</div>`
+      : `<div class="no-data">No data available for this marker.</div>`;
+  }
+
+  const W = 340, H = 110;
+  const PL = 38, PR = 10, PT = 10, PB = 30;
+  const iW = W - PL - PR, iH = H - PT - PB;
+
+  const vals = d.points.map(p => p.value);
+  const allY = [...vals];
+  if (d.refLow !== null) allY.push(d.refLow);
+  if (d.refHigh !== null) allY.push(d.refHigh);
+  const yMin = Math.min(...allY) * 0.88;
+  const yMax = Math.max(...allY) * 1.12;
+  const yR = yMax - yMin || 1;
+
+  const dates = d.points.map(p => p.dateMs);
+  const xMin = Math.min(...dates), xMax = Math.max(...dates);
+  const xR = xMax - xMin || 1;
+
+  const ys = v => iH - ((v - yMin) / yR * iH);
+  const xs = t => dates.length < 2 ? iW/2 : ((t - xMin) / xR * iW);
+
+  const SCOL = { ok:'#c8f542', warn:'#FFD700', hi:'#FF4444', lo:'#60A5FA' };
+
+  // Reference band
+  let refBand = '';
+  if (d.refLow !== null && d.refHigh !== null) {
+    const ry1 = Math.min(ys(d.refHigh), iH), ry2 = Math.max(ys(d.refLow), 0);
+    refBand = `<rect x="0" y="${Math.min(ys(d.refHigh),0).toFixed(1)}" width="${iW}" height="${Math.abs(ys(d.refLow)-ys(d.refHigh)).toFixed(1)}" fill="rgba(200,245,66,0.1)" />`;
+  }
+
+  // Ref lines
+  let refLines = '';
+  if (d.refHigh !== null && ys(d.refHigh) >= 0 && ys(d.refHigh) <= iH)
+    refLines += `<line x1="0" y1="${ys(d.refHigh).toFixed(1)}" x2="${iW}" y2="${ys(d.refHigh).toFixed(1)}" stroke="rgba(200,245,66,0.25)" stroke-width="1" stroke-dasharray="3,3"/>`;
+  if (d.refLow !== null && ys(d.refLow) >= 0 && ys(d.refLow) <= iH)
+    refLines += `<line x1="0" y1="${ys(d.refLow).toFixed(1)}" x2="${iW}" y2="${ys(d.refLow).toFixed(1)}" stroke="rgba(200,245,66,0.25)" stroke-width="1" stroke-dasharray="3,3"/>`;
+
+  // Polyline
+  const pts = d.points.map(p => `${xs(p.dateMs).toFixed(1)},${ys(p.value).toFixed(1)}`).join(' ');
+
+  // Dots + labels
+  const dots = d.points.map(p => {
+    const cx = xs(p.dateMs).toFixed(1), cy = ys(p.value).toFixed(1);
+    const col = SCOL[sc(p.status)] || '#c8f542';
+    return `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${col}" stroke="#2c2c2e" stroke-width="2"/>`;
+  }).join('');
+
+  const xlabels = d.points.map(p => {
+    const cx = xs(p.dateMs).toFixed(1);
+    return `<text x="${cx}" y="${iH+20}" text-anchor="middle" font-size="8" fill="rgba(240,240,238,0.4)" font-family="DM Mono,monospace">${p.label}</text>`;
+  }).join('');
+
+  // Y-axis ticks
+  const yticks = [d.refHigh !== null ? d.refHigh : yMax, d.refLow !== null ? d.refLow : yMin].filter(v=>v!==null).map(v => {
+    const y = ys(v).toFixed(1);
+    if (y < 0 || +y > iH) return '';
+    return `<text x="-4" y="${(+y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="rgba(240,240,238,0.35)" font-family="DM Mono,monospace">${v % 1 ? v.toFixed(1) : v}</text>`;
+  }).join('');
+
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;overflow:visible">
+    <g transform="translate(${PL},${PT})">
+      <line x1="0" y1="${iH}" x2="${iW}" y2="${iH}" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+      <line x1="0" y1="0" x2="0" y2="${iH}" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+      ${refBand}${refLines}
+      <polyline points="${pts}" fill="none" stroke="rgba(240,240,238,0.25)" stroke-width="1.5"/>
+      ${dots}${xlabels}${yticks}
+    </g>
+  </svg>`;
+}
+
+// ── Latest panel grouped render ───────────────────────────────────────────────
+const LATEST_PANEL_ID = 'medlab_serbia_2026_04_14';
+const GROUPS = [
+  { label:'Glucose & Insulin', ids:['glucose','hba1c','insulin','homa_ir'] },
+  { label:'Lipids & Cardiovascular', ids:['total_chol','triglycerides','hdl','ldl','lpa','apo_b','apo_a1','fibrinogen'] },
+  { label:'Liver', ids:['ast','alt','ggt','alp','bilirubin','albumin','ldh','ck'] },
+  { label:'Kidney', ids:['creatinine','egfr','urea','uric_acid'] },
+  { label:'Minerals', ids:['magnesium','zinc','calcium','potassium','sodium','phosphate'] },
+  { label:'Iron Status', ids:['iron','ferritin','transferrin_sat','uibc','tibc'] },
+  { label:'Hormones', ids:['testosterone','free_testosterone','shbg','dht','estradiol','lh','fsh','prolactin','dhea_s','igf1','cortisol'] },
+  { label:'Thyroid', ids:['tsh','free_t3','free_t4','anti_tpo','anti_tg'] },
+  { label:'Vitamins & Methylation', ids:['vitd','b12','folate','homocysteine'] },
+  { label:'Inflammation', ids:['crp'] },
+];
+
+function renderLatest() {
+  const BD = window.BLOOD_TESTS;
+  const panel = BD.panels.find(p => p.id === LATEST_PANEL_ID);
+  if (!panel) { document.getElementById('bt-latest-view').innerHTML='<div class="no-data">Panel not found.</div>'; return; }
+  const mMap = {};
+  panel.markers.forEach(m => { mMap[m.id] = m; });
+
+  let html = '';
+  GROUPS.forEach(g => {
+    const markers = g.ids.map(id => mMap[id]).filter(Boolean).filter(m => m.value !== null);
+    if (!markers.length) return;
+    html += `<div class="grp-label">${g.label}</div><div class="marker-grid">`;
+    markers.forEach(m => {
+      const cls = sc(m.status);
+      const disp = m.us_value !== undefined ? `${m.us_value} <span class="mk-unit">${m.us_unit}</span>` : `${m.value} <span class="mk-unit">${m.unit}</span>`;
+      html += `<div class="marker-card ${cls}">
+        <div class="mk-name">${m.name}</div>
+        <div class="mk-val">${disp}</div>
+        <div class="mk-badge ${cls}">${sl(m.status)}</div>
+        ${m.note ? `<div class="mk-note">${m.note}</div>` : ''}
+      </div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('bt-latest-view').innerHTML = html;
+}
+
+// ── Timeline render ───────────────────────────────────────────────────────────
+function renderTimeline() {
+  const BD = window.BLOOD_TESTS;
+  const panels = [...BD.panels].sort((a,b) => new Date(b.date) - new Date(a.date));
+  let html = '<div style="padding-top:4px">';
+  panels.forEach(panel => {
+    const flags = panel.markers.filter(m => m.status && !['normal','optimal','negative','see_report'].includes(m.status));
+    const date = new Date(panel.date).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    const flagCls = flags.length === 0 ? 'ok' : flags.some(m=>['high','elevated'].includes(m.status)) ? 'hi' : 'warn';
+    const flagLabel = flags.length === 0 ? 'All clear' : `${flags.length} flag${flags.length>1?'s':''}`;
+
+    // markers with actual numeric values
+    const numericMarkers = panel.markers.filter(m => typeof m.value === 'number' && m.value !== null);
+
+    html += `<div class="tl-card" id="tlc-${panel.id}">
+      <div class="tl-head" onclick="toggleTl('${panel.id}')">
+        <div class="tl-left">
+          <div class="tl-date">${date}</div>
+          <div class="tl-lab">${panel.lab}</div>
+          <div class="tl-lab" style="margin-top:1px;color:rgba(240,240,238,0.3)">${panel.title}</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-flag-count ${flagCls}">${flagLabel}</div>
+          <div class="tl-chevron">›</div>
+        </div>
+      </div>
+      <div class="tl-body" id="tlb-${panel.id}">`;
+
+    if (numericMarkers.length) {
+      numericMarkers.forEach(m => {
+        const cls = sc(m.status);
+        const valStr = m.us_value !== undefined ? `${m.us_value} ${m.us_unit}` : `${m.value} ${m.unit}`;
+        html += `<div class="tl-mk-row">
+          <span class="tl-mk-name">${m.name}</span>
+          <span class="tl-mk-val ${cls}">${valStr} <span style="font-size:9px;opacity:0.5">${sl(m.status)}</span></span>
+        </div>`;
+      });
+    } else {
+      panel.markers.filter(m => m.note).forEach(m => {
+        html += `<div class="tl-mk-row">
+          <span class="tl-mk-name">${m.name}</span>
+          <span class="tl-mk-val ok" style="max-width:60%;text-align:right;font-size:11px;white-space:normal">${m.note}</span>
+        </div>`;
+      });
+    }
+    html += `</div></div>`;
+  });
+  html += '</div>';
+  document.getElementById('bt-timeline-view').innerHTML = html;
+}
+
+function toggleTl(id) {
+  const card = document.getElementById('tlc-' + id);
+  const body = document.getElementById('tlb-' + id);
+  card.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ── Trends render ─────────────────────────────────────────────────────────────
+const TREND_MARKERS = [
+  {id:'hemoglobin',     name:'Hemoglobin'},
+  {id:'hematocrit',     name:'Hematocrit'},
+  {id:'total_chol',     name:'Total Cholesterol'},
+  {id:'triglycerides',  name:'Triglycerides'},
+  {id:'hdl',            name:'HDL'},
+  {id:'ldl',            name:'LDL'},
+  {id:'crp',            name:'CRP'},
+  {id:'ast',            name:'AST'},
+  {id:'alt',            name:'ALT'},
+  {id:'creatinine',     name:'Creatinine'},
+  {id:'ferritin',       name:'Ferritin'},
+  {id:'vitd',           name:'Vitamin D'},
+  {id:'magnesium',      name:'Magnesium'},
+  {id:'b12',            name:'Vitamin B12'},
+  {id:'tsh',            name:'TSH'},
+  {id:'free_t3',        name:'Free T3'},
+  {id:'testosterone',   name:'Testosterone'},
+  {id:'shbg',           name:'SHBG'},
+  {id:'uric_acid',      name:'Uric Acid'},
+  {id:'albumin',        name:'Albumin'},
+  {id:'calcium',        name:'Calcium'},
+  {id:'glucose',        name:'Glucose'},
+  {id:'homocysteine',   name:'Homocysteine'},
+  {id:'igf1',           name:'IGF-1'},
+  {id:'dht',            name:'DHT'},
+  {id:'psa',            name:'PSA'},
+  {id:'platelets',      name:'Platelets'},
+  {id:'wbc',            name:'WBC'},
+];
+
+function renderTrends() {
+  const chips = TREND_MARKERS.map(m =>
+    `<button class="trend-chip${activeTrendMarker===m.id?' active':''}" onclick="selectTrend('${m.id}','${m.name}')">${m.name}</button>`
+  ).join('');
+  const chart = activeTrendMarker ? buildTrendDetail(activeTrendMarker) : '<div class="no-data">Select a marker above to view its trend.</div>';
+  document.getElementById('bt-trends-view').innerHTML =
+    `<div style="padding-top:4px"><div class="trend-chips">${chips}</div>${chart}</div>`;
+}
+
+function selectTrend(id, name) {
+  activeTrendMarker = id;
+  renderTrends();
+}
+
+function buildTrendDetail(markerId) {
+  const info = TREND_MARKERS.find(m => m.id === markerId);
+  const d = collectTrendData(markerId);
+  const svgHtml = drawChart(markerId);
+
+  let refStr = '';
+  if (d.refLow !== null && d.refHigh !== null)
+    refStr = `Reference: ${d.refLow % 1 ? d.refLow.toFixed(2) : d.refLow} – ${d.refHigh % 1 ? d.refHigh.toFixed(2) : d.refHigh} ${d.unit||''}`;
+  else if (d.refHigh !== null)
+    refStr = `Reference: < ${d.refHigh} ${d.unit||''}`;
+
+  let table = '';
+  if (d.points.length) {
+    const rows = d.points.map(p => {
+      const date = new Date(p.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      const cls = sc(p.status);
+      return `<tr><td>${date}</td><td class="${cls}">${p.value % 1 ? p.value.toFixed(2) : p.value}</td><td style="color:var(--muted)">${p.unit}</td><td class="${cls}" style="font-size:10px">${sl(p.status)}</td><td style="color:var(--muted);font-size:10px">${p.title.substring(0,30)}</td></tr>`;
+    }).join('');
+    table = `<table class="trend-table"><thead><tr><th>Date</th><th>Value</th><th>Unit</th><th>Status</th><th>Source</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  return `<div class="trend-box">
+    <div class="trend-title">${info ? info.name : markerId}</div>
+    ${refStr ? `<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">${refStr}</div>` : ''}
+    <div class="trend-svg-wrap">${svgHtml}</div>
+    ${table}
+  </div>`;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+function initBloodTests() {
+  if (!window.BLOOD_TESTS) {
+    document.getElementById('bt-subtitle').textContent = 'Error: bloodtests.js not loaded — run serve.py';
+    return;
+  }
+  btReady = true;
+  const BD = window.BLOOD_TESTS;
+  const panels = BD.panels;
+  const latest = [...panels].sort((a,b) => new Date(b.date)-new Date(a.date))[0];
+  const latestDate = new Date(latest.date).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('bt-subtitle').textContent = `${panels.length} panels · Latest: ${latestDate}`;
+
+  // Summary stats from latest numeric panel
+  const latestFull = BD.panels.find(p => p.id === LATEST_PANEL_ID);
+  if (latestFull) {
+    const all = latestFull.markers.filter(m => typeof m.value === 'number');
+    const flagged = all.filter(m => !['normal','optimal','negative'].includes(m.status));
+    const elevated = flagged.filter(m => ['high','elevated'].includes(m.status));
+    const borderline = flagged.filter(m => m.status === 'borderline');
+    const low = flagged.filter(m => m.status === 'low');
+    const optimal = all.filter(m => ['normal','optimal'].includes(m.status));
+    const statsEl = document.getElementById('bt-stats');
+    statsEl.innerHTML = `
+      <div class="stat-card ok"><div class="stat-val">${optimal.length}</div><div class="stat-label">Optimal</div></div>
+      <div class="stat-card warn"><div class="stat-val">${borderline.length}</div><div class="stat-label">Borderline</div></div>
+      <div class="stat-card high"><div class="stat-val">${elevated.length}</div><div class="stat-label">Elevated</div></div>
+      ${low.length ? `<div class="stat-card low"><div class="stat-val">${low.length}</div><div class="stat-label">Low</div></div>` : ''}
+      <div class="stat-card" style=""><div class="stat-val" style="color:var(--muted)">${all.length}</div><div class="stat-label">Markers</div></div>
+    `;
+  }
+
+  renderLatest();
+  renderTimeline();
+  renderTrends();
+}
+
+// Preload blood tests data on startup (it's already in window.BLOOD_TESTS from the script tag)
+if (window.BLOOD_TESTS) {
+  // Will init when section is first opened
+}
+</script>
+</body>
+</html>

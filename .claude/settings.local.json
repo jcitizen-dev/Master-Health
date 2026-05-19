@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import pdfplumber; print\\('pdfplumber ok'\\)\")",
+      "Bash(python3 -c \"import pypdf; print\\('pypdf ok'\\)\")",
+      "Bash(python3 -c \"from pypdf import PdfReader; r=PdfReader\\('/Users/jordan/Desktop/Health Master App/Blood Tests/Quest/05:14:2026.pdf'\\); print\\(r.pages[0].extract_text\\(\\)[:2000]\\)\")",
+      "Bash(pip3 install *)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}
