@@ -165,6 +165,24 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;hei
 .trend-table .hi{color:var(--danger)}.trend-table .lo{color:var(--blue)}
 .no-data{text-align:center;padding:32px 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
 
+/* ── Marker Detail Drawer ── */
+.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;opacity:0;transition:opacity .25s;pointer-events:none}
+.drawer-backdrop.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;bottom:0;left:0;right:0;z-index:201;background:var(--surface);border-radius:20px 20px 0 0;padding:0 0 calc(var(--safe-bot) + var(--nav-h) + 8px);max-height:85dvh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.drawer.open{transform:translateY(0)}
+.drawer-handle{width:36px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:12px auto 0}
+.drawer-inner{padding:16px 20px 0}
+.drawer-marker-name{font-size:22px;font-weight:300;letter-spacing:-0.02em;margin-bottom:4px}
+.drawer-value{font-family:'DM Mono',monospace;font-size:15px;margin-bottom:16px}
+.drawer-section{margin-bottom:18px}
+.drawer-section-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.drawer-section-text{font-size:14px;line-height:1.6;color:rgba(240,240,238,0.85)}
+.drawer-section-text.context{color:var(--text);background:rgba(200,245,66,0.06);border-left:2px solid var(--accent);padding:10px 12px;border-radius:0 8px 8px 0;font-size:13px}
+.drawer-sup-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.drawer-sup-tag{padding:5px 12px;border-radius:20px;background:var(--surface2);border:1px solid var(--border);font-size:12px;font-family:'DM Mono',monospace}
+.marker-card{cursor:pointer;transition:border-color .15s}
+.marker-card:active{opacity:0.85}
+
 #s-game{padding:0}
 #s-game iframe{width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block}
 </style>
@@ -208,6 +226,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;hei
 </nav>
 
 <script src="bloodtests.js?v=5"></script>
+<script src="game-app/src/biomarkers.js?v=1"></script>
+<script src="game-app/src/supplements.js?v=1"></script>
 <script>
 // ── Navigation ────────────────────────────────────────────────────────────────
 function showSection(id) {
@@ -472,7 +492,7 @@ function renderLatest() {
     const cls = sc(m.status);
     const disp = m.us_value !== undefined ? `${m.us_value} <span class="mk-unit">${m.us_unit}</span>` : `${m.value} <span class="mk-unit">${m.unit}</span>`;
     const dateStr = m._panelDate ? new Date(m._panelDate + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
-    return `<div class="marker-card ${cls}">
+    return `<div class="marker-card ${cls}" onclick="openDrawer('${m.id}')">
       <div class="mk-name">${m.name}</div>
       <div class="mk-val">${disp}</div>
       <div class="mk-badge ${cls}">${sl(m.status)}</div>
@@ -702,6 +722,74 @@ function initBloodTests() {
 if (window.BLOOD_TESTS) {
   // Will init when section is first opened
 }
+
+// ── Marker Detail Drawer ──────────────────────────────────────────────────────
+function openDrawer(markerId) {
+  const BM = (window.HSA && window.HSA.BIOMARKERS) || [];
+  const SUPPS = (window.HSA && window.HSA.SUPPLEMENTS) || [];
+
+  // Find biomarker entry — try exact id, then strip/add _bm suffix
+  let bm = BM.find(b => b.id === markerId);
+  if (!bm) bm = BM.find(b => b.id === markerId + '_bm');
+  if (!bm) bm = BM.find(b => b.id === markerId.replace('_bm',''));
+
+  // Find the marker value from blood tests
+  const BD = window.BLOOD_TESTS;
+  let marker = null;
+  const sortedPanels = [...BD.panels].sort((a,b) => new Date(b.date)-new Date(a.date));
+  for (const panel of sortedPanels) {
+    const m = panel.markers.find(mk => mk.id === markerId && mk.value !== null && typeof mk.value === 'number');
+    if (m) { marker = m; break; }
+  }
+
+  if (!bm && !marker) return; // nothing to show
+
+  const name = (bm && bm.name) || (marker && marker.name) || markerId;
+  let valueHtml = '';
+  if (marker) {
+    const disp = marker.us_value !== undefined ? `${marker.us_value} ${marker.us_unit}` : `${marker.value} ${marker.unit}`;
+    const cls = sc(marker.status);
+    const colMap = {ok:'var(--accent)',warn:'var(--gold)',hi:'var(--danger)',lo:'var(--blue)'};
+    valueHtml = `<div class="drawer-value" style="color:${colMap[cls]||'var(--accent)'}">${disp} · ${sl(marker.status)}</div>`;
+  }
+
+  let sectionsHtml = '';
+  if (bm) {
+    if (bm.whatItMeasures)
+      sectionsHtml += `<div class="drawer-section"><div class="drawer-section-label">What it measures</div><div class="drawer-section-text">${bm.whatItMeasures}</div></div>`;
+    if (bm.whyItMatters)
+      sectionsHtml += `<div class="drawer-section"><div class="drawer-section-label">Why it matters</div><div class="drawer-section-text">${bm.whyItMatters}</div></div>`;
+    if (bm.myContextNote)
+      sectionsHtml += `<div class="drawer-section"><div class="drawer-section-label">My result</div><div class="drawer-section-text context">${bm.myContextNote}</div></div>`;
+    if (bm.relatedSupplements && bm.relatedSupplements.length) {
+      const tags = bm.relatedSupplements.map(sid => {
+        const sup = SUPPS.find(s => s.id === sid);
+        return `<span class="drawer-sup-tag">${sup ? sup.emoji + ' ' + sup.name : sid}</span>`;
+      }).join('');
+      sectionsHtml += `<div class="drawer-section"><div class="drawer-section-label">In my stack</div><div class="drawer-sup-row">${tags}</div></div>`;
+    }
+  }
+
+  if (!sectionsHtml) return; // no educational content, don't open drawer
+
+  document.getElementById('drawer-inner').innerHTML = `
+    <div class="drawer-marker-name">${name}</div>
+    ${valueHtml}
+    ${sectionsHtml}
+  `;
+  document.getElementById('drawer-backdrop').classList.add('open');
+  document.getElementById('marker-drawer').classList.add('open');
+}
+
+function closeDrawer() {
+  document.getElementById('drawer-backdrop').classList.remove('open');
+  document.getElementById('marker-drawer').classList.remove('open');
+}
 </script>
+<div class="drawer-backdrop" id="drawer-backdrop" onclick="closeDrawer()"></div>
+<div class="drawer" id="marker-drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-inner" id="drawer-inner"></div>
+</div>
 </body>
 </html>

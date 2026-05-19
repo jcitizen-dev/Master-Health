@@ -4,7 +4,7 @@
     {
       "name": "Health Master App",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["serve.py"],
+      "runtimeArgs": ["/tmp/hma_serve.py"],
       "port": 8080
     }
   ]
