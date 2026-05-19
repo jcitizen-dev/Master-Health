@@ -161,29 +161,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .trend-table .hi{color:var(--danger)}.trend-table .lo{color:var(--blue)}
 .no-data{text-align:center;padding:32px 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
 
-/* ── Game section ── */
-#s-game.active{display:flex;align-items:center;justify-content:center}
-.game-card{text-align:center;padding:32px 24px;max-width:340px;width:100%}
-.game-icon{font-size:64px;margin-bottom:20px}
-.game-title{font-size:26px;font-weight:300;letter-spacing:-0.02em;margin-bottom:8px}
-.game-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px}
-.game-stat-row{display:flex;justify-content:center;gap:24px;margin-bottom:28px}
-.game-stat{text-align:center}
-.game-stat-val{font-family:'DM Mono',monospace;font-size:20px;color:var(--accent)}
-.game-stat-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px}
-.launch-btn{
-  width:100%;padding:15px;border-radius:var(--radius);background:var(--accent);
-  color:#0e0e0f;border:none;font-size:15px;font-weight:500;cursor:pointer;
-  font-family:'DM Sans',sans-serif;transition:opacity .15s;
-}
-.launch-btn:active{opacity:0.85}
-.launch-hint{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:12px;letter-spacing:0.04em}
-.or-divider{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin:16px 0}
-.launch-btn-secondary{
-  width:100%;padding:13px;border-radius:var(--radius);background:transparent;
-  color:var(--muted);border:1px solid var(--border);font-size:13px;cursor:pointer;
-  font-family:'DM Sans',sans-serif;
-}
+#s-game{padding:0}
+#s-game iframe{width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block}
 </style>
 </head>
 <body>
@@ -209,21 +188,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 </section>
 
 <!-- ── Game ── -->
-<section class="section" id="s-game">
-  <div class="game-card">
-    <svg class="game-title" viewBox="0 0 24 24" style="width:36px;height:36px;stroke:var(--text);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 12h.01M18 12h.01"/></svg>
-    <p class="game-desc">Health Stack Academy — quiz your way through your biomarkers and learn exactly why each supplement is in your stack.</p>
-    <div class="game-stat-row">
-      <div class="game-stat"><div class="game-stat-val">52</div><div class="game-stat-label">Biomarkers</div></div>
-      <div class="game-stat"><div class="game-stat-val">28</div><div class="game-stat-label">Supplements</div></div>
-      <div class="game-stat"><div class="game-stat-val">7</div><div class="game-stat-label">Ranks</div></div>
-    </div>
-    <button class="launch-btn" onclick="launchGame()">Launch Game →</button>
-    <div class="launch-hint" id="game-hint">Opens in browser at localhost:8080</div>
-    <div class="or-divider">— or —</div>
-    <button class="launch-btn-secondary" onclick="launchGameTab()">Open in new tab</button>
-  </div>
-</section>
+<section class="section" id="s-game"></section>
 
 <!-- ── Bottom nav ── -->
 <nav class="bottom-nav">
@@ -249,22 +214,6 @@ function showSection(id) {
   if (id === 'blood' && !btReady) initBloodTests();
 }
 
-// ── Game launcher ─────────────────────────────────────────────────────────────
-function launchGame() {
-  const isLocal = location.protocol === 'http:';
-  if (isLocal) {
-    window.location.href = '/My%20Health%20Game/health-stack-academy/index.html';
-  } else {
-    launchGameTab();
-  }
-}
-function launchGameTab() {
-  const isLocal = location.protocol === 'http:';
-  const url = isLocal
-    ? `${location.protocol}//${location.hostname}:${location.port}/My%20Health%20Game/health-stack-academy/index.html`
-    : 'My Health Game/health-stack-academy/index.html';
-  window.open(url, '_blank');
-}
 
 // ── Blood Tests ───────────────────────────────────────────────────────────────
 let btReady = false;
@@ -275,6 +224,9 @@ let latestSort = 'grouped';
 
 document.getElementById('s-stack').innerHTML =
   `<iframe id="stack-frame" src="stack-app/index.html" title="Stack" style="width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block"></iframe>`;
+
+document.getElementById('s-game').innerHTML =
+  `<iframe id="game-frame" src="game-app/index.html" title="Game" style="width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block"></iframe>`;
 
 function setLatestSort(s) {
   latestSort = s;
