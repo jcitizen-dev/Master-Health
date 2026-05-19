@@ -1,5 +1,5 @@
 // ── Reusable UI Components ────────────────────────────────────────────────────
-const { useState, useEffect, useRef, useCallback } = React;
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
 // ── PillTag ───────────────────────────────────────────────────────────────────
 function PillTag({ label, color, onClick }) {
@@ -307,6 +307,11 @@ function QuizCard({ quiz, onAnswer, answered, combo, multiplier, hearts }) {
 
   useEffect(() => { setSelected(null); setShake(false); setShowXP(false); }, [quiz?.id]);
 
+  const shuffledOptions = useMemo(function() {
+    if (!quiz || !quiz.options) return [];
+    return quiz.options.slice().sort(function() { return Math.random() - 0.5; });
+  }, [quiz && quiz.id]);
+
   const handleSelect = (opt) => {
     if (answered !== null || selected) return;
     setSelected(opt);
@@ -354,7 +359,7 @@ function QuizCard({ quiz, onAnswer, answered, combo, multiplier, hearts }) {
 
       {/* Options */}
       <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-        {(quiz.options || []).map((opt, i) => {
+        {shuffledOptions.map((opt, i) => {
           const isSelected = selected === opt;
           const isCorrect = opt === quiz.answer;
           let bg = 'var(--surface)', border = 'var(--border)', color = 'var(--text)';

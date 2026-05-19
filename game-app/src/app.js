@@ -366,7 +366,7 @@ function QuizScreen({ progressHook }) {
     // Default: random mix
     const shuffled = [...allQ].sort(() => Math.random() - 0.5);
     return shuffled.slice(0,10).map(q=>q.id);
-  }, []);
+  }, [location.search]);
 
   const [idx, setIdx] = useState(0);
   const [answered, setAnswered] = useState(null);
@@ -400,19 +400,19 @@ function QuizScreen({ progressHook }) {
 
     setAnswered(correct ? 'correct' : 'wrong');
     setResults(r => [...r, { correct, earned }]);
+  }, [current, answered, multiplier, answerQuestion, update, incrementCombo, resetCombo, consumeHeart]);
 
-    setTimeout(() => {
-      if (heartsEmpty && !correct) { setDone(true); return; }
-      if (idx + 1 >= quizzes.length) {
-        setDone(true);
-        const allCorrect = results.concat({correct}).every(r => r.correct);
-        if (allCorrect) setShowParticles(true);
-      } else {
-        setIdx(i => i + 1);
-        setAnswered(null);
-      }
-    }, 1300);
-  }, [current, answered, idx, quizzes.length, multiplier, hearts, heartsEmpty, results, answerQuestion, update, incrementCombo, resetCombo, consumeHeart, params]);
+  const handleContinue = useCallback(function() {
+    if (heartsEmpty && answered === 'wrong') { setDone(true); return; }
+    if (idx + 1 >= quizzes.length) {
+      const allCorrect = results.every(function(r) { return r.correct; });
+      setDone(true);
+      if (allCorrect) setShowParticles(true);
+    } else {
+      setIdx(function(i) { return i + 1; });
+      setAnswered(null);
+    }
+  }, [heartsEmpty, answered, idx, quizzes.length, results]);
 
   const correctCount = results.filter(r => r.correct).length;
   const pct = results.length ? Math.round((correctCount / results.length) * 100) : 0;
@@ -449,6 +449,11 @@ function QuizScreen({ progressHook }) {
         </div>
       </div>
       {current && <QuizCard quiz={current} onAnswer={handleAnswer} answered={answered} combo={combo} multiplier={multiplier} hearts={hearts} />}
+      {answered !== null && (
+        <button onClick={handleContinue} style={{ width:'100%', marginTop:16, padding:'16px', borderRadius:'var(--radius)', background:'var(--accent)', color:'#0e0e0f', border:'none', fontFamily:'DM Mono, monospace', fontSize:13, fontWeight:500, letterSpacing:'0.06em', cursor:'pointer' }}>
+          {idx + 1 >= quizzes.length ? 'FINISH →' : 'CONTINUE →'}
+        </button>
+      )}
     </div>
   );
 }
