@@ -121,6 +121,11 @@
     </div>
   </div>
   <div id="log-content"></div>
+  <div style="display:flex;gap:8px;padding:20px 0 8px;">
+    <button onclick="exportBackup()" style="flex:1;padding:12px;border-radius:12px;background:rgba(200,245,66,0.08);border:1px solid rgba(200,245,66,0.25);color:#c8f542;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.05em;cursor:pointer;">↓ Export Backup</button>
+    <button onclick="document.getElementById('import-input').click()" style="flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(240,240,238,0.55);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.05em;cursor:pointer;">↑ Restore Backup</button>
+    <input id="import-input" type="file" accept=".json" style="display:none" onchange="importBackup(this)">
+  </div>
 </div>
 
 <div class="bottom-nav">
@@ -474,6 +479,32 @@ function renderLog() {
     });
     c.appendChild(monthEl);
   });
+}
+
+// --- Backup / Restore ---
+async function exportBackup() {
+  const keys = await storeAll();
+  const data = { version: 1, exported: new Date().toISOString(), entries: keys };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'stack-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function importBackup(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const text = await file.text();
+  let data;
+  try { data = JSON.parse(text); } catch(e) { alert('Invalid backup file.'); return; }
+  const entries = Array.isArray(data) ? data : (data.entries || []);
+  for (const k of entries) { checked.add(k); await storeSet(k); }
+  input.value = '';
+  render();
+  alert('Restored ' + entries.length + ' check-ins.');
 }
 
 // --- Boot ---
