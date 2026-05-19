@@ -269,27 +269,8 @@ let activeBtView = 'latest';
 let activeTrendMarker = null;
 let latestFilter = null;
 
-(function() {
-  const isLocal = location.protocol === 'http:';
-  if (isLocal) {
-    // Local: inject Stack iframe
-    document.getElementById('s-stack').innerHTML =
-      `<iframe id="stack-frame" src="stack-app/index.html" title="Stack" style="width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block"></iframe>`;
-  } else {
-    // GitHub Pages: show placeholder, land on Blood
-    showSection('blood');
-    document.getElementById('s-stack').innerHTML = `
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
-                  height:100%;gap:12px;padding:40px;text-align:center">
-        <svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:var(--text);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/></svg>
-        <div style="font-size:17px;font-weight:500;color:var(--text)">Stack Tracker</div>
-        <div style="font-size:13px;color:var(--muted);font-family:'DM Mono',monospace">
-          Available on local server only.<br>Run serve.py on your Mac to access.
-        </div>
-      </div>`;
-    document.getElementById('game-hint').textContent = 'Local server required';
-  }
-})();
+document.getElementById('s-stack').innerHTML =
+  `<iframe id="stack-frame" src="stack-app/index.html" title="Stack" style="width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block"></iframe>`;
 
 function setLatestFilter(f) {
   latestFilter = (latestFilter === f) ? null : f;
