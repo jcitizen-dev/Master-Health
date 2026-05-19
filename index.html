@@ -186,9 +186,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <body>
 
 <!-- ── Stack ── -->
-<section class="section active" id="s-stack">
-  <iframe id="stack-frame" src="Stack/index.html" title="Stack"></iframe>
-</section>
+<section class="section active" id="s-stack"></section>
 
 <!-- ── Blood Tests ── -->
 <section class="section" id="s-blood">
@@ -237,7 +235,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </button>
 </nav>
 
-<script src="Blood%20Tests/bloodtests.js"></script>
+<script src="bloodtests.js"></script>
 <script>
 // ── Navigation ────────────────────────────────────────────────────────────────
 function showSection(id) {
@@ -272,10 +270,14 @@ let activeTrendMarker = null;
 let latestFilter = null;
 
 (function() {
-  if (location.protocol !== 'http:') {
-    // GitHub Pages / remote: Blood is the useful tab — start there
+  const isLocal = location.protocol === 'http:';
+  if (isLocal) {
+    // Local: inject Stack iframe
+    document.getElementById('s-stack').innerHTML =
+      `<iframe id="stack-frame" src="Stack/index.html" title="Stack" style="width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block"></iframe>`;
+  } else {
+    // GitHub Pages: show placeholder, land on Blood
     showSection('blood');
-    // Stack: iframe won't resolve, swap for a placeholder
     document.getElementById('s-stack').innerHTML = `
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
                   height:100%;gap:12px;padding:40px;text-align:center">
@@ -285,7 +287,6 @@ let latestFilter = null;
           Available on local server only.<br>Run serve.py on your Mac to access.
         </div>
       </div>`;
-    // Game: update hint
     document.getElementById('game-hint').textContent = 'Local server required';
   }
 })();
