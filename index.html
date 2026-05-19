@@ -481,6 +481,7 @@ function renderLatest() {
   let html = `<div class="sort-row">
     <button class="sort-btn ${latestSort==='grouped'?'active':''}" onclick="setLatestSort('grouped')">Grouped</button>
     <button class="sort-btn ${latestSort==='alpha'?'active':''}" onclick="setLatestSort('alpha')">A–Z</button>
+    <button class="sort-btn ${latestSort==='date'?'active':''}" onclick="setLatestSort('date')">Date</button>
   </div>`;
 
   if (latestSort === 'alpha') {
@@ -491,6 +492,25 @@ function renderLatest() {
       allMarkers.forEach(m => { html += mkCard(m); });
       html += '</div>';
     }
+  } else if (latestSort === 'date') {
+    const allMarkers = Object.values(mMap).filter(m => m.value !== null).filter(filterFn);
+    allMarkers.sort((a, b) => {
+      const dateDiff = new Date(b._panelDate) - new Date(a._panelDate);
+      return dateDiff !== 0 ? dateDiff : a.name.localeCompare(b.name);
+    });
+    // Group by panel date with date headers
+    const byDate = [];
+    allMarkers.forEach(m => {
+      const last = byDate[byDate.length - 1];
+      if (last && last.date === m._panelDate) { last.markers.push(m); }
+      else { byDate.push({ date: m._panelDate, markers: [m] }); }
+    });
+    byDate.forEach(group => {
+      const label = new Date(group.date + 'T12:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+      html += `<div class="grp-label">${label}</div><div class="marker-grid">`;
+      group.markers.forEach(m => { html += mkCard(m); });
+      html += '</div>';
+    });
   } else {
     GROUPS.forEach(g => {
       const markers = g.ids.map(id => mMap[id]).filter(Boolean).filter(m => m.value !== null).filter(filterFn);
