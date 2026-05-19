@@ -193,7 +193,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <!-- ── Blood Tests ── -->
 <section class="section" id="s-blood">
   <div class="bt-top">
-    <h1 class="bt-title">Blood Tests</h1>
+    <svg class="bt-title" viewBox="0 0 24 24" style="width:36px;height:36px;stroke:var(--text);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2C8 7 5 10.5 5 14a7 7 0 0014 0c0-3.5-3-7-7-12z"/></svg>
     <div class="bt-subtitle" id="bt-subtitle">Loading...</div>
     <div class="stat-row" id="bt-stats"></div>
   </div>
@@ -210,8 +210,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <!-- ── Game ── -->
 <section class="section" id="s-game">
   <div class="game-card">
-    <div class="game-icon">🎮</div>
-    <h1 class="game-title">My Health Game</h1>
+    <svg class="game-title" viewBox="0 0 24 24" style="width:36px;height:36px;stroke:var(--text);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 12h.01M18 12h.01"/></svg>
     <p class="game-desc">Health Stack Academy — quiz your way through your biomarkers and learn exactly why each supplement is in your stack.</p>
     <div class="game-stat-row">
       <div class="game-stat"><div class="game-stat-val">52</div><div class="game-stat-label">Biomarkers</div></div>
@@ -228,16 +227,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <!-- ── Bottom nav ── -->
 <nav class="bottom-nav">
   <button class="nav-btn active" id="nav-stack" onclick="showSection('stack')">
-    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Stack
+    <svg viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/></svg>
   </button>
   <button class="nav-btn" id="nav-blood" onclick="showSection('blood')">
     <svg viewBox="0 0 24 24"><path d="M12 2C8 7 5 10.5 5 14a7 7 0 0014 0c0-3.5-3-7-7-12z"/></svg>
-    Blood
   </button>
   <button class="nav-btn" id="nav-game" onclick="showSection('game')">
     <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 12h.01M18 12h.01"/></svg>
-    Game
   </button>
 </nav>
 
