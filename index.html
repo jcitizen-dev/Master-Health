@@ -274,7 +274,7 @@ let latestFilter = null;
   if (isLocal) {
     // Local: inject Stack iframe
     document.getElementById('s-stack').innerHTML =
-      `<iframe id="stack-frame" src="Stack/index.html" title="Stack" style="width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block"></iframe>`;
+      `<iframe id="stack-frame" src="stack-app/index.html" title="Stack" style="width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block"></iframe>`;
   } else {
     // GitHub Pages: show placeholder, land on Blood
     showSection('blood');

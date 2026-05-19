@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Stack">
+<title>Stack</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1c1c1e;
+    --surface: #2c2c2e;
+    --surface2: #3a3a3c;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0f0ee;
+    --muted: rgba(240,240,238,0.45);
+    --accent: #c8f542;
+    --accent-dim: rgba(200,245,66,0.12);
+    --skip-bg: rgba(255,255,255,0.04);
+    --skip-text: rgba(240,240,238,0.2);
+    --radius: 14px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100dvh;
+    padding-top: calc(var(--safe-top) + 16px);
+    padding-bottom: calc(var(--safe-bottom) + 72px);
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
+  .header-left h1 { font-size: 28px; font-weight: 300; letter-spacing: -0.02em; line-height: 1; }
+  .header-left .date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .prog-ring-wrap { position: relative; width: 52px; height: 52px; }
+  .prog-ring-wrap svg { transform: rotate(-90deg); }
+  .prog-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 3; }
+  .prog-ring-fill { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset .4s ease; }
+  .prog-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--accent); }
+  .day-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; margin-bottom: 24px; scrollbar-width: none; }
+  .day-tabs::-webkit-scrollbar { display: none; }
+  .day-tab { flex-shrink: 0; padding: 7px 14px; border-radius: 40px; border: 1px solid var(--border); font-size: 13px; cursor: pointer; background: transparent; color: var(--muted); transition: all .18s; font-family: 'DM Sans', sans-serif; }
+  .day-tab.active { background: var(--accent); color: #0e0e0f; border-color: var(--accent); font-weight: 500; }
+  .day-tab.today-marker { border-color: var(--accent); color: var(--accent); }
+  .day-tab.today-marker.active { color: #0e0e0f; }
+  .section { margin-bottom: 20px; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .pill { display: flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 40px; border: 1px solid var(--border); font-size: 14px; cursor: pointer; background: var(--surface); color: var(--text); transition: all .15s; user-select: none; -webkit-user-select: none; }
+  .pill:active { transform: scale(0.95); }
+  .pill.checked { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .pill.skip { background: var(--skip-bg); border: 1px dashed rgba(255,255,255,0.1); color: var(--skip-text); text-decoration: line-through; cursor: default; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid currentColor; flex-shrink: 0; }
+  .pill.checked .dot { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 6px rgba(200,245,66,0.5); }
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+  .all-done { text-align: center; padding: 12px 0 4px; font-size: 13px; color: var(--accent); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; opacity: 0; transition: opacity .4s; }
+  .all-done.show { opacity: 1; }
+  .streak { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); margin-top: 3px; letter-spacing: 0.04em; min-height: 16px; }
+  .reset-btn { width: 100%; padding: 13px; border-radius: var(--radius); border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 8px; }
+  .reset-btn:active { background: var(--surface2); }
+
+  /* BOTTOM NAV */
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: rgba(28,28,30,0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.08); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .nav-btn { flex: 1; padding: 14px 0; background: transparent; border: none; color: rgba(240,240,238,0.45); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+  .nav-btn.active { color: #c8f542; }
+
+  /* LOG */
+  #log-view { display: none; }
+  .log-month { margin-bottom: 28px; }
+  .log-month-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(240,240,238,0.45); margin-bottom: 12px; }
+  .log-day { background: #2c2c2e; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 8px; overflow: hidden; }
+  .log-day-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; cursor: pointer; }
+  .log-day-left { display: flex; align-items: center; gap: 10px; }
+  .log-day-name { font-size: 14px; font-weight: 500; color: #f0f0ee; }
+  .log-day-date { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(240,240,238,0.45); }
+  .log-pct { font-family: 'DM Mono', monospace; font-size: 12px; color: #c8f542; }
+  .log-pct.zero { color: rgba(240,240,238,0.45); }
+  .log-body { display: none; padding: 0 14px 12px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .log-body.open { display: block; }
+  .log-section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(240,240,238,0.45); margin: 10px 0 6px; }
+  .log-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+  .log-pill { padding: 4px 10px; border-radius: 40px; font-size: 12px; border: 1px solid rgba(255,255,255,0.08); color: rgba(240,240,238,0.45); }
+  .log-pill.taken { border-color: #c8f542; color: #c8f542; background: rgba(200,245,66,0.12); }
+  .log-empty { text-align: center; padding: 48px 0; font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(240,240,238,0.45); letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+
+<div id="today-view">
+  <div class="header">
+    <div class="header-left">
+      <h1>Stack</h1>
+      <div class="date" id="date-label"></div>
+      <div class="streak" id="streak-label"></div>
+    </div>
+    <div class="prog-ring-wrap">
+      <svg width="52" height="52" viewBox="0 0 52 52">
+        <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
+        <circle class="prog-ring-fill" id="prog-ring" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2"/>
+      </svg>
+      <div class="prog-center" id="prog-pct">0%</div>
+    </div>
+  </div>
+  <div class="day-tabs" id="day-tabs"></div>
+  <div id="schedule"></div>
+  <div class="all-done" id="all-done">✦ all done for today</div>
+  <button class="reset-btn" onclick="resetDay()">Reset day</button>
+</div>
+
+<div id="log-view">
+  <div class="header" style="margin-bottom:16px;">
+    <div class="header-left">
+      <h1>Log</h1>
+      <div class="date" id="log-subtitle"></div>
+    </div>
+  </div>
+  <div id="log-content"></div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-today" onclick="showView('today')">Today</button>
+  <button class="nav-btn" id="nav-log" onclick="showView('log')">Log</button>
+</div>
+
+<script>
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+const SCHEDULE = {
+  Sunday: [
+    {time:'Fasted', items:['NMN','TMG','B12'], skip:[]},
+    {time:'Post (Shake)', items:['Protein','Creatine','EVOO','🐟','Taurine'], skip:[]},
+    {time:'Lunch', items:['Probiotic','P5P','Fisetin','Duta','Boron'], skip:[]},
+    {time:'Night', items:['Mag','Zinc','Glycine'], skip:[]},
+    {time:'Skip', items:['NAC','TUDCA','Tongkat'], skip:['NAC','TUDCA','Tongkat']},
+  ],
+  Monday: [
+    {time:'Fasted', items:['NMN','NAC','TMG','B12'], skip:[]},
+    {time:'Pre', items:['Matcha','Citrulline'], skip:[]},
+    {time:'Post (Shake)', items:['Protein','Creatine','EVOO','Vit D','K2','🐟','Taurine'], skip:[]},
+    {time:'Lunch', items:['Tongkat','TUDCA','Garlic','Ginger','Vit C','P5P','Probiotic','Duta','Boron'], skip:[]},
+    {time:'Night', items:['Mag','Zinc','Ash/Api','Glycine'], skip:[]},
+  ],
+  Tuesday: [
+    {time:'Fasted', items:['NMN','NAC','TMG','B12'], skip:[]},
+    {time:'Pre', items:['Matcha','Citrulline'], skip:[]},
+    {time:'Post (Shake)', items:['Protein','Creatine','EVOO','Vit D','K2','🐟','Taurine'], skip:[]},
+    {time:'Lunch', items:['Tongkat','TUDCA','Garlic','Ginger','Vit C','P5P','Probiotic','Duta','Boron'], skip:[]},
+    {time:'Night', items:['Mag','Zinc','Ash/Api','Glycine'], skip:[]},
+  ],
+  Wednesday: [
+    {time:'Fasted', items:['NMN','NAC','TMG','B12'], skip:[]},
+    {time:'Pre', items:['Matcha','Citrulline'], skip:[]},
+    {time:'Post (Shake)', items:['Protein','Creatine','EVOO','Vit D','K2','🐟','Taurine'], skip:[]},
+    {time:'Lunch', items:['Garlic','Ginger','Vit C','P5P','Probiotic','Duta','Boron'], skip:[]},
+    {time:'Night', items:['Mag','Ash/Api','Glycine'], skip:[]},
+    {time:'Skip', items:['Tongkat','TUDCA'], skip:['Tongkat','TUDCA']},
+  ],
+  Thursday: [
+    {time:'Fasted', items:['NMN','NAC','TMG','B12'], skip:[]},
+    {time:'Pre', items:['Matcha','Citrulline'], skip:[]},
+    {time:'Post (Shake)', items:['Protein','Creatine','EVOO','Vit D','K2','🐟','Taurine'], skip:[]},
+    {time:'Lunch', items:['Tongkat','TUDCA','Garlic','Ginger','Vit C','P5P','Probiotic','Duta','Boron'], skip:[]},
+    {time:'Night', items:['Mag','Zinc','Ash/Api','Glycine'], skip:[]},
+  ],
+  Friday: [
+    {time:'Fasted', items:['NMN','NAC','TMG','B12'], skip:[]},
+    {time:'Pre', items:['Matcha','Citrulline'], skip:[]},
+    {time:'Post (Shake)', items:['Protein','Creatine','EVOO','Vit D','K2','🐟','Taurine'], skip:[]},
+    {time:'Lunch', items:['Garlic','Ginger','Vit C','P5P','Probiotic','Duta','Boron'], skip:[]},
+    {time:'Night', items:['Mag','Zinc','Ash/Api','Glycine'], skip:[]},
+    {time:'Skip', items:['Tongkat','TUDCA'], skip:['Tongkat','TUDCA']},
+  ],
+  Saturday: [
+    {time:'Fasted', items:['NMN','TMG','B12'], skip:[]},
+    {time:'Pre', items:['Matcha'], skip:[]},
+    {time:'Post (Shake)', items:['Protein','Creatine','EVOO','🐟','Taurine'], skip:[]},
+    {time:'Lunch', items:['Probiotic','P5P','Fisetin','Duta','Boron'], skip:[]},
+    {time:'Night', items:['Mag','Glycine'], skip:[]},
+    {time:'Skip', items:['NAC','Tongkat','TUDCA','Garlic','Ginger'], skip:['NAC','Tongkat','TUDCA','Garlic','Ginger']},
+  ],
+};
+
+// --- Date helpers ---
+function dateStr(d) {
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function parseDateStr(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function dateForDayIndex(i) {
+  const now = new Date();
+  const diff = (now.getDay() - i + 7) % 7;
+  const d = new Date(now); d.setDate(now.getDate()-diff); return d;
+}
+
+// --- IndexedDB ---
+const IDB = { db: null };
+function openDB() {
+  return new Promise((res,rej) => {
+    const r = indexedDB.open('suppLog2', 1);
+    r.onupgradeneeded = e => e.target.result.createObjectStore('c');
+    r.onsuccess = e => { IDB.db = e.target.result; res(); };
+    r.onerror = rej;
+  });
+}
+function idbOp(mode, fn) {
+  return new Promise((res,rej) => {
+    if (!IDB.db) { res(null); return; }
+    const tx = IDB.db.transaction('c', mode);
+    const s = tx.objectStore('c');
+    const r = fn(s);
+    if (r) r.onsuccess = () => res(r.result);
+    tx.oncomplete = () => res(null);
+    tx.onerror = rej;
+  });
+}
+const idbSet = k => idbOp('readwrite', s => s.put(1, k));
+const idbDel = k => idbOp('readwrite', s => s.delete(k));
+
+// Fallback localStorage helpers
+function lsSet(k) { try { localStorage.setItem(k,'1'); } catch(e){} }
+function lsDel(k) { try { localStorage.removeItem(k); } catch(e){} }
+function lsAll() { const out=[]; for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('sl2|'))out.push(k);} return out; }
+
+// Unified storage
+async function storeSet(k) { IDB.db ? await idbSet(k) : lsSet(k); }
+async function storeDel(k) { IDB.db ? await idbDel(k) : lsDel(k); }
+async function storeAll() {
+  if (IDB.db) { const keys = await idbOp('readonly', s=>s.getAllKeys()); return (keys||[]).filter(k=>String(k).startsWith('sl2|')); }
+  return lsAll();
+}
+
+function makeKey(ds, item) { return 'sl2|'+ds+'|'+item; }
+
+let checked = new Set();
+
+async function loadAll() {
+  const keys = await storeAll();
+  checked = new Set((keys||[]).map(String));
+}
+
+function isChecked(ds, item) { return checked.has(makeKey(ds,item)); }
+
+async function toggle(ds, item) {
+  const k = makeKey(ds,item);
+  if (checked.has(k)) { checked.delete(k); await storeDel(k); }
+  else { checked.add(k); await storeSet(k); }
+  render();
+}
+
+async function resetDay() {
+  if (!confirm('Reset all checks for this day?')) return;
+  const ds = dateStr(dateForDayIndex(activeDayIdx));
+  const pre = 'sl2|'+ds+'|';
+  const toRemove = [...checked].filter(k=>k.startsWith(pre));
+  for (const k of toRemove) { checked.delete(k); await storeDel(k); }
+  render();
+}
+
+// --- App state ---
+let activeDayIdx = new Date().getDay();
+let currentView = 'today';
+
+function showView(v) {
+  currentView = v;
+  document.getElementById('today-view').style.display = v==='today'?'':'none';
+  document.getElementById('log-view').style.display = v==='log'?'block':'none';
+  document.getElementById('nav-today').classList.toggle('active', v==='today');
+  document.getElementById('nav-log').classList.toggle('active', v==='log');
+  if (v==='log') renderLog();
+}
+
+// --- Streak ---
+function calcStreak() {
+  const now = new Date();
+  let streak = 0;
+  let todaySkipped = false;
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(now);
+    d.setDate(now.getDate() - i);
+    const ds = dateStr(d);
+    const sched = SCHEDULE[DAYS[d.getDay()]] || [];
+    const takeable = sched.flatMap(s => s.items.filter(it => !s.skip.includes(it)));
+    if (!takeable.length) continue;
+    const done = takeable.filter(it => isChecked(ds, it)).length;
+    if (done === takeable.length) {
+      streak++;
+    } else if (i === 0 && !todaySkipped) {
+      todaySkipped = true;
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+// --- Render today ---
+function renderTabs() {
+  const c = document.getElementById('day-tabs');
+  c.innerHTML = '';
+  DAYS.forEach((d,i) => {
+    const b = document.createElement('button');
+    const isToday = i===new Date().getDay(), isActive = i===activeDayIdx;
+    b.className = 'day-tab'+(isActive?' active':'')+(isToday&&!isActive?' today-marker':'');
+    b.textContent = SHORT[i];
+    b.onclick = () => { activeDayIdx=i; render(); };
+    c.appendChild(b);
+    if (isActive) setTimeout(()=>b.scrollIntoView({inline:'center',behavior:'smooth'}),50);
+  });
+}
+
+function renderSchedule() {
+  const dayName = DAYS[activeDayIdx];
+  const ds = dateStr(dateForDayIndex(activeDayIdx));
+  const sched = SCHEDULE[dayName]||[];
+  const takeable = sched.flatMap(s=>s.items.filter(it=>!s.skip.includes(it)));
+  const done = takeable.filter(it=>isChecked(ds,it)).length;
+  const total = takeable.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+
+  document.getElementById('prog-ring').style.strokeDashoffset = 138.2-(138.2*pct/100);
+  document.getElementById('prog-pct').textContent = pct+'%';
+  document.getElementById('all-done').classList.toggle('show', total>0&&done===total);
+
+  const c = document.getElementById('schedule'); c.innerHTML='';
+  sched.forEach((section,si) => {
+    if (!section.items.length) return;
+    if (si>0) { const dv=document.createElement('div'); dv.className='divider'; c.appendChild(dv); }
+    const sec=document.createElement('div'); sec.className='section';
+    const lbl=document.createElement('div'); lbl.className='section-label'; lbl.textContent=section.time; sec.appendChild(lbl);
+    const row=document.createElement('div'); row.className='pill-row';
+    section.items.forEach(item => {
+      const isSkip=section.skip.includes(item);
+      const pill=document.createElement('div');
+      pill.className='pill'+(isSkip?' skip':isChecked(ds,item)?' checked':'');
+      if (!isSkip) {
+        pill.onclick=()=>toggle(ds,item);
+        const dot=document.createElement('div'); dot.className='dot'; pill.appendChild(dot);
+      }
+      const txt=document.createElement('span'); txt.textContent=item; pill.appendChild(txt);
+      row.appendChild(pill);
+    });
+    sec.appendChild(row); c.appendChild(sec);
+  });
+}
+
+function render() {
+  const selectedDate = dateForDayIndex(activeDayIdx);
+  document.getElementById('date-label').textContent = selectedDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const streak = calcStreak();
+  document.getElementById('streak-label').textContent = streak > 0 ? streak + ' day streak' : '';
+  renderTabs(); renderSchedule();
+}
+
+// --- Render log ---
+function renderLog() {
+  const c = document.getElementById('log-content');
+  const sub = document.getElementById('log-subtitle');
+  c.innerHTML = '';
+
+  const byDate = {};
+  checked.forEach(k => {
+    const parts = k.split('|');
+    if (parts.length < 3) return;
+    const ds = parts[1], item = parts.slice(2).join('|');
+    if (!byDate[ds]) byDate[ds] = new Set();
+    byDate[ds].add(item);
+  });
+
+  // Always show last 14 days; also surface older days with entries
+  const shown = new Set();
+  const now = new Date();
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(now); d.setDate(now.getDate() - i);
+    shown.add(dateStr(d));
+  }
+  Object.keys(byDate).forEach(ds => shown.add(ds));
+
+  const dates = [...shown].sort((a, b) => b.localeCompare(a));
+  const loggedCount = Object.keys(byDate).length;
+  sub.textContent = loggedCount + ' day' + (loggedCount !== 1 ? 's' : '') + ' logged';
+
+  if (!dates.length) {
+    c.innerHTML = '<div class="log-empty">no entries yet</div>';
+    return;
+  }
+
+  const byMonth = {};
+  dates.forEach(ds => {
+    const d = parseDateStr(ds);
+    const mk = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    if (!byMonth[mk]) byMonth[mk] = [];
+    byMonth[mk].push(ds);
+  });
+
+  Object.keys(byMonth).sort((a, b) => b.localeCompare(a)).forEach(mk => {
+    const [y, m] = mk.split('-');
+    const monthLabel = new Date(+y, +m-1, 1).toLocaleDateString('en-US', {month:'long', year:'numeric'});
+
+    const monthEl = document.createElement('div');
+    monthEl.className = 'log-month';
+
+    const mlbl = document.createElement('div');
+    mlbl.className = 'log-month-label';
+    mlbl.textContent = monthLabel;
+    monthEl.appendChild(mlbl);
+
+    byMonth[mk].forEach(ds => {
+      const d = parseDateStr(ds);
+      const dayName = DAYS[d.getDay()];
+      const sched = SCHEDULE[dayName] || [];
+      const taken = byDate[ds] || new Set();
+      const takeable = sched.flatMap(s => s.items.filter(it => !s.skip.includes(it)));
+      const doneCount = takeable.filter(it => taken.has(it)).length;
+      const total = takeable.length;
+      const pct = total ? Math.round(doneCount / total * 100) : 0;
+
+      const dayEl = document.createElement('div');
+      dayEl.className = 'log-day';
+
+      const hdr = document.createElement('div');
+      hdr.className = 'log-day-header';
+
+      const left = document.createElement('div');
+      left.className = 'log-day-left';
+
+      const dn = document.createElement('span');
+      dn.className = 'log-day-name';
+      dn.textContent = dayName;
+
+      const dd = document.createElement('span');
+      dd.className = 'log-day-date';
+      dd.textContent = d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+
+      left.appendChild(dn); left.appendChild(dd);
+
+      const pe = document.createElement('span');
+      pe.className = 'log-pct' + (pct === 0 ? ' zero' : '');
+      pe.textContent = pct + '%';
+
+      hdr.appendChild(left); hdr.appendChild(pe);
+
+      const body = document.createElement('div');
+      body.className = 'log-body';
+
+      sched.forEach(section => {
+        const tbl = section.items.filter(it => !section.skip.includes(it));
+        if (!tbl.length) return;
+
+        const sl = document.createElement('div');
+        sl.className = 'log-section-label';
+        sl.textContent = section.time;
+        body.appendChild(sl);
+
+        const pr = document.createElement('div');
+        pr.className = 'log-pills';
+
+        tbl.forEach(item => {
+          const p = document.createElement('span');
+          p.className = 'log-pill' + (taken.has(item) ? ' taken' : '');
+          p.textContent = item;
+          pr.appendChild(p);
+        });
+        body.appendChild(pr);
+      });
+
+      hdr.onclick = () => body.classList.toggle('open');
+      dayEl.appendChild(hdr); dayEl.appendChild(body); monthEl.appendChild(dayEl);
+    });
+    c.appendChild(monthEl);
+  });
+}
+
+// --- Boot ---
+(async () => {
+  try { await openDB(); } catch(e) { console.warn('IDB unavailable, using localStorage'); }
+  await loadAll();
+  render();
+})();
+</script>
+</body>
+</html>
