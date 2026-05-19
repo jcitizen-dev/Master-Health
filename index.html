@@ -451,6 +451,7 @@ function drawChart(markerId) {
 // ── Latest panel grouped render ───────────────────────────────────────────────
 // Uses the most recent value for each marker across ALL panels
 const GROUPS = [
+  { label:'CBC', ids:['wbc','rbc','hemoglobin','hematocrit','mcv','mch','mchc','rdw','platelets'] },
   { label:'Glucose & Insulin', ids:['glucose','hba1c','insulin','homa_ir','c_peptide'] },
   { label:'Lipids & Cardiovascular', ids:['total_chol','triglycerides','hdl','ldl','apo_b','lpa','apo_a1','fibrinogen','non_hdl'] },
   { label:'Liver', ids:['ast','alt','ggt','alp','bilirubin','albumin'] },

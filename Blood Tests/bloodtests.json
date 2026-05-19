@@ -249,6 +249,7 @@
         { "id": "bioavail_t",       "name": "Bioavailable Testosterone", "value": 192.4, "unit": "ng/dL", "ref_low": 110.0, "ref_high": 575.0, "status": "normal" },
         { "id": "iron",             "name": "Iron, Total",            "value": 136,   "unit": "mcg/dL",    "ref_low": 50,    "ref_high": 180,   "status": "normal" },
         { "id": "tibc",             "name": "Iron Binding Capacity",  "value": 341,   "unit": "mcg/dL",    "ref_low": 250,   "ref_high": 425,   "status": "normal" },
+        { "id": "uibc",             "name": "UIBC",                   "value": 205,   "unit": "mcg/dL",    "ref_low": 110,   "ref_high": 370,   "status": "normal", "note": "Calculated: TIBC 341 − Iron 136 = 205 mcg/dL" },
         { "id": "iron_sat",         "name": "Iron Saturation",        "value": 40,    "unit": "%",         "ref_low": 20,    "ref_high": 48,    "status": "normal" },
         { "id": "crp",              "name": "hs-CRP",                 "value": 0.2,   "unit": "mg/L",      "ref_low": null,  "ref_high": 1.0,   "status": "normal", "flag": "<0.2", "note": "Reported as <0.2 — essentially undetectable. Down from 1.0 (borderline) in April 2026 Serbia panel. Excellent." },
         { "id": "c_peptide",        "name": "C-Peptide",              "value": 1.09,  "unit": "ng/mL",     "ref_low": 0.80,  "ref_high": 3.85,  "status": "normal" },
