@@ -8,6 +8,9 @@
 <meta name="apple-mobile-web-app-title" content="Stack">
 <title>Stack</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
   :root {
     --bg: #1c1c1e;
@@ -99,6 +102,7 @@
       <div class="date" id="date-label"></div>
       <div class="streak" id="streak-label"></div>
     </div>
+    <button id="auth-btn" onclick="handleSignIn()" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(240,240,238,0.55);padding:6px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis;">Sign in</button>
     <div class="prog-ring-wrap">
       <svg width="52" height="52" viewBox="0 0 52 52">
         <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
@@ -232,9 +236,13 @@ function lsSet(k) { try { localStorage.setItem(k,'1'); } catch(e){} }
 function lsDel(k) { try { localStorage.removeItem(k); } catch(e){} }
 function lsAll() { const out=[]; for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('sl2|'))out.push(k);} return out; }
 
-// Unified storage
-async function storeSet(k) { IDB.db ? await idbSet(k) : lsSet(k); }
-async function storeDel(k) { IDB.db ? await idbDel(k) : lsDel(k); }
+// Local-only helpers (no cloud sync — used internally)
+async function localSet(k) { IDB.db ? await idbSet(k) : lsSet(k); }
+async function localDel(k) { IDB.db ? await idbDel(k) : lsDel(k); }
+
+// Unified storage (local + cloud)
+async function storeSet(k) { await localSet(k); await cloudSet(k); }
+async function storeDel(k) { await localDel(k); await cloudDel(k); }
 async function storeAll() {
   if (IDB.db) { const keys = await idbOp('readonly', s=>s.getAllKeys()); return (keys||[]).filter(k=>String(k).startsWith('sl2|')); }
   return lsAll();
@@ -507,9 +515,99 @@ async function importBackup(input) {
   alert('Restored ' + entries.length + ' check-ins.');
 }
 
+// --- Firebase ---
+firebase.initializeApp({
+  apiKey: "AIzaSyDO98lInEJFSi5NqPk1S3zVtb1egATbpd4",
+  authDomain: "health-master-app.firebaseapp.com",
+  projectId: "health-master-app",
+  storageBucket: "health-master-app.firebasestorage.app",
+  messagingSenderId: "125976318858",
+  appId: "1:125976318858:web:1ed0aac9ea78ba8c5e6e73"
+});
+const auth = firebase.auth();
+const db = firebase.firestore();
+let currentUser = null;
+
+function userDoc() { return db.collection('users').doc(currentUser.uid); }
+
+async function cloudSet(k) {
+  if (!currentUser) return;
+  try {
+    await userDoc().set({ checkins: firebase.firestore.FieldValue.arrayUnion(k) }, { merge: true });
+  } catch(e) { console.warn('cloudSet failed', e); }
+}
+
+async function cloudDel(k) {
+  if (!currentUser) return;
+  try {
+    await userDoc().update({ checkins: firebase.firestore.FieldValue.arrayRemove(k) });
+  } catch(e) { console.warn('cloudDel failed', e); }
+}
+
+async function cloudLoad() {
+  if (!currentUser) return;
+  try {
+    const snap = await userDoc().get();
+    if (snap.exists) {
+      const cloudKeys = snap.data().checkins || [];
+      // Merge cloud into local — use localSet to avoid re-uploading
+      for (const k of cloudKeys) {
+        if (!checked.has(k)) { checked.add(k); await localSet(k); }
+      }
+      // Push any local-only keys up to cloud
+      const localOnly = [...checked].filter(k => !cloudKeys.includes(k));
+      if (localOnly.length) {
+        await userDoc().set({ checkins: firebase.firestore.FieldValue.arrayUnion(...localOnly) }, { merge: true });
+      }
+    } else {
+      // First sign-in: upload all local data
+      const keys = [...checked];
+      if (keys.length) await userDoc().set({ checkins: keys });
+    }
+  } catch(e) { console.warn('cloudLoad failed', e); }
+}
+
+function updateAuthBtn() {
+  const btn = document.getElementById('auth-btn');
+  if (!btn) return;
+  if (currentUser) {
+    const name = currentUser.displayName ? currentUser.displayName.split(' ')[0] : currentUser.email.split('@')[0];
+    btn.textContent = '✓ ' + name;
+    btn.style.color = '#c8f542';
+    btn.style.borderColor = 'rgba(200,245,66,0.3)';
+  } else {
+    btn.textContent = 'Sign in';
+    btn.style.color = 'rgba(240,240,238,0.55)';
+    btn.style.borderColor = 'rgba(255,255,255,0.12)';
+  }
+}
+
+async function handleSignIn() {
+  if (currentUser) {
+    if (confirm('Sign out of cloud sync?')) await auth.signOut();
+    return;
+  }
+  const provider = new firebase.auth.GoogleAuthProvider();
+  // signInWithRedirect works reliably on iOS PWA
+  try { await auth.signInWithRedirect(provider); }
+  catch(e) { console.warn('Sign-in error', e); }
+}
+
+auth.onAuthStateChanged(async user => {
+  currentUser = user;
+  updateAuthBtn();
+  if (user) {
+    await cloudLoad();
+    render();
+    if (currentView === 'log') renderLog();
+  }
+});
+
 // --- Boot ---
 (async () => {
   try { await openDB(); } catch(e) { console.warn('IDB unavailable, using localStorage'); }
+  // Handle Google redirect result (fires after sign-in redirect completes)
+  try { await auth.getRedirectResult(); } catch(e) { console.warn('Redirect result error', e); }
   await loadAll();
   render();
 })();
