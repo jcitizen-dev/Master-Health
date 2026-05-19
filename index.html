@@ -29,7 +29,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .section.active{display:block}
 
 /* Stack iframe */
-#s-stack iframe{width:100%;height:100%;border:none;display:block}
+#s-stack{padding:0}
+#s-stack iframe{width:100%;height:calc(100dvh - var(--nav-h) - var(--safe-bot));border:none;display:block}
 
 /* ── Bottom nav ── */
 .bottom-nav{
@@ -613,8 +614,8 @@ function initBloodTests() {
   const latestDate = new Date(latest.date).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   document.getElementById('bt-subtitle').textContent = `${panels.length} panels · Latest: ${latestDate}`;
 
-  // Summary stats from latest numeric panel
-  const latestFull = BD.panels.find(p => p.id === LATEST_PANEL_ID);
+  // Summary stats from latest panel
+  const latestFull = latest;
   if (latestFull) {
     const all = latestFull.markers.filter(m => typeof m.value === 'number');
     const flagged = all.filter(m => !['normal','optimal','negative'].includes(m.status));
