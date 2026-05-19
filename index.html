@@ -62,6 +62,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .stat-card.warn .stat-val{color:var(--gold)}
 .stat-card.high .stat-val{color:var(--danger)}
 .stat-card.low .stat-val{color:var(--blue)}
+.stat-card[data-filter]{cursor:pointer;transition:border-color .15s}
+.stat-card[data-filter]:hover{border-color:rgba(255,255,255,0.2)}
+.stat-card.ok.filter-active{border-color:var(--accent)}
+.stat-card.warn.filter-active{border-color:var(--gold)}
+.stat-card.high.filter-active{border-color:var(--danger)}
 
 /* Sub-nav */
 .subnav{
@@ -281,6 +286,17 @@ function launchGameTab() {
 let btReady = false;
 let activeBtView = 'latest';
 let activeTrendMarker = null;
+let latestFilter = null;
+
+function setLatestFilter(f) {
+  latestFilter = (latestFilter === f) ? null : f;
+  document.querySelectorAll('.stat-card[data-filter]').forEach(c => c.classList.remove('filter-active'));
+  if (latestFilter) {
+    const el = document.querySelector(`.stat-card[data-filter="${latestFilter}"]`);
+    if (el) el.classList.add('filter-active');
+  }
+  renderLatest();
+}
 
 const STATUS_CLASS = { normal:'ok', optimal:'ok', negative:'ok', low_normal:'warn',
   borderline:'warn', see_report:'warn', high:'hi', elevated:'hi', low:'lo' };
@@ -460,9 +476,17 @@ function renderLatest() {
     });
   });
 
+  const filterFn = m => {
+    if (!latestFilter) return true;
+    if (latestFilter === 'optimal') return ['normal','optimal','negative'].includes(m.status);
+    if (latestFilter === 'borderline') return ['borderline','low_normal','see_report'].includes(m.status);
+    if (latestFilter === 'flagged') return ['high','elevated','low'].includes(m.status);
+    return true;
+  };
+
   let html = '';
   GROUPS.forEach(g => {
-    const markers = g.ids.map(id => mMap[id]).filter(Boolean).filter(m => m.value !== null);
+    const markers = g.ids.map(id => mMap[id]).filter(Boolean).filter(m => m.value !== null).filter(filterFn);
     if (!markers.length) return;
     html += `<div class="grp-label">${g.label}</div><div class="marker-grid">`;
     markers.forEach(m => {
@@ -635,13 +659,13 @@ function initBloodTests() {
     const borderline = flagged.filter(m => m.status === 'borderline');
     const low = flagged.filter(m => m.status === 'low');
     const optimal = all.filter(m => ['normal','optimal'].includes(m.status));
+    const outOfRange = flagged.filter(m => ['high','elevated','low'].includes(m.status));
     const statsEl = document.getElementById('bt-stats');
     statsEl.innerHTML = `
-      <div class="stat-card ok"><div class="stat-val">${optimal.length}</div><div class="stat-label">Optimal</div></div>
-      <div class="stat-card warn"><div class="stat-val">${borderline.length}</div><div class="stat-label">Borderline</div></div>
-      <div class="stat-card high"><div class="stat-val">${elevated.length}</div><div class="stat-label">Elevated</div></div>
-      ${low.length ? `<div class="stat-card low"><div class="stat-val">${low.length}</div><div class="stat-label">Low</div></div>` : ''}
-      <div class="stat-card" style=""><div class="stat-val" style="color:var(--muted)">${all.length}</div><div class="stat-label">Markers</div></div>
+      <div class="stat-card ok" data-filter="optimal" onclick="setLatestFilter('optimal')"><div class="stat-val">${optimal.length}</div><div class="stat-label">Optimal</div></div>
+      <div class="stat-card warn" data-filter="borderline" onclick="setLatestFilter('borderline')"><div class="stat-val">${borderline.length}</div><div class="stat-label">Borderline</div></div>
+      <div class="stat-card ${outOfRange.length ? 'high' : ''}" data-filter="flagged" onclick="setLatestFilter('flagged')"><div class="stat-val" style="${outOfRange.length ? '' : 'color:var(--muted)'}">${outOfRange.length}</div><div class="stat-label">Flagged</div></div>
+      <div class="stat-card" onclick="setLatestFilter(null)"><div class="stat-val" style="color:var(--muted)">${all.length}</div><div class="stat-label">Markers</div></div>
     `;
   }
 
