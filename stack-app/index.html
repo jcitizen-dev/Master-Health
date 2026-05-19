@@ -588,9 +588,16 @@ async function handleSignIn() {
     return;
   }
   const provider = new firebase.auth.GoogleAuthProvider();
-  // signInWithRedirect works reliably on iOS PWA
-  try { await auth.signInWithRedirect(provider); }
-  catch(e) { console.warn('Sign-in error', e); }
+  try {
+    await auth.signInWithPopup(provider);
+  } catch(e) {
+    // Popup blocked (iOS PWA) — open stack app directly in top window for redirect
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      window.top.location.href = window.location.href + '?signin=1';
+    } else {
+      console.warn('Sign-in error', e);
+    }
+  }
 }
 
 auth.onAuthStateChanged(async user => {
@@ -606,7 +613,12 @@ auth.onAuthStateChanged(async user => {
 // --- Boot ---
 (async () => {
   try { await openDB(); } catch(e) { console.warn('IDB unavailable, using localStorage'); }
-  // Handle Google redirect result (fires after sign-in redirect completes)
+  // If opened standalone with ?signin=1, trigger redirect sign-in
+  if (window.location.search.includes('signin=1') && !currentUser) {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try { await auth.signInWithRedirect(provider); return; } catch(e) {}
+  }
+  // Handle completed redirect result
   try { await auth.getRedirectResult(); } catch(e) { console.warn('Redirect result error', e); }
   await loadAll();
   render();
