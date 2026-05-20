@@ -68,6 +68,18 @@
   .reset-btn { width: 100%; padding: 13px; border-radius: var(--radius); border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 8px; }
   .reset-btn:active { background: var(--surface2); }
 
+  /* AUTH MODAL */
+  .auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; width: 100%; max-width: 320px; }
+  .auth-title { font-size: 18px; font-weight: 500; margin-bottom: 20px; }
+  .auth-input { width: 100%; padding: 12px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 15px; font-family: 'DM Sans', sans-serif; margin-bottom: 10px; outline: none; box-sizing: border-box; }
+  .auth-input:focus { border-color: rgba(200,245,66,0.4); }
+  .auth-error { font-size: 12px; color: #ff6b6b; margin-bottom: 12px; min-height: 16px; font-family: 'DM Mono', monospace; }
+  .auth-submit { width: 100%; padding: 13px; border-radius: 10px; border: none; background: var(--accent); color: #0e0e0f; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 10px; }
+  .auth-submit:active { opacity: 0.85; }
+  .auth-toggle { width: 100%; padding: 11px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 8px; }
+  .auth-cancel { width: 100%; padding: 9px; border: none; background: transparent; color: rgba(240,240,238,0.3); font-size: 12px; cursor: pointer; font-family: 'DM Mono', sans-serif; letter-spacing: 0.04em; }
+
   /* BOTTOM NAV */
   .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: rgba(28,28,30,0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.08); padding-bottom: env(safe-area-inset-bottom, 0px); }
   .nav-btn { flex: 1; padding: 14px 0; background: transparent; border: none; color: rgba(240,240,238,0.45); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
@@ -129,6 +141,18 @@
     <button onclick="exportBackup()" style="flex:1;padding:12px;border-radius:12px;background:rgba(200,245,66,0.08);border:1px solid rgba(200,245,66,0.25);color:#c8f542;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.05em;cursor:pointer;">↓ Export Backup</button>
     <button onclick="document.getElementById('import-input').click()" style="flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(240,240,238,0.55);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.05em;cursor:pointer;">↑ Restore Backup</button>
     <input id="import-input" type="file" accept=".json" style="display:none" onchange="importBackup(this)">
+  </div>
+</div>
+
+<div id="auth-overlay" class="auth-overlay" style="display:none">
+  <div class="auth-card">
+    <div class="auth-title" id="auth-modal-title">Sign in</div>
+    <input id="auth-email" class="auth-input" type="email" placeholder="Email" autocomplete="email">
+    <input id="auth-password" class="auth-input" type="password" placeholder="Password" autocomplete="current-password">
+    <div class="auth-error" id="auth-error"></div>
+    <button id="auth-submit-btn" class="auth-submit" onclick="submitAuth()">Sign in</button>
+    <button class="auth-toggle" id="auth-toggle-btn" onclick="toggleAuthMode()">Create account instead</button>
+    <button class="auth-cancel" onclick="closeAuthModal()">Cancel</button>
   </div>
 </div>
 
@@ -582,72 +606,85 @@ function updateAuthBtn() {
   }
 }
 
-async function handleSignIn() {
-  if (currentUser) {
-    if (confirm('Sign out of cloud sync?')) await auth.signOut();
-    return;
-  }
-  const provider = new firebase.auth.GoogleAuthProvider();
-  const standalone = !!window.navigator.standalone ||
-    window.matchMedia('(display-mode: standalone)').matches;
-  if (standalone) {
-    // Google blocks OAuth in iOS home screen apps (WKWebView).
-    // Open the sign-in flow in a real Safari context via window.open.
-    // The visibilitychange listener below reloads on return to pick up the auth state.
-    sessionStorage.setItem('gsi_pending', '1');
-    const url = new URL(window.location.href);
-    url.searchParams.set('gsi', '1');
-    window.open(url.toString(), '_blank');
-    return;
-  }
+let authMode = 'signin';
+
+function showAuthModal() {
+  authMode = 'signin';
+  document.getElementById('auth-modal-title').textContent = 'Sign in';
+  document.getElementById('auth-toggle-btn').textContent = 'Create account instead';
+  document.getElementById('auth-submit-btn').textContent = 'Sign in';
+  document.getElementById('auth-email').value = '';
+  document.getElementById('auth-password').value = '';
+  document.getElementById('auth-error').textContent = '';
+  document.getElementById('auth-overlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('auth-email').focus(), 50);
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-overlay').style.display = 'none';
+}
+
+function toggleAuthMode() {
+  authMode = authMode === 'signin' ? 'create' : 'signin';
+  const isCreate = authMode === 'create';
+  document.getElementById('auth-modal-title').textContent = isCreate ? 'Create account' : 'Sign in';
+  document.getElementById('auth-toggle-btn').textContent = isCreate ? 'Sign in instead' : 'Create account instead';
+  document.getElementById('auth-submit-btn').textContent = isCreate ? 'Create account' : 'Sign in';
+  document.getElementById('auth-error').textContent = '';
+}
+
+async function submitAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const errEl = document.getElementById('auth-error');
+  errEl.textContent = '';
+  if (!email || !password) { errEl.textContent = 'Email and password required.'; return; }
+  const btn = document.getElementById('auth-submit-btn');
+  btn.disabled = true;
   try {
-    await auth.signInWithPopup(provider);
-  } catch(e) {
-    if (e.code === 'auth/popup-blocked' ||
-        e.code === 'auth/popup-closed-by-user' ||
-        e.code === 'auth/operation-not-supported-in-this-environment') {
-      try { await auth.signInWithRedirect(provider); } catch(e2) { console.warn('Sign-in redirect error', e2.code, e2); }
+    if (authMode === 'create') {
+      await auth.createUserWithEmailAndPassword(email, password);
     } else {
-      console.warn('Sign-in error', e.code, e);
+      await auth.signInWithEmailAndPassword(email, password);
     }
+    closeAuthModal();
+  } catch(e) {
+    const msgs = {
+      'auth/email-already-in-use': 'An account with this email already exists.',
+      'auth/invalid-email': 'Invalid email address.',
+      'auth/weak-password': 'Password must be at least 6 characters.',
+      'auth/user-not-found': 'No account found with this email.',
+      'auth/wrong-password': 'Incorrect password.',
+      'auth/invalid-credential': 'Incorrect email or password.',
+      'auth/too-many-requests': 'Too many attempts. Try again later.'
+    };
+    errEl.textContent = msgs[e.code] || 'Something went wrong. Try again.';
+  } finally {
+    btn.disabled = false;
   }
+}
+
+function handleSignIn() {
+  if (currentUser) {
+    if (confirm('Sign out of cloud sync?')) auth.signOut();
+    return;
+  }
+  showAuthModal();
 }
 
 auth.onAuthStateChanged(async user => {
   currentUser = user;
   updateAuthBtn();
   if (user) {
-    // If this sign-in happened in a Safari tab opened from the PWA, prompt the user to return
-    if (sessionStorage.getItem('gsi_return')) {
-      sessionStorage.removeItem('gsi_return');
-      alert('Signed in as ' + (user.displayName || user.email) + '.\n\nClose this tab and open the Stack app from your home screen to sync your data.');
-    }
     await cloudLoad();
     render();
     if (currentView === 'log') renderLog();
   }
 });
 
-// When returning to the PWA after the sign-in window closes, reload so
-// Firebase can read any auth state written in that window (iOS 16.4+ shares the store).
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && sessionStorage.getItem('gsi_pending') === '1') {
-    sessionStorage.removeItem('gsi_pending');
-    window.location.reload();
-  }
-});
-
 // --- Boot ---
 (async () => {
   try { await openDB(); } catch(e) { console.warn('IDB unavailable, using localStorage'); }
-  try { await auth.getRedirectResult(); } catch(e) { console.warn('Redirect result error', e.code, e); }
-  // If opened via window.open from the PWA with ?gsi=1, trigger the OAuth redirect here
-  const isStandalone = !!window.navigator.standalone ||
-    window.matchMedia('(display-mode: standalone)').matches;
-  if (new URLSearchParams(window.location.search).get('gsi') === '1' && !isStandalone) {
-    history.replaceState(null, '', window.location.pathname);
-    try { await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()); return; } catch(e) { console.warn('gsi redirect error', e.code, e); }
-  }
   await loadAll();
   render();
 })();
