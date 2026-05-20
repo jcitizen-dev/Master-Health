@@ -262,7 +262,7 @@ function RangeBar({ marker }) {
     const pct = Math.max(2, Math.min(98, ((myValue - r.low) / total) * 100));
     setTimeout(() => setDotPos(pct), 300);
   }, [myValue, r]);
-  const statusColor = { optimal:'var(--accent)', borderline:'var(--xp-gold)', elevated:'var(--danger)', low:'var(--epic)' }[status] || 'var(--muted)';
+  const statusColor = { optimal:'var(--accent)', borderline:'var(--xp-gold)', elevated:'var(--danger)', low:'var(--danger)' }[status] || 'var(--muted)';
   const statusLabel = { optimal:'✓ OPTIMAL', borderline:'⚠ BORDERLINE', elevated:'↑ ELEVATED', low:'↓ LOW' }[status] || status;
   return (
     <div style={{ marginTop:8 }}>
@@ -448,7 +448,7 @@ function BiomarkerFlashCard({ marker, onSwipe }) {
   const [flipped, setFlipped] = useState$c(false);
 
   const statusColor = marker.status === 'optimal' ? 'var(--accent)' : marker.status === 'elevated' ? 'var(--danger)' : 'var(--xp-gold)';
-  const statusLabel = marker.status === 'optimal' ? 'OPTIMAL' : marker.status === 'elevated' ? 'ELEVATED' : 'BORDERLINE';
+  const statusLabel = { optimal:'OPTIMAL', elevated:'ELEVATED', low:'LOW', borderline:'BORDERLINE' }[marker.status] || 'BORDERLINE';
   const panelLabel = { glucose:'Glucose', metabolic:'Cardiovascular', liver:'Liver', kidney:'Kidney', minerals:'Minerals', hormones:'Hormones', thyroid:'Thyroid', inflammation:'Inflammation', vitamins:'Vitamins', lipids:'Advanced Lipids', cbc:'Blood Count' }[marker.panel] || marker.panel;
 
   const r = marker.referenceRange;
@@ -849,7 +849,7 @@ function BiomarkersScreen({ progressHook }) {
       <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
         {sortedMarkers.map(function(m) {
           var isExpanded = expanded===m.id;
-          var statusColor = {optimal:'var(--accent)',borderline:'var(--xp-gold)',elevated:'var(--danger)',low:'var(--epic)'}[m.status];
+          var statusColor = {optimal:'var(--accent)',borderline:'var(--xp-gold)',elevated:'var(--danger)',low:'var(--danger)'}[m.status];
           return (
             <div key={m.id} onClick={function(){handleExpand(m.id);}} style={{ background:'var(--surface)', borderRadius:'var(--radius)', border:`1px solid ${isExpanded?statusColor:'var(--border)'}`, overflow:'hidden', cursor:'pointer', transition:'border-color 0.2s' }}>
               <div style={{ padding:'14px 16px' }}>

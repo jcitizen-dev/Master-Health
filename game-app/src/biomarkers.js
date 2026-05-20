@@ -610,8 +610,8 @@ window.HSA.BIOMARKERS = [
   // ── ADVANCED LIPID PANEL (Quest May 2026) ────────────────────────────────
   {
     id: 'ldl_particle_num', name: 'LDL-P (Particle Number)', panel: 'lipids', myValue: 1176, unit: 'nmol/L',
-    referenceRange: { low: 0, optimal_low: 0, optimal_high: 1000, high: 1300 },
-    status: 'borderline',
+    referenceRange: { low: 600, optimal_low: 600, optimal_high: 1138, high: 2000 },
+    status: 'elevated',
     whatItMeasures: 'The total count of LDL particles circulating in blood — each one is a potential vehicle for artery-wall damage, regardless of how much cholesterol is inside.',
     whyItMatters: 'LDL-P is a stronger cardiovascular risk predictor than LDL cholesterol (LDL-C). Two people can have identical LDL-C but very different particle counts. More particles = more chances for artery-wall collision. Think of it as counting trucks on the highway, not just the cargo weight.',
     myContextNote: '1176 nmol/L is mildly elevated (optimal <1000). Critical context: ApoB is 80 (optimal boundary), triglycerides are 60 mg/dL (exceptional), CRP <0.2 (near-zero inflammation), insulin sensitivity elite (HOMA-IR 0.9), and LDL Pattern is A. This is a genetic tendency toward slightly elevated particle counts in an otherwise pristine metabolic landscape. "Optimization is different from disease." Main levers: Zone 2 cardio, psyllium husk / soluble fiber, continued fish oil.',
@@ -654,8 +654,8 @@ window.HSA.BIOMARKERS = [
   },
   {
     id: 'ldl_peak_size', name: 'LDL Peak Size', panel: 'lipids', myValue: 218.0, unit: 'Å',
-    referenceRange: { low: 200, optimal_low: 222, optimal_high: 240, high: 250 },
-    status: 'borderline',
+    referenceRange: { low: 210, optimal_low: 222.9, optimal_high: 240, high: 250 },
+    status: 'low',
     whatItMeasures: 'The modal (most common) diameter of LDL particles in angstroms (Å). Pattern A = large, buoyant LDL (≥222 Å). Pattern B = small, dense LDL (<222 Å). More like Pattern A = better.',
     whyItMatters: 'LDL peak size is the key to Pattern A vs Pattern B classification. Pattern A LDL (large, fluffy) is considered significantly less atherogenic than Pattern B (small, dense). Most of the cardiovascular risk associated with LDL comes from small dense particles — Pattern A is the favorable phenotype.',
     myContextNote: '218.0 Å is below the Pattern A cutoff of 222 Å — technically at the Pattern A/B boundary. HOWEVER, the Quest report officially classifies this as Pattern A. More importantly: triglycerides at 60 mg/dL are the strongest single predictor of Pattern A biology (high TG drives Pattern B). Low TG + Pattern A classification + ApoB 80 = a favorable lipid phenotype despite borderline particle counts. Context makes this a "watch and optimise" situation, not a concern.',
