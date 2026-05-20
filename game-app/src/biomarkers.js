@@ -280,10 +280,10 @@ window.HSA.BIOMARKERS = [
   {
     id: 'zinc_bm', name: 'Zinc', panel: 'minerals', myValue: 18.3, unit: 'µmol/L',
     referenceRange: { low: 7, optimal_low: 12, optimal_high: 20, high: 23 },
-    status: 'borderline',
+    status: 'optimal',
     whatItMeasures: 'Serum zinc — essential trace mineral for immune function, testosterone synthesis, and 300+ enzyme reactions.',
     whyItMatters: 'Zinc deficiency impairs immunity, testosterone synthesis, wound healing, and DNA repair. Vegans are at high risk due to phytate-bound zinc in plant foods.',
-    myContextNote: '18.3 µmol/L is in the lower third of the reference range. Plant zinc bioavailability is 50–70% lower than meat-based zinc due to phytate chelation. Zinc supplementation at 15–30 mg/night is specifically addressing this vegan gap.',
+    myContextNote: '18.3 µmol/L is in the upper portion of the optimal range [12–20 µmol/L] — well-supplemented. Plant zinc bioavailability is 50–70% lower than meat-based zinc due to phytate chelation. Supplementation at 15–30 mg/night is successfully closing the vegan gap.',
     relatedSupplements: ['zinc'],
     mnemonic: 'Zinc 18.3 — EIGHTEEN-point-THREE, plants steal zinc so supplement for free.',
     xpValue: 15
