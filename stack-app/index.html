@@ -591,11 +591,15 @@ async function handleSignIn() {
   const standalone = !!window.navigator.standalone ||
     window.matchMedia('(display-mode: standalone)').matches;
   if (standalone) {
-    // Google blocks OAuth in iOS WebView (PWA). Open a real Safari tab instead.
-    // After signing in there, return to this app — auth state is shared on iOS 16.4+.
-    const url = new URL(window.location.href);
-    url.searchParams.set('gsi', '1');
-    window.open(url.toString(), '_blank');
+    // Google blocks OAuth in iOS home screen apps (WKWebView restriction).
+    // Use the system share sheet so the user can open in real Safari, sign in,
+    // then return here — the app reloads on return to pick up the auth state.
+    sessionStorage.setItem('gsi_pending', '1');
+    try {
+      await navigator.share({ url: window.location.href });
+    } catch(e) {
+      sessionStorage.removeItem('gsi_pending');
+    }
     return;
   }
   try {
@@ -626,19 +630,20 @@ auth.onAuthStateChanged(async user => {
   }
 });
 
+// Reload when returning from Safari after a share-sheet sign-in attempt,
+// so Firebase can pick up the auth state written by Safari (iOS 16.4+).
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && sessionStorage.getItem('gsi_pending') === '1') {
+    sessionStorage.removeItem('gsi_pending');
+    window.location.reload();
+  }
+});
+
 // --- Boot ---
 (async () => {
   try { await openDB(); } catch(e) { console.warn('IDB unavailable, using localStorage'); }
   // Process any returning OAuth redirect before loading local data
   try { await auth.getRedirectResult(); } catch(e) { console.warn('Redirect result error', e.code, e); }
-  // If opened from the PWA via window.open with ?gsi=1, trigger sign-in here in real Safari
-  const isStandalone = !!window.navigator.standalone ||
-    window.matchMedia('(display-mode: standalone)').matches;
-  if (new URLSearchParams(window.location.search).get('gsi') === '1' && !isStandalone) {
-    history.replaceState(null, '', window.location.pathname);
-    sessionStorage.setItem('gsi_return', '1');
-    try { await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()); return; } catch(e) { console.warn('gsi error', e.code, e); }
-  }
   await loadAll();
   render();
 })();
