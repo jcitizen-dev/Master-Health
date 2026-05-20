@@ -588,16 +588,22 @@ async function handleSignIn() {
     return;
   }
   const provider = new firebase.auth.GoogleAuthProvider();
+  // PWA / standalone mode: iOS blocks popups entirely, go straight to redirect
+  const standalone = !!window.navigator.standalone ||
+    window.matchMedia('(display-mode: standalone)').matches;
+  if (standalone) {
+    try { await auth.signInWithRedirect(provider); } catch(e) { console.warn('Sign-in error', e.code, e); }
+    return;
+  }
   try {
     await auth.signInWithPopup(provider);
   } catch(e) {
-    // Popup blocked (iOS PWA) — open stack app directly in top window for redirect
-    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
-      const dest = new URL(window.location.href);
-      dest.search = '?signin=1';
-      window.top.location.href = dest.toString();
+    if (e.code === 'auth/popup-blocked' ||
+        e.code === 'auth/popup-closed-by-user' ||
+        e.code === 'auth/operation-not-supported-in-this-environment') {
+      try { await auth.signInWithRedirect(provider); } catch(e2) { console.warn('Sign-in redirect error', e2.code, e2); }
     } else {
-      console.warn('Sign-in error', e);
+      console.warn('Sign-in error', e.code, e);
     }
   }
 }
@@ -615,17 +621,8 @@ auth.onAuthStateChanged(async user => {
 // --- Boot ---
 (async () => {
   try { await openDB(); } catch(e) { console.warn('IDB unavailable, using localStorage'); }
-  // Handle completed redirect result FIRST — must run before checking ?signin=1
-  // to avoid re-triggering a redirect on the return trip from Google OAuth
-  try { await auth.getRedirectResult(); } catch(e) { console.warn('Redirect result error', e); }
-  // If opened standalone with ?signin=1 and still not signed in, trigger redirect sign-in.
-  // Strip ?signin=1 from the URL before calling signInWithRedirect so Firebase stores
-  // the clean URL as the post-auth redirect target, breaking the redirect loop.
-  if (window.location.search.includes('signin=1') && !auth.currentUser) {
-    history.replaceState(null, '', window.location.pathname);
-    const provider = new firebase.auth.GoogleAuthProvider();
-    try { await auth.signInWithRedirect(provider); return; } catch(e) {}
-  }
+  // Process any returning OAuth redirect before loading local data
+  try { await auth.getRedirectResult(); } catch(e) { console.warn('Redirect result error', e.code, e); }
   await loadAll();
   render();
 })();
