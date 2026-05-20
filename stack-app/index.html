@@ -78,6 +78,7 @@
   .auth-submit { width: 100%; padding: 13px; border-radius: 10px; border: none; background: var(--accent); color: #0e0e0f; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 10px; }
   .auth-submit:active { opacity: 0.85; }
   .auth-toggle { width: 100%; padding: 11px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-bottom: 8px; }
+  .auth-forgot { width: 100%; padding: 7px; border: none; background: transparent; color: rgba(200,245,66,0.5); font-size: 12px; cursor: pointer; font-family: 'DM Mono', monospace; letter-spacing: 0.04em; margin-bottom: 4px; display: none; }
   .auth-cancel { width: 100%; padding: 9px; border: none; background: transparent; color: rgba(240,240,238,0.3); font-size: 12px; cursor: pointer; font-family: 'DM Mono', sans-serif; letter-spacing: 0.04em; }
 
   /* BOTTOM NAV */
@@ -152,6 +153,7 @@
     <div class="auth-error" id="auth-error"></div>
     <button id="auth-submit-btn" class="auth-submit" onclick="submitAuth()">Sign in</button>
     <button class="auth-toggle" id="auth-toggle-btn" onclick="toggleAuthMode()">Create account instead</button>
+    <button class="auth-forgot" id="auth-forgot-btn" onclick="sendPasswordReset()">Forgot password?</button>
     <button class="auth-cancel" onclick="closeAuthModal()">Cancel</button>
   </div>
 </div>
@@ -613,6 +615,7 @@ function showAuthModal() {
   document.getElementById('auth-modal-title').textContent = 'Sign in';
   document.getElementById('auth-toggle-btn').textContent = 'Create account instead';
   document.getElementById('auth-submit-btn').textContent = 'Sign in';
+  document.getElementById('auth-forgot-btn').style.display = 'block';
   document.getElementById('auth-email').value = '';
   document.getElementById('auth-password').value = '';
   document.getElementById('auth-error').textContent = '';
@@ -630,7 +633,23 @@ function toggleAuthMode() {
   document.getElementById('auth-modal-title').textContent = isCreate ? 'Create account' : 'Sign in';
   document.getElementById('auth-toggle-btn').textContent = isCreate ? 'Sign in instead' : 'Create account instead';
   document.getElementById('auth-submit-btn').textContent = isCreate ? 'Create account' : 'Sign in';
+  document.getElementById('auth-forgot-btn').style.display = isCreate ? 'none' : 'block';
   document.getElementById('auth-error').textContent = '';
+}
+
+async function sendPasswordReset() {
+  const email = document.getElementById('auth-email').value.trim();
+  const errEl = document.getElementById('auth-error');
+  if (!email) { errEl.textContent = 'Enter your email above first.'; return; }
+  try {
+    await auth.sendPasswordResetEmail(email);
+    errEl.style.color = '#c8f542';
+    errEl.textContent = 'Reset email sent — check your inbox.';
+  } catch(e) {
+    errEl.style.color = '#ff6b6b';
+    const msgs = { 'auth/user-not-found': 'No account found with this email.', 'auth/invalid-email': 'Invalid email address.' };
+    errEl.textContent = msgs[e.code] || 'Could not send reset email.';
+  }
 }
 
 async function submitAuth() {
