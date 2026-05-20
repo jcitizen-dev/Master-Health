@@ -449,7 +449,7 @@ function BiomarkerFlashCard({ marker, onSwipe }) {
 
   const statusColor = marker.status === 'optimal' ? 'var(--accent)' : marker.status === 'elevated' ? 'var(--danger)' : 'var(--xp-gold)';
   const statusLabel = marker.status === 'optimal' ? 'OPTIMAL' : marker.status === 'elevated' ? 'ELEVATED' : 'BORDERLINE';
-  const panelLabel = { glucose:'Glucose', metabolic:'Cardiovascular', liver:'Liver', kidney:'Kidney', minerals:'Minerals', hormones:'Hormones', thyroid:'Thyroid', inflammation:'Inflammation', vitamins:'Vitamins' }[marker.panel] || marker.panel;
+  const panelLabel = { glucose:'Glucose', metabolic:'Cardiovascular', liver:'Liver', kidney:'Kidney', minerals:'Minerals', hormones:'Hormones', thyroid:'Thyroid', inflammation:'Inflammation', vitamins:'Vitamins', lipids:'Advanced Lipids', cbc:'Blood Count' }[marker.panel] || marker.panel;
 
   const r = marker.referenceRange;
   const rangeMin = r.low, rangeMax = r.high;
@@ -1044,9 +1044,10 @@ function LearnScreen({ progressHook }) {
     {id:'glucose',label:'Glucose'},{id:'metabolic',label:'Cardio'},{id:'liver',label:'Liver'},
     {id:'kidney',label:'Kidney'},{id:'minerals',label:'Minerals'},{id:'hormones',label:'Hormones'},
     {id:'thyroid',label:'Thyroid'},{id:'inflammation',label:'Inflam.'},{id:'vitamins',label:'Vitamins'},
+    {id:'lipids',label:'Lipids'},{id:'cbc',label:'CBC'},
   ];
   const statusColor = function(s){ return s==='optimal'?'var(--accent)':s==='elevated'?'var(--danger)':'var(--xp-gold)'; };
-  const panelLabel = function(p){ return {glucose:'Glucose',metabolic:'Cardiovascular',liver:'Liver',kidney:'Kidney',minerals:'Minerals',hormones:'Hormones',thyroid:'Thyroid',inflammation:'Inflammation',vitamins:'Vitamins'}[p]||p; };
+  const panelLabel = function(p){ return {glucose:'Glucose',metabolic:'Cardiovascular',liver:'Liver',kidney:'Kidney',minerals:'Minerals',hormones:'Hormones',thyroid:'Thyroid',inflammation:'Inflammation',vitamins:'Vitamins',lipids:'Advanced Lipids',cbc:'Blood Count'}[p]||p; };
 
   const ModeToggle = (
     <div style={{ display:'flex', background:'var(--surface2)', borderRadius:20, padding:3, gap:2, marginBottom:16 }}>

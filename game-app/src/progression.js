@@ -33,6 +33,8 @@ window.HSA.CATEGORIES = {
   gut:         { label:'Gut & Immunity',          emoji:'🦠', bossName:'The Gut Parasite',         color:'#10B981' },
   hair:        { label:'Hair Protocol',           emoji:'💈', bossName:'The Follicle Phantom',     color:'#F59E0B' },
   vegan:       { label:'Vegan Gaps',              emoji:'🌱', bossName:'The Deficiency Specter',   color:'#84CC16' },
+  lipids:      { label:'Advanced Lipids',         emoji:'🫀', bossName:'The Particle Phantom',     color:'#EC4899' },
+  cardio:      { label:'Zone 2 & Cardio',         emoji:'🏃', bossName:'The Mitochondrial Wraith', color:'#06B6D4' },
 };
 
 window.HSA.BOSSES = [
@@ -124,6 +126,28 @@ window.HSA.BOSSES = [
     quizIds:['q9','q34','q40','q41','q51','q69','q83','q101','q108','q111'],
     xpReward:150, badgeId:'vegan_complete'
   },
+  {
+    id:'boss_lipids', category:'lipids', name:'The Particle Phantom', emoji:'💊', hp:10,
+    dialogueLines:[
+      '"LDL-P is 1176. The Phantom whispers: is this a problem? You must know the context before you answer."',
+      '"ApoB 80. TG 60. CRP less than 0.2. Pattern A. The Phantom waits — what story do these numbers tell together?"',
+      '"Small LDL particles: 262. Name what drives them lower. The Phantom will not accept just \'eat better.\'"',
+      '"The Particle Phantom dissolves into context. You now see the full lipid picture — not just one number."',
+    ],
+    quizIds:['q141','q142','q143','q144','q145','q146','q147','q155','q158','q162'],
+    xpReward:150, badgeId:'lipid_scholar'
+  },
+  {
+    id:'boss_cardio', category:'cardio', name:'The Mitochondrial Wraith', emoji:'🏃', hp:10,
+    dialogueLines:[
+      '"Zone 2. What heart rate zone? What intensity? The Wraith demands precision — not just \'moderate exercise.\'"',
+      '"The Wraith challenges: why does sustained Zone 2 improve lipid particles more than HIIT?"',
+      '"LPL — lipoprotein lipase. Three letters, three words. What does it do and what activates it?"',
+      '"The Mitochondrial Wraith retreats to the mitochondria. You have earned the Zone 2 mastery."',
+    ],
+    quizIds:['q149','q150','q151','q152','q159','q160','q163','q164','q2','q21'],
+    xpReward:150, badgeId:'cardio_builder'
+  },
 ];
 
 window.HSA.BADGES = [
@@ -152,6 +176,10 @@ window.HSA.BADGES = [
   { id:'vegan_warrior',     name:'Vegan Warrior',      emoji:'🌱', description:'Mastered all Vegan Gaps content', rarity:'uncommon', unlockCondition:'100% mastery in Vegan Gaps category' },
   { id:'protocol_clockwork',name:'Protocol Clockwork', emoji:'⏰', description:'All timing/interaction quizzes complete', rarity:'uncommon', unlockCondition:'Complete all dosage_timing questions' },
   { id:'stack_scientist',   name:'Stack Scientist',    emoji:'🧪', description:'Every supplement dose stated correctly', rarity:'rare', unlockCondition:'All dosage questions answered correctly' },
+  { id:'lipid_scholar',    name:'Lipid Scholar',      emoji:'💊', description:'Defeated The Particle Phantom',        rarity:'rare',      unlockCondition:'Defeat The Particle Phantom' },
+  { id:'cardio_builder',   name:'Cardio Builder',     emoji:'🏃', description:'Defeated The Mitochondrial Wraith',   rarity:'rare',      unlockCondition:'Defeat The Mitochondrial Wraith' },
+  { id:'particle_expert',  name:'Particle Expert',    emoji:'🔬', description:'Mastered the advanced lipid panel',   rarity:'epic',      unlockCondition:'All lipid panel quiz questions answered correctly' },
+  { id:'zone2_master',     name:'Zone 2 Master',      emoji:'🫀', description:'Completed all Zone 2 cardio lessons', rarity:'uncommon',  unlockCondition:'100% mastery in Zone 2 & Cardio category' },
 ];
 
 // Daily challenge pool — seeded by date

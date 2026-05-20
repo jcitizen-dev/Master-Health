@@ -605,5 +605,86 @@ window.HSA.BIOMARKERS = [
     relatedSupplements: ['b12', 'tmg', 'p5p'],
     mnemonic: 'Folate 10.7 — TEN-point-SEVEN, folate from plants sent from heaven.',
     xpValue: 15
+  },
+
+  // ── ADVANCED LIPID PANEL (Quest May 2026) ────────────────────────────────
+  {
+    id: 'ldl_particle_num', name: 'LDL-P (Particle Number)', panel: 'lipids', myValue: 1176, unit: 'nmol/L',
+    referenceRange: { low: 0, optimal_low: 0, optimal_high: 1000, high: 1300 },
+    status: 'borderline',
+    whatItMeasures: 'The total count of LDL particles circulating in blood — each one is a potential vehicle for artery-wall damage, regardless of how much cholesterol is inside.',
+    whyItMatters: 'LDL-P is a stronger cardiovascular risk predictor than LDL cholesterol (LDL-C). Two people can have identical LDL-C but very different particle counts. More particles = more chances for artery-wall collision. Think of it as counting trucks on the highway, not just the cargo weight.',
+    myContextNote: '1176 nmol/L is mildly elevated (optimal <1000). Critical context: ApoB is 80 (optimal boundary), triglycerides are 60 mg/dL (exceptional), CRP <0.2 (near-zero inflammation), insulin sensitivity elite (HOMA-IR 0.9), and LDL Pattern is A. This is a genetic tendency toward slightly elevated particle counts in an otherwise pristine metabolic landscape. "Optimization is different from disease." Main levers: Zone 2 cardio, psyllium husk / soluble fiber, continued fish oil.',
+    relatedSupplements: ['fishoil', 'evoo'],
+    mnemonic: 'LDL-P 1176 — ONE-one-SEVEN-SIX. More trucks on the road, but ApoB 80 keeps the fleet in check.',
+    xpValue: 25
+  },
+  {
+    id: 'ldl_small', name: 'LDL Small', panel: 'lipids', myValue: 262, unit: 'nmol/L',
+    referenceRange: { low: 0, optimal_low: 0, optimal_high: 200, high: 500 },
+    status: 'elevated',
+    whatItMeasures: 'Small, dense LDL particles — the most atherogenic LDL subfraction because they are more easily oxidised and slip through arterial walls more readily.',
+    whyItMatters: 'Small dense LDL has a longer half-life in circulation (more time to cause damage), oxidises more easily, and penetrates arterial walls more readily than large buoyant LDL. HOWEVER, low triglycerides (<100 mg/dL) and Pattern A classification dramatically reduce the atherogenic significance of elevated small LDL counts.',
+    myContextNote: '262 nmol/L is above the optimal range. BUT this must be interpreted in full context: triglycerides 60 mg/dL (exceptional — low TG strongly predicts Pattern A physics), LDL Pattern A confirmed, ApoB 80 (optimal), CRP <0.2, HOMA-IR 0.9. This is "stubborn lipoprotein genetics" in someone with otherwise excellent cardiovascular markers — NOT metabolic syndrome. Zone 2 cardio and soluble fiber (psyllium) are the most evidence-based next interventions.',
+    relatedSupplements: ['fishoil', 'evoo'],
+    mnemonic: 'LDL Small 262 — TWO-sixty-TWO. Elevated but TG 60 and Pattern A say: genetics, not lifestyle.',
+    xpValue: 25
+  },
+  {
+    id: 'ldl_medium', name: 'LDL Medium', panel: 'lipids', myValue: 269, unit: 'nmol/L',
+    referenceRange: { low: 0, optimal_low: 0, optimal_high: 200, high: 500 },
+    status: 'elevated',
+    whatItMeasures: 'Medium-sized LDL particles — intermediate between the most atherogenic small-dense particles and the less atherogenic large-buoyant particles.',
+    whyItMatters: 'Medium LDL contributes to total LDL-P alongside the small and large fractions. The entire small+medium elevation drives the LDL-P above 1000, while large LDL (less atherogenic) would contribute less to overall risk. The complete size distribution matters more than any single subtype.',
+    myContextNote: '269 nmol/L — combined with LDL Small (262), these two fractions drive the total LDL-P to 1176. The "discordance" pattern here — elevated particle counts but excellent metabolic markers — is a known genetic pattern in lipoprotein metabolism. People with this pattern often respond well to sustained Zone 2 cardio, which activates lipoprotein lipase and improves the particle size distribution over months.',
+    relatedSupplements: ['fishoil', 'evoo'],
+    mnemonic: 'LDL Medium 269 — TWO-sixty-NINE. Mid-size elevated, but the whole picture is not alarming.',
+    xpValue: 20
+  },
+  {
+    id: 'hdl_large', name: 'HDL Large', panel: 'lipids', myValue: 4921, unit: 'nmol/L',
+    referenceRange: { low: 0, optimal_low: 7000, optimal_high: 15000, high: 20000 },
+    status: 'low',
+    whatItMeasures: 'Large HDL particles — the most cardioprotective HDL subtype with the greatest capacity for reverse cholesterol transport (picking up cholesterol from artery walls).',
+    whyItMatters: 'Not all HDL is equal. Large HDL particles are metabolically active; they perform reverse cholesterol transport most effectively. Small HDL particles are less functional. Total HDL-C can look "normal" while HDL functionality is suboptimal. Zone 2 cardio is the strongest known modifiable stimulus for raising large HDL particles.',
+    myContextNote: '4921 nmol/L is well below the optimal zone (>7000). This pairs with HDL-C of 52 mg/dL (borderline) to confirm that both the quantity AND quality of HDL are lower than ideal. This is the key finding that makes Zone 2 cardio a priority optimization lever. Sustained aerobic training at moderate intensity directly stimulates lipoprotein lipase and raises large HDL particle production. EVOO and fish oil help too but cardio is the main event.',
+    relatedSupplements: ['fishoil', 'evoo'],
+    mnemonic: 'HDL Large 4921 — FOUR-nine-TWO-ONE. The quality of HDL is low. Zone 2 cardio is the answer.',
+    xpValue: 25
+  },
+  {
+    id: 'ldl_peak_size', name: 'LDL Peak Size', panel: 'lipids', myValue: 218.0, unit: 'Å',
+    referenceRange: { low: 200, optimal_low: 222, optimal_high: 240, high: 250 },
+    status: 'borderline',
+    whatItMeasures: 'The modal (most common) diameter of LDL particles in angstroms (Å). Pattern A = large, buoyant LDL (≥222 Å). Pattern B = small, dense LDL (<222 Å). More like Pattern A = better.',
+    whyItMatters: 'LDL peak size is the key to Pattern A vs Pattern B classification. Pattern A LDL (large, fluffy) is considered significantly less atherogenic than Pattern B (small, dense). Most of the cardiovascular risk associated with LDL comes from small dense particles — Pattern A is the favorable phenotype.',
+    myContextNote: '218.0 Å is below the Pattern A cutoff of 222 Å — technically at the Pattern A/B boundary. HOWEVER, the Quest report officially classifies this as Pattern A. More importantly: triglycerides at 60 mg/dL are the strongest single predictor of Pattern A biology (high TG drives Pattern B). Low TG + Pattern A classification + ApoB 80 = a favorable lipid phenotype despite borderline particle counts. Context makes this a "watch and optimise" situation, not a concern.',
+    relatedSupplements: ['fishoil', 'evoo'],
+    mnemonic: 'LDL Size 218 Å — TWO-eighteen, at the Pattern A boundary. TG 60 keeps the physics favorable.',
+    xpValue: 20
+  },
+
+  // ── CBC / BLOOD COUNT ─────────────────────────────────────────────────────
+  {
+    id: 'hematocrit', name: 'Hematocrit', panel: 'cbc', myValue: 38.8, unit: '%',
+    referenceRange: { low: 36.0, optimal_low: 40.0, optimal_high: 50.0, high: 52.0 },
+    status: 'borderline',
+    whatItMeasures: 'The percentage of total blood volume made up of red blood cells — the primary measure of blood\'s oxygen-carrying capacity and RBC mass.',
+    whyItMatters: 'Low hematocrit (anaemia) means less oxygen reaching muscles and brain, causing fatigue and impaired performance. In male athletes, ≥40% is the functional target. Hematocrit below 36% in males = anaemia by WHO definition.',
+    myContextNote: '38.8% is just below the male optimal zone (40–50%). Critically, iron is completely normal: ferritin 71, serum iron 136 mcg/dL, saturation 40%. This is NOT iron deficiency anaemia. The most likely causes: (1) vegan athlete pattern — some plant-based athletes run mildly lower erythrocyte mass; (2) hemodilution from training and high hydration; (3) borderline B12 utilisation at the cellular level. Worth monitoring at next panel before any intervention.',
+    relatedSupplements: ['b12', 'vitc'],
+    mnemonic: 'Hematocrit 38.8 — THIRTY-eight-EIGHT, just below 40. Iron is fine — this is a vegan athlete pattern.',
+    xpValue: 20
+  },
+  {
+    id: 'hemoglobin', name: 'Hemoglobin', panel: 'cbc', myValue: 13.3, unit: 'g/dL',
+    referenceRange: { low: 12.0, optimal_low: 13.5, optimal_high: 17.5, high: 18.0 },
+    status: 'borderline',
+    whatItMeasures: 'The oxygen-carrying protein packed inside red blood cells — the single most direct measure of blood\'s functional oxygen transport capacity.',
+    whyItMatters: 'Hemoglobin below 13.5 g/dL in males sits at the borderline of the reference range. Combined with hematocrit 38.8%, this confirms mild erythrocyte underperformance — not classic iron deficiency, since iron stores are excellent.',
+    myContextNote: '13.3 g/dL — borderline by male reference (13.5–17.5). The key exculpatory facts: ferritin 71 (adequate), serum iron 136 mcg/dL (optimal), saturation 40% (optimal), B12 530.7 pg/mL (well supplemented). This is NOT iron deficiency anaemia or B12 deficiency anaemia. Pattern consistent with: vegan athlete physiology, mild hemodilution, or lower-normal erythropoiesis baseline. No intervention yet — repeat panel in 3–6 months.',
+    relatedSupplements: ['b12', 'vitc'],
+    mnemonic: 'Hemoglobin 13.3 — THIRTEEN-three. Borderline but not iron-deficient. Vegan pattern — watch.',
+    xpValue: 20
   }
 ];

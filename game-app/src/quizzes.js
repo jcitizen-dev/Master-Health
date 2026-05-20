@@ -962,4 +962,259 @@ window.HSA.QUIZZES = [
     ], answer:'Total testosterone measures all testosterone including bound (inactive) forms; free testosterone is the unbound fraction that cells can actually use — free T is more clinically meaningful',
     explanation:'Most testosterone in the blood is hitched to carrier proteins — primarily SHBG (tightly bound and inactive) and albumin (loosely bound and partly available). Only about 1–3% is free and immediately usable by cells. Total testosterone tells you the whole pool; free testosterone tells you how much is actually reaching the locker room. A man with high total T but very high SHBG may experience symptoms of low testosterone because so little of it is free. Free T is the number that reflects lived experience.',
     xpReward:15 },
+
+  // ── ADVANCED LIPID PANEL — New Questions (May 2026 Quest) ─────────────────
+  { id:'q141', type:'concept', category:'lipids', difficulty:2,
+    question:'What is the difference between LDL-C (LDL cholesterol) and LDL-P (LDL particle number)?',
+    options:[
+      'LDL-C counts the cholesterol content inside particles; LDL-P counts the number of particles — two people can have the same LDL-C but very different particle counts',
+      'LDL-P is just a more precise version of LDL-C using a different lab method',
+      'LDL-C is the harmful form; LDL-P is the protective form of the same measurement',
+      'LDL-P measures oxidised LDL; LDL-C measures non-oxidised LDL'
+    ], answer:'LDL-C counts the cholesterol content inside particles; LDL-P counts the number of particles — two people can have the same LDL-C but very different particle counts',
+    explanation:'Imagine LDL-C as the total weight of cargo on delivery trucks, and LDL-P as the count of trucks on the road. You could have 10 heavily loaded trucks (high LDL-C, low LDL-P) or 20 lightly loaded trucks (lower LDL-C, higher LDL-P). Each truck is a potential collision with an artery wall — so particle count (LDL-P) better predicts actual cardiovascular risk. This explains why someone can have "normal" LDL-C but still have a higher cardiovascular risk from elevated LDL-P.',
+    xpReward:20, markerId:'ldl_particle_num' },
+
+  { id:'q142', type:'my_value', category:'lipids', difficulty:2,
+    question:'What was my LDL Particle Number (LDL-P) on the May 2026 Quest advanced lipid panel?',
+    options:['847 nmol/L','1176 nmol/L','1423 nmol/L','1680 nmol/L'], answer:'1176 nmol/L',
+    explanation:'1176 nmol/L — mildly elevated (optimal <1000). Context is everything: ApoB 80 (optimal), TG 60 mg/dL (exceptional), Pattern A, CRP <0.2, HOMA-IR 0.9. This is genetic lipoprotein biology, not metabolic dysfunction. Optimization is different from disease.',
+    xpReward:15, markerId:'ldl_particle_num' },
+
+  { id:'q143', type:'concept', category:'lipids', difficulty:2,
+    question:'Why are small, dense LDL particles considered more atherogenic than large, buoyant LDL?',
+    options:[
+      'Small LDL has a longer half-life in circulation, oxidises more easily, and slips through arterial walls more readily — all increasing atherogenic potential',
+      'Small LDL contains more cholesterol per particle so it deposits more in artery walls',
+      'Small LDL is produced only when cholesterol is dietary rather than made by the liver',
+      'Small LDL is more atherogenic simply because it is lighter and floats toward arteries'
+    ], answer:'Small LDL has a longer half-life in circulation, oxidises more easily, and slips through arterial walls more readily — all increasing atherogenic potential',
+    explanation:'Three reasons small dense LDL is riskier: (1) Longer half-life — it stays in circulation longer because LDL receptors bind it less efficiently, giving it more time to cause damage. (2) More easily oxidised — oxidised LDL is far more inflammatory and atherogenic. (3) Smaller size — it can squeeze through the gaps in the endothelial lining of artery walls more easily, where it gets trapped and triggers plaque formation.',
+    xpReward:20, markerId:'ldl_small' },
+
+  { id:'q144', type:'concept', category:'lipids', difficulty:2,
+    question:'What is LDL Pattern A vs Pattern B, and which is more favorable?',
+    options:[
+      'Pattern A = predominantly large buoyant LDL (less atherogenic, favorable); Pattern B = predominantly small dense LDL (more atherogenic, concerning). My May 2026 result is Pattern A.',
+      'Pattern A = high total LDL count; Pattern B = low total LDL count. Pattern B is better.',
+      'Pattern A means LDL is diet-derived; Pattern B means LDL is liver-derived',
+      'Pattern A is associated with high triglycerides; Pattern B with low triglycerides'
+    ], answer:'Pattern A = predominantly large buoyant LDL (less atherogenic, favorable); Pattern B = predominantly small dense LDL (more atherogenic, concerning). My May 2026 result is Pattern A.',
+    explanation:'LDL pattern is classified by particle size: Pattern A = large fluffy LDL (peak size ≥222 Å), considered significantly less atherogenic. Pattern B = small dense LDL (<222 Å), more atherogenic. The key predictor: triglycerides. Low TG (<100 mg/dL) drives Pattern A physics; high TG (>150 mg/dL) drives Pattern B. My TG of 60 mg/dL strongly predicts Pattern A — confirmed by the Quest report.',
+    xpReward:20, markerId:'ldl_peak_size' },
+
+  { id:'q145', type:'concept', category:'lipids', difficulty:2,
+    question:'Why do many cardiologists now consider ApoB a more important cardiovascular risk marker than LDL-C?',
+    options:[
+      'ApoB is newer and more expensive so it must be better',
+      'ApoB directly counts atherogenic particles (one ApoB per particle) — it captures the total cardiovascular particle burden, not just the cholesterol content inside them',
+      'ApoB is only important in high-risk patients; for healthy people LDL-C is sufficient',
+      'ApoB measures inflammation directly, which is the true cause of heart disease'
+    ], answer:'ApoB directly counts atherogenic particles (one ApoB per particle) — it captures the total cardiovascular particle burden, not just the cholesterol content inside them',
+    explanation:'Every atherogenic particle — LDL, VLDL, IDL, Lp(a) — carries exactly ONE ApoB molecule. So ApoB is a direct headcount of all potentially atherogenic particles. LDL-C only measures the cholesterol stuffed inside LDL — it misses VLDL and IDL, and misses the particle-count vs. particle-content distinction. ApoB at 80 (optimal threshold) means the total atherogenic particle burden is well-controlled, despite LDL-P being 1176.',
+    xpReward:20, markerId:'apo_b' },
+
+  { id:'q146', type:'concept', category:'lipids', difficulty:2,
+    question:'What makes large HDL particles more cardioprotective than small HDL particles?',
+    options:[
+      'Large HDL particles contain more cholesterol so they can remove more from artery walls',
+      'Large HDL particles are more functionally active at reverse cholesterol transport — they have greater capacity to remove cholesterol from artery walls and deliver it back to the liver',
+      'Large HDL particles are produced by the liver; small HDL are produced in the gut',
+      'Large HDL particles block LDL from binding to artery walls directly'
+    ], answer:'Large HDL particles are more functionally active at reverse cholesterol transport — they have greater capacity to remove cholesterol from artery walls and deliver it back to the liver',
+    explanation:'Think of large HDL as a full-size dump truck versus small HDL as a compact car. Both do reverse cholesterol transport (picking up cholesterol from artery walls and returning it to the liver), but large HDL does it more efficiently and at greater capacity. Low large HDL is associated with cardiovascular risk even when total HDL-C appears "normal." This is why my HDL-C of 52 mg/dL paired with HDL Large of 4921 (below optimal) is more informative than HDL-C alone.',
+    xpReward:20, markerId:'hdl_large' },
+
+  { id:'q147', type:'my_value', category:'lipids', difficulty:2,
+    question:'What was my LDL Small particle count on the May 2026 Quest advanced lipid panel?',
+    options:['124 nmol/L','192 nmol/L','262 nmol/L','318 nmol/L'], answer:'262 nmol/L',
+    explanation:'262 nmol/L — elevated (optimal <200). However: TG 60 mg/dL (exceptional), Pattern A, ApoB 80, CRP <0.2. The context frames this as "stubborn lipoprotein genetics" rather than metabolic syndrome. Zone 2 cardio and psyllium husk are the evidence-based next interventions.',
+    xpReward:15, markerId:'ldl_small' },
+
+  { id:'q148', type:'my_value', category:'lipids', difficulty:2,
+    question:'What was my HDL Large particle count on the May 2026 Quest advanced lipid panel?',
+    options:['2840 nmol/L','4921 nmol/L','6812 nmol/L','8940 nmol/L'], answer:'4921 nmol/L',
+    explanation:'4921 nmol/L — below the optimal threshold of 7000 nmol/L. Low large HDL is the functional confirmation that cardioprotective reverse cholesterol transport is suboptimal. The most evidence-based intervention: sustained Zone 2 aerobic cardio, which stimulates ApoA-I synthesis and large HDL production.',
+    xpReward:15, markerId:'hdl_large' },
+
+  // ── ZONE 2 CARDIO — New Educational Module ────────────────────────────────
+  { id:'q149', type:'concept', category:'cardio', difficulty:1,
+    question:'What defines Zone 2 exercise intensity, and why is this specific zone especially important for metabolic health?',
+    options:[
+      'Zone 2 is maximum sprint effort (90–100% max HR) — the zone that burns the most calories',
+      'Zone 2 is low-to-moderate aerobic intensity (~60–70% max HR, conversational pace) — the zone that maximises mitochondrial biogenesis, fat oxidation, and lipoprotein metabolism improvements',
+      'Zone 2 is defined by heart rate variability (HRV), not heart rate',
+      'Zone 2 is the warm-up zone before "real" training begins — not considered effective exercise'
+    ], answer:'Zone 2 is low-to-moderate aerobic intensity (~60–70% max HR, conversational pace) — the zone that maximises mitochondrial biogenesis, fat oxidation, and lipoprotein metabolism improvements',
+    explanation:'Zone 2 is the "goldilocks" aerobic zone. At this intensity, you remain below the lactate threshold — meaning mitochondria run primarily on fat oxidation. The cellular adaptations are profound: more mitochondria (biogenesis), better fat-burning capacity, improved cardiovascular efficiency, and — critically for the May 2026 lipid picture — activation of lipoprotein lipase (LPL) which improves particle size distribution and raises large HDL.',
+    xpReward:15, supplementId:'zone2' },
+
+  { id:'q150', type:'concept', category:'cardio', difficulty:2,
+    question:'How does Zone 2 cardio specifically improve LDL particle profiles?',
+    options:[
+      'Zone 2 directly lowers LDL-C by blocking cholesterol synthesis in the liver',
+      'Zone 2 activates lipoprotein lipase (LPL), which processes triglyceride-rich particles and shifts LDL toward larger, less atherogenic sizes over sustained training',
+      'Zone 2 reduces LDL particles by increasing muscle uptake of circulating cholesterol',
+      'Zone 2 has no effect on LDL particles — only resistance training affects lipid metabolism'
+    ], answer:'Zone 2 activates lipoprotein lipase (LPL), which processes triglyceride-rich particles and shifts LDL toward larger, less atherogenic sizes over sustained training',
+    explanation:'Lipoprotein lipase (LPL) is an enzyme attached to blood vessel walls in muscle and fat tissue that breaks down triglyceride-rich particles. Zone 2 cardio strongly upregulates LPL activity. More active LPL: (1) clears VLDL and TG more efficiently, (2) remodels LDL particles into larger, less dense forms, and (3) donates surface components (including ApoA-I) to nascent HDL particles — raising large HDL. HIIT does not produce the same sustained LPL upregulation.',
+    xpReward:20, supplementId:'zone2' },
+
+  { id:'q151', type:'concept', category:'cardio', difficulty:2,
+    question:'Why does sustained Zone 2 cardio raise large HDL particles specifically?',
+    options:[
+      'Zone 2 stops the liver from removing HDL from circulation',
+      'Zone 2 increases ApoA-I synthesis (the main HDL structural protein) and activates LPL — LPL remodels smaller HDL into larger, more functional particles over sustained aerobic training',
+      'Zone 2 transfers cholesterol from LDL to HDL directly during exercise',
+      'Zone 2 increases dietary fat absorption which builds larger HDL particles'
+    ], answer:'Zone 2 increases ApoA-I synthesis (the main HDL structural protein) and activates LPL — LPL remodels smaller HDL into larger, more functional particles over sustained aerobic training',
+    explanation:'Sustained aerobic training increases ApoA-I production (the scaffolding protein that builds HDL particles). LPL activity during Zone 2 also donates surface lipids from VLDL remnants to nascent HDL, growing small HDL into larger, more functional particles. This is the specific mechanism behind "exercise raises HDL" — and it is dose-dependent, taking months of consistent Zone 2 volume to manifest in bloodwork.',
+    xpReward:20, supplementId:'zone2' },
+
+  { id:'q152', type:'concept', category:'cardio', difficulty:2,
+    question:'In my current health profile, which optimization lever remains MOST underutilised and is most likely to improve the advanced lipid panel?',
+    options:[
+      'More aggressive supplementation — adding statins or niacin',
+      'Zone 2 cardio volume — diet, body composition, supplements, hormones, and inflammation are already well-optimized; cardio is the remaining major lever for LDL-P, small LDL, and HDL Large',
+      'Caloric restriction — reducing body fat further is the key driver',
+      'Eliminating all dietary fat — the LDL particles are diet-driven'
+    ], answer:'Zone 2 cardio volume — diet, body composition, supplements, hormones, and inflammation are already well-optimized; cardio is the remaining major lever for LDL-P, small LDL, and HDL Large',
+    explanation:'By May 2026: diet (TG 60, CRP <0.2), body composition (HOMA-IR 0.9), supplements (ApoB 80, fish oil and EVOO running), hormones (SHBG 30, free T 89.7), and inflammation (CRP <0.2) are all well-dialed. The advanced lipid panel flags one remaining cluster: LDL-P 1176, LDL Small 262, HDL Large 4921. These are all responsive to sustained aerobic training. Zone 2 cardio is the highest-yield remaining optimization — the "next chapter" after all other major levers are addressed.',
+    xpReward:25, supplementId:'zone2' },
+
+  // ── SERBIA → QUEST TREND COMPARISONS ──────────────────────────────────────
+  { id:'q153', type:'multiple_choice', category:'lipids', difficulty:2,
+    question:'From Serbia April 2026 to Quest May 2026, which markers showed the MOST DRAMATIC improvement?',
+    options:[
+      'LDL particle number and HDL large — both dramatically improved',
+      'ALT (67→26, -61%), CRP (1.0→<0.2, near-zero), eGFR (62.2→79), and SHBG (53.42→30) — multiple major improvements in one month',
+      'Total testosterone and DHT — both dramatically increased',
+      'HbA1c and insulin — both substantially improved'
+    ], answer:'ALT (67→26, -61%), CRP (1.0→<0.2, near-zero), eGFR (62.2→79), and SHBG (53.42→30) — multiple major improvements in one month',
+    explanation:'The Serbia → Quest improvement story is remarkable: ALT dropped 61% (67→26, liver recovered), CRP dropped from borderline 1.0 to essentially undetectable <0.2 (inflammation eliminated), eGFR jumped from concerning 62.2 to solid 79 (creatine artifact resolved), and SHBG fell 44% from 53.42 to 30 (free testosterone dramatically improved). One month of protocol discipline across liver, inflammation, kidney, and hormone axes.',
+    xpReward:20 },
+
+  { id:'q154', type:'multiple_choice', category:'lipids', difficulty:2,
+    question:'From Serbia April 2026 to Quest May 2026, which cluster of markers WORSENED or remained an OPTIMIZATION TARGET?',
+    options:[
+      'Liver enzymes — ALT and AST continued to rise',
+      'Advanced lipid particle numbers — LDL-P 1176, LDL Small 262, HDL Large 4921 remain optimization targets despite overall excellent cardiovascular health context',
+      'Glucose markers — HbA1c rose above pre-diabetes threshold',
+      'Testosterone — total testosterone collapsed while free testosterone worsened'
+    ], answer:'Advanced lipid particle numbers — LDL-P 1176, LDL Small 262, HDL Large 4921 remain optimization targets despite overall excellent cardiovascular health context',
+    explanation:'The advanced lipid particle profile was not tested in Serbia, so May 2026 establishes the baseline. LDL-P 1176, LDL Small 262, and HDL Large 4921 are the new targets. Context: ApoB improved from 89 to 80, TG improved from 0.78 to 0.68 mmol/L, and CRP is near zero. The lipid particle findings likely reflect genetic lipoprotein biology rather than worsening lifestyle — but they are the clear optimization target for the next phase.',
+    xpReward:20 },
+
+  { id:'q155', type:'multiple_choice', category:'lipids', difficulty:2,
+    question:'My advanced lipid panel shows mildly elevated small LDL particles despite excellent triglycerides (60 mg/dL), HOMA-IR 0.9, and near-zero CRP. What does this pattern most likely represent?',
+    options:[
+      'Metabolic syndrome — high small LDL always indicates poor metabolic health',
+      'Dietary fat excess — must reduce EVOO and fish oil immediately',
+      'Genetic tendency in lipoprotein metabolism — not metabolic disease. The context (low TG, excellent insulin sensitivity, zero inflammation) dissociates this from the typical small-LDL risk profile',
+      'Supplement toxicity — the stack is elevating LDL particles'
+    ], answer:'Genetic tendency in lipoprotein metabolism — not metabolic disease. The context (low TG, excellent insulin sensitivity, zero inflammation) dissociates this from the typical small-LDL risk profile',
+    explanation:'Small LDL particles are classically associated with insulin resistance, high TG, and inflammation — the metabolic syndrome constellation. My profile is the opposite: TG 60 (exceptional), HOMA-IR 0.9 (elite insulin sensitivity), CRP <0.2 (essentially no inflammation). The elevated small LDL particles WITHOUT these metabolic risk factors strongly suggests genetic variation in lipoprotein particle metabolism — not lifestyle or diet failure. Optimization is different from disease.',
+    xpReward:25 },
+
+  // ── CBC / HEMATOCRIT ──────────────────────────────────────────────────────
+  { id:'q156', type:'my_value', category:'metabolic', difficulty:1,
+    question:'What was my hematocrit on the May 2026 Quest panel?',
+    options:['35.2%','38.8%','41.6%','44.3%'], answer:'38.8%',
+    explanation:'38.8% — just below the male optimal zone of 40–50%. Iron is completely fine (ferritin 71, saturation 40%), so this is not iron deficiency anaemia. Most likely a vegan athlete pattern or hemodilution. Worth monitoring at the next panel.',
+    xpReward:10, markerId:'hematocrit' },
+
+  { id:'q157', type:'concept', category:'metabolic', difficulty:2,
+    question:'My hematocrit is 38.8% (borderline) but all iron markers are optimal. What does this most likely indicate?',
+    options:[
+      'B12 deficiency — high-dose B12 supplementation is failing',
+      'Iron deficiency anaemia — the ferritin test is unreliable',
+      'Vegan athlete pattern or hemodilution — borderline hematocrit with excellent iron status does NOT indicate iron deficiency. May reflect training-related plasma volume expansion or baseline physiology.',
+      'Kidney disease — eGFR 79 is causing reduced erythropoietin production'
+    ], answer:'Vegan athlete pattern or hemodilution — borderline hematocrit with excellent iron status does NOT indicate iron deficiency. May reflect training-related plasma volume expansion or baseline physiology.',
+    explanation:'In true iron deficiency anaemia: ferritin is low (<30), TIBC is high, serum iron is low. Here: ferritin 71 (adequate), saturation 40% (optimal), serum iron 136 mcg/dL (optimal). All iron markers are fine. Endurance-trained athletes often have expanded plasma volume — the same RBC mass is diluted in more blood volume, making hematocrit appear lower. This is actually a cardiovascular adaptation, not a deficiency. Monitor at next panel.',
+    xpReward:20, markerId:'hematocrit' },
+
+  // ── OPTIMIZATION FRAMING & GENETICS ──────────────────────────────────────
+  { id:'q158', type:'concept', category:'lipids', difficulty:1,
+    question:'"Optimization is different from disease." What does this mean in the context of my May 2026 lipid results?',
+    options:[
+      'It means my lipid results are perfect and require no further attention',
+      'It means mildly elevated LDL particles in someone with excellent metabolic health, low inflammation, and favorable ApoB represents a genetic optimization target — not a disease state requiring urgent medical treatment',
+      'It means lipid results do not matter for people with healthy lifestyles',
+      'It means the advanced lipid panel test is unreliable for healthy people'
+    ], answer:'It means mildly elevated LDL particles in someone with excellent metabolic health, low inflammation, and favorable ApoB represents a genetic optimization target — not a disease state requiring urgent medical treatment',
+    explanation:'The "optimization vs disease" framing is important for psychological wellbeing and appropriate perspective. LDL-P 1176 in someone with: CRP <0.2 (no inflammation driving oxidation), HOMA-IR 0.9 (no insulin resistance causing small LDL production), ApoB 80 (overall atherogenic particle burden well-controlled), and TG 60 (Pattern A physics) — this is a fine-tuning opportunity, not a medical emergency. You have already optimized most major cardiovascular levers. The remaining opportunity is real but it exists in the zone of ongoing optimization, not remediation.',
+    xpReward:15 },
+
+  { id:'q159', type:'concept', category:'lipids', difficulty:2,
+    question:'How does psyllium husk (soluble fiber) lower LDL cholesterol — what is the mechanism?',
+    options:[
+      'Psyllium blocks LDL receptors in the liver, trapping LDL in circulation temporarily before clearance',
+      'Psyllium forms a gel in the gut that binds bile acids — preventing their reabsorption. The liver must use LDL cholesterol to make replacement bile acids, drawing LDL from the blood.',
+      'Psyllium reduces dietary fat absorption, which directly lowers LDL synthesis',
+      'Psyllium is an antioxidant that prevents LDL oxidation, making existing LDL less atherogenic'
+    ], answer:'Psyllium forms a gel in the gut that binds bile acids — preventing their reabsorption. The liver must use LDL cholesterol to make replacement bile acids, drawing LDL from the blood.',
+    explanation:'Bile acids are made from cholesterol by the liver, used to digest fat, then normally reabsorbed in the intestine and recycled (enterohepatic circulation). Psyllium\'s soluble fiber forms a viscous gel that physically traps bile acids, which are then excreted in stool. The liver compensates by pulling more LDL cholesterol from the blood to make new bile. This is the same general mechanism as bile acid sequestrant medications (cholestyramine) but delivered via food/supplement rather than drug. Studies show 5–10 g/day psyllium reduces LDL-C by 5–10%.',
+    xpReward:20, supplementId:'psyllium' },
+
+  { id:'q160', type:'concept', category:'cardio', difficulty:2,
+    question:'Why does sustained Zone 2 cardio (at conversational pace) produce different physiological adaptations than HIIT (high-intensity interval training)?',
+    options:[
+      'HIIT is always better — Zone 2 is just not intense enough to produce meaningful adaptation',
+      'Zone 2 maximises time below the lactate threshold where fat oxidation and mitochondrial biogenesis dominate — HIIT produces different adaptations (VO2 max, fast-twitch efficiency) but less LPL upregulation and mitochondrial density per session',
+      'They produce identical adaptations — intensity is the only variable that matters',
+      'Zone 2 is only beneficial for people over 50 — HIIT is superior for all metabolic outcomes in younger people'
+    ], answer:'Zone 2 maximises time below the lactate threshold where fat oxidation and mitochondrial biogenesis dominate — HIIT produces different adaptations (VO2 max, fast-twitch efficiency) but less LPL upregulation and mitochondrial density per session',
+    explanation:'Zone 2 and HIIT are complementary, not competing. Zone 2 maximises: (1) mitochondrial biogenesis — more time in fat-oxidation mode = stronger stimulus for mitochondrial proliferation; (2) LPL activity — sustained moderate intensity produces more lipoprotein lipase than brief intense bursts; (3) cardiovascular reserve. HIIT maximises VO2 max and fast-twitch power. For the specific goal of improving LDL particle distribution and raising large HDL, sustained Zone 2 volume is the evidence-based tool.',
+    xpReward:20, supplementId:'zone2' },
+
+  { id:'q161', type:'my_value', category:'lipids', difficulty:2,
+    question:'What was my LDL Peak Size on the May 2026 Quest advanced lipid panel, and what pattern does it suggest?',
+    options:['208.4 Å — Pattern B','218.0 Å — Pattern A (borderline)','228.6 Å — Pattern A','240.2 Å — Pattern A (ideal)'], answer:'218.0 Å — Pattern A (borderline)',
+    explanation:'218.0 Å is at the boundary of Pattern A (≥222 Å = Pattern A). The Quest report classifies this as Pattern A, which is the favorable designation. Critically, triglycerides at 60 mg/dL are the strongest predictor of Pattern A physics — very low TG means LDL particles are large and buoyant. The 218 Å is at the borderline but the broader context (TG, ApoB, CRP) all support a Pattern A physiology.',
+    xpReward:15, markerId:'ldl_peak_size' },
+
+  { id:'q162', type:'multiple_choice', category:'lipids', difficulty:3,
+    question:'My profile shows elevated LDL-P (1176) and small LDL (262) but also ApoB 80, TG 60, CRP <0.2, HOMA-IR 0.9, and Pattern A. How do you interpret this "discordance"?',
+    options:[
+      'The LDL-P and small LDL are the most important numbers — the other markers should be disregarded',
+      'Discordance between LDL-P and ApoB/TG/metabolic markers strongly suggests genetic variation in lipoprotein metabolism — not diet- or lifestyle-driven atherogenesis. ApoB 80 confirms the atherogenic burden is controlled. Context saves the interpretation.',
+      'This pattern always indicates statin therapy is immediately required',
+      'The LDL-P of 1176 must be a lab error — it cannot coexist with TG 60 and Pattern A'
+    ], answer:'Discordance between LDL-P and ApoB/TG/metabolic markers strongly suggests genetic variation in lipoprotein metabolism — not diet- or lifestyle-driven atherogenesis. ApoB 80 confirms the atherogenic burden is controlled. Context saves the interpretation.',
+    explanation:'When different cardiovascular markers point in different directions, the full constellation matters. Here: LDL-P is mildly elevated (concerning in isolation) but ApoB 80 is optimal (particle burden controlled), TG 60 (excellent — drives Pattern A), CRP <0.2 (no oxidative environment to make LDL particles dangerous), HOMA-IR 0.9 (elite insulin sensitivity). This discordant pattern — elevated particle count with excellent metabolic context — is a known genetic lipoprotein phenotype. The risk profile is much lower than LDL-P alone would suggest.',
+    xpReward:30 },
+
+  { id:'q163', type:'concept', category:'cardio', difficulty:2,
+    question:'What is lipoprotein lipase (LPL), and why does Zone 2 cardio upregulate it?',
+    options:[
+      'LPL is a liver enzyme that converts LDL to HDL during exercise',
+      'LPL is an enzyme attached to blood vessel walls in muscle and fat tissue that breaks down TG-rich particles — Zone 2 cardio powerfully upregulates it, improving particle size distribution and raising HDL large over sustained training',
+      'LPL is produced in the gut and controls bile acid recycling — Zone 2 upregulates bile production',
+      'LPL is a blood pressure regulator that Zone 2 cardio activates to reduce cardiovascular resistance'
+    ], answer:'LPL is an enzyme attached to blood vessel walls in muscle and fat tissue that breaks down TG-rich particles — Zone 2 cardio powerfully upregulates it, improving particle size distribution and raising HDL large over sustained training',
+    explanation:'LPL (lipoprotein lipase) sits on the inner surface of blood vessels in working muscle and fat tissue. It breaks down TG-rich particles (VLDL, IDL) by hydrolyzing their triglycerides, releasing fatty acids into muscle cells. This process: (1) clears TG from blood; (2) remodels VLDL remnants into smaller LDL particles but also shifts the LDL size distribution toward larger forms; (3) donates surface material to HDL particles, growing them into larger, more functional forms. Zone 2 intensity (sustained, moderate) maximises LPL activity per unit time better than HIIT.',
+    xpReward:20, supplementId:'zone2' },
+
+  { id:'q164', type:'concept', category:'lipids', difficulty:1,
+    question:'What does hs-CRP (high-sensitivity CRP) <0.2 mg/L tell us about cardiovascular risk from LDL particles?',
+    options:[
+      'CRP being low means LDL particles cannot cause any cardiovascular harm',
+      'Very low CRP means there is minimal oxidative and inflammatory environment to modify LDL particles into their most atherogenic (oxidised) form — significantly reducing the clinical significance of mildly elevated LDL-P',
+      'CRP <0.2 means the LDL-P test result is a lab error',
+      'CRP is unrelated to LDL particle risk — they are independent systems'
+    ], answer:'Very low CRP means there is minimal oxidative and inflammatory environment to modify LDL particles into their most atherogenic (oxidised) form — significantly reducing the clinical significance of mildly elevated LDL-P',
+    explanation:'LDL particles only become maximally atherogenic after oxidation. Oxidised LDL is the form that triggers inflammatory responses in artery walls, gets taken up by macrophages, and forms foam cells — the beginning of plaque. An inflammatory environment (high CRP, high oxidative stress) accelerates this process. Near-zero CRP (<0.2) means the oxidative/inflammatory environment is minimal — LDL particles are less likely to be oxidised and rendered maximally dangerous. This is why CRP is one of the key contextual markers in interpreting lipid particle results.',
+    xpReward:15, markerId:'crp' },
+
+  { id:'q165', type:'concept', category:'lipids', difficulty:2,
+    question:'What cardiovascular imaging tests could help assess actual arterial health beyond lipid blood markers?',
+    options:[
+      'Full-body MRI — the only reliable imaging for arterial health assessment',
+      'CAC scan (coronary artery calcium score) and carotid ultrasound (CIMT) — non-invasive tests that directly image plaque burden in arteries, independent of blood marker predictions',
+      'PET scan — required to assess cardiac function accurately',
+      'Blood pressure monitoring — the only non-invasive cardiovascular assessment needed'
+    ], answer:'CAC scan (coronary artery calcium score) and carotid ultrasound (CIMT) — non-invasive tests that directly image plaque burden in arteries, independent of blood marker predictions',
+    explanation:'Blood markers (LDL-P, ApoB, CRP) predict cardiovascular risk but don\'t directly measure what\'s happening in your arteries. A CAC scan (coronary artery calcium score) directly images calcified plaque in the coronary arteries — a CAC score of 0 in someone with mildly elevated LDL-P is highly reassuring. Carotid intima-media thickness (CIMT) ultrasound measures arterial wall thickness. Both tests provide objective data on actual arterial health status that blood markers alone cannot give.',
+    xpReward:20 },
 ];
