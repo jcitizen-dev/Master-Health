@@ -1247,7 +1247,7 @@ function LearnScreen({ progressHook }) {
                   <div style={{ fontSize:15, fontWeight:500, marginBottom:3 }}>{m.name}</div>
                   <div style={{ fontFamily:'DM Mono, monospace', fontSize:12, color:'var(--muted)' }}>{m.myValue} {m.unit} · {panelLabel(m.panel)}</div>
                 </div>
-                <span style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:sc, border:`1px solid ${sc}`, borderRadius:20, padding:'2px 10px' }}>{m.status}</span>
+                <span style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:sc, border:`1px solid ${sc}`, borderRadius:20, padding:'2px 10px' }}>{ m.status==='elevated'||m.status==='low' ? 'FLAGGED' : m.status==='borderline' ? 'BORDERLINE' : 'OPTIMAL' }</span>
               </div>
             );
           })}
