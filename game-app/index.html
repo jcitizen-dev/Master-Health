@@ -1196,7 +1196,7 @@ function LearnScreen({ progressHook }) {
       {mode==='supplements' && <>
         <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginBottom:12 }}>{supplements.length} supplements {categoryFilter?'· '+categoryFilter:''}</div>
         <div style={{ display:'flex', gap:6, overflowX:'auto', paddingBottom:4, marginBottom:16, scrollbarWidth:'none' }}>
-          <button onClick={() => navigate('/flashcards')} style={{ flexShrink:0, padding:'7px 14px', borderRadius:'40px', border:`1px solid ${!categoryFilter?'var(--accent)':'var(--border)'}`, background:!categoryFilter?'var(--accent)':'transparent', color:!categoryFilter?'#0e0e0f':'var(--muted)', fontFamily:'DM Mono, monospace', fontSize:11, cursor:'pointer' }}>All</button>
+          <button onClick={() => navigate('/learn')} style={{ flexShrink:0, padding:'7px 14px', borderRadius:'40px', border:`1px solid ${!categoryFilter?'var(--accent)':'var(--border)'}`, background:!categoryFilter?'var(--accent)':'transparent', color:!categoryFilter?'#0e0e0f':'var(--muted)', fontFamily:'DM Mono, monospace', fontSize:11, cursor:'pointer' }}>All</button>
           {Object.entries(window.HSA.CATEGORIES).map(function([key,cat]) {
             return <button key={key} onClick={() => navigate('/learn?category='+key)} style={{ flexShrink:0, padding:'7px 14px', borderRadius:'40px', border:`1px solid ${categoryFilter===key?cat.color:'var(--border)'}`, background:categoryFilter===key?cat.color+'22':'transparent', color:categoryFilter===key?cat.color:'var(--muted)', fontFamily:'DM Mono, monospace', fontSize:11, cursor:'pointer' }}>{cat.emoji} {key}</button>;
           })}
