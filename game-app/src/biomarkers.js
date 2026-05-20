@@ -671,7 +671,7 @@ window.HSA.BIOMARKERS = [
     status: 'low',
     whatItMeasures: 'The percentage of total blood volume made up of red blood cells — the primary measure of blood\'s oxygen-carrying capacity and RBC mass.',
     whyItMatters: 'Low hematocrit (anemia) means less oxygen reaching muscles and brain, causing fatigue and impaired performance. In male athletes, ≥40% is the functional target. Hematocrit below 36% in males = anemia by WHO definition.',
-    myContextNote: '38.8% is just below the male optimal zone (40–50%). Critically, iron is completely normal: ferritin 71, serum iron 136 mcg/dL, saturation 40%. This is NOT iron deficiency anemia. The most likely causes: (1) vegan athlete pattern — some plant-based athletes run mildly lower erythrocyte mass; (2) hemodilution from training and high hydration; (3) borderline B12 utilization at the cellular level. Worth monitoring at next panel before any intervention. · B12 is listed because it is the direct rate-limiting cofactor for RBC maturation in bone marrow — it is literally required for the cell division that produces red blood cells. If B12 is short at the cellular level, fewer mature RBCs are produced, and hematocrit drops. My serum B12 is 531 pg/mL (in range), but vegans can have suboptimal delivery of the active form (methylcobalamin) to cells even with normal serum levels. Supplementing methylcobalamin keeps this step from being the bottleneck. · Vitamin C\'s connection is more indirect: it converts non-heme iron (the only type in plant foods) into the absorbable form at the gut level. My iron markers are currently good — that\'s partly because C at meals is already doing its job. Without it, iron absorption on a vegan diet degrades over time, which would eventually pull hematocrit down. Think of it as maintenance for the iron supply chain that keeps these numbers stable.',
+    myContextNote: '38.8% is just below the male optimal zone (40–50%). Critically, iron is completely normal: ferritin 71, serum iron 136 mcg/dL, saturation 40%. This is NOT iron deficiency anemia. The most likely causes: (1) vegan athlete pattern — some plant-based athletes run mildly lower erythrocyte mass; (2) hemodilution from training and high hydration; (3) borderline B12 utilization at the cellular level. Worth monitoring at next panel before any intervention.',
     relatedSupplements: ['b12', 'vitc'],
     mnemonic: 'Hematocrit 38.8 — THIRTY-eight-EIGHT, just below 40. Iron is fine — this is a vegan athlete pattern.',
     xpValue: 20
@@ -992,3 +992,279 @@ window.HSA.BIOMARKERS = [
     xpValue: 20
   }
 ];
+
+// ── Supplement × Biomarker connection explanations ───────────────────────────
+// Accessed by openDrawer() when a supplement tag is tapped.
+// Key: biomarker id → supplement id → why THIS supplement relates to THIS result.
+window.HSA.SUPPLEMENT_CONNECTIONS = {
+  glucose: {
+    magnesium: 'Magnesium is a cofactor for the insulin receptor\'s tyrosine kinase — without it the receptor responds weakly to insulin, raising fasting glucose. Keeping magnesium adequate directly supports insulin signaling at the cellular level.',
+    vitd: 'Vitamin D receptors sit on pancreatic beta cells and in muscle tissue. Low D impairs both insulin secretion and peripheral insulin sensitivity — my D was critically low (31 ng/mL in 2025) and correcting it is part of why glucose is now 89 mg/dL.',
+    creatine: 'Creatine enables higher-intensity training by replenishing ATP faster. More training volume → greater glucose disposal into muscle → lower fasting glucose. The effect on this result is via training performance, not a direct metabolic mechanism.'
+  },
+  hba1c: {
+    magnesium: 'HbA1c reflects average glucose over ~3 months. Magnesium improves insulin sensitivity (via insulin receptor activation), which keeps glucose consistently lower day-to-day — that sustained effect is what HbA1c captures.',
+    vitd: 'Chronic vitamin D deficiency impairs long-term glucose control by reducing insulin sensitivity over months. My D correction (31 → 54 ng/mL) is one of the structural factors behind the 5.3% HbA1c.',
+    creatine: 'Higher training intensity from creatine → better glucose clearance after meals → lower average glucose over the 3-month window HbA1c measures. An indirect but real contribution.'
+  },
+  insulin: {
+    magnesium: 'The insulin receptor requires magnesium for full activation. Low magnesium = blunted insulin signaling = compensatory rise in fasting insulin. This is a direct cellular mechanism — keeping magnesium adequate keeps the receptor sensitive so less insulin is needed.',
+    creatine: 'Creatine fuels higher training output, which increases insulin-independent glucose uptake (GLUT4 translocation in muscle). Over time this reduces the baseline insulin demand, keeping fasting insulin low.',
+    vitd: 'Vitamin D upregulates insulin receptor expression in target tissues. Fewer receptors means more insulin required to clear the same glucose load. Adequate D keeps expression up and baseline insulin down.'
+  },
+  homa_ir: {
+    magnesium: 'HOMA-IR = (fasting glucose × fasting insulin) ÷ 22.5. Magnesium improves both components by enhancing insulin receptor sensitivity — my HOMA-IR of 0.9 reflects this working.',
+    vitd: 'Vitamin D improves both the glucose and insulin components of the HOMA-IR formula via its effects on insulin sensitivity and beta-cell function. Correcting deficiency is a structural lever for this composite score.',
+    creatine: 'Creatine\'s effect on HOMA-IR is mediated through training: more training capacity → better insulin sensitivity → lower glucose and insulin at rest → lower HOMA-IR.'
+  },
+  c_peptide: {
+    magnesium: 'C-peptide is co-secreted with insulin by pancreatic beta cells. Magnesium deficiency stresses beta cells and can impair secretory function. Adequate magnesium directly supports normal beta cell physiology.',
+    vitd: 'Vitamin D directly supports pancreatic beta cell survival, proliferation, and insulin secretory capacity. Low D reduces beta cell responsiveness. At 54 ng/mL, D is supporting the 1.09 ng/mL C-peptide seen here.'
+  },
+  total_chol: {
+    fishoil: 'Fish oil\'s primary lipid effect is TG-lowering, not total cholesterol. At high doses, EPA/DHA modestly lower total cholesterol by reducing hepatic VLDL output. The connection is indirect — via VLDL reduction rather than direct cholesterol synthesis inhibition.',
+    evoo: 'Oleic acid (MUFA) from EVOO replaces saturated fat, which modestly reduces LDL-C and therefore total cholesterol. EVOO polyphenols also reduce LDL oxidation independently of the cholesterol number itself.',
+    garlic: 'Allicin and organosulfur compounds in garlic weakly inhibit HMG-CoA reductase — the same enzyme statins block, at much lower potency. Clinical effect on total cholesterol is modest (~5%) but real.'
+  },
+  hdl: {
+    fishoil: 'EPA/DHA modestly raise HDL-C and more meaningfully shift HDL toward larger, more functional particles. Given my low HDL Large (4921 nmol/L), fish oil is targeting the quality and size of HDL as much as the quantity.',
+    evoo: 'EVOO maintains HDL-C on a heart-healthy diet (unlike low-fat diets which tend to lower HDL). Its polyphenols also improve HDL particle function — making existing HDL better at reverse cholesterol transport.',
+    vitd: 'Vitamin D has a modest positive effect on HDL-C through its regulation of apolipoprotein A-I expression — ApoA-I is the structural protein of HDL particles. More ApoA-I means more functional HDL capacity.'
+  },
+  ldl: {
+    fishoil: 'Fish oil can paradoxically nudge LDL-C slightly upward while shifting particles toward larger, less atherogenic Pattern A. The full picture — lower TG, Pattern A, low ApoB — is more important than the LDL-C number alone.',
+    garlic: 'Allicin weakly inhibits HMG-CoA reductase, reducing hepatic cholesterol synthesis and modestly lowering LDL-C. Small effect, but additive in a comprehensive lipid protocol.',
+    evoo: 'Oleic acid from EVOO shifts LDL toward less oxidizable particles. EVOO polyphenols (oleuropein) reduce LDL oxidation — making existing LDL less atherogenic even if the number doesn\'t change dramatically.'
+  },
+  triglycerides: {
+    fishoil: 'This is fish oil\'s strongest, most evidence-backed lipid effect. EPA/DHA directly inhibit hepatic TG synthesis (VLDL assembly) and increase TG clearance via lipoprotein lipase. My TG of 60 mg/dL is partly attributable to this — it was 109 in July 2025 before I started.',
+    evoo: 'MUFA from EVOO replaces dietary carbohydrate, which reduces de novo lipogenesis (the liver converting carbs to fat). This directly lowers TG production. Lower TG also drives Pattern A LDL as a downstream benefit.',
+    vitd: 'Vitamin D deficiency is associated with elevated triglycerides in population studies, likely via its role in lipoprotein lipase regulation. Correcting D to 54 ng/mL removes this as a drag on TG.'
+  },
+  apo_b: {
+    fishoil: 'ApoB marks every atherogenic lipoprotein particle. Fish oil lowers ApoB primarily through its TG-lowering effect — fewer VLDL particles assembled and released from the liver means fewer total atherogenic particles in circulation.',
+    evoo: 'By reducing small dense LDL formation (lower TG → less CETP exchange), EVOO reduces atherogenic particle count and thus ApoB. Oleic acid also modestly reduces hepatic VLDL output directly.',
+    garlic: 'Garlic\'s modest cholesterol-lowering translates to a small reduction in LDL particles and ApoB. Not the primary lever here, but additive alongside fish oil and EVOO.'
+  },
+  apo_a1: {
+    fishoil: 'EPA/DHA upregulate apolipoprotein A-I expression in the liver — ApoA-I is the structural backbone of every HDL particle. More ApoA-I means more HDL particles available for reverse cholesterol transport.',
+    evoo: 'EVOO polyphenols (particularly oleuropein) upregulate ApoA-I gene expression. More ApoA-I supports higher HDL particle capacity — directly relevant to raising the HDL Large count (4921, currently low).'
+  },
+  lpa: {
+    fishoil: 'Some evidence suggests high-dose EPA may modestly lower Lp(a), though the effect is less consistent than statins or PCSK9 inhibitors. I include fish oil for its broader lipid benefits; any Lp(a) reduction is a secondary benefit.'
+  },
+  ast: {
+    nac: 'NAC (N-acetyl cysteine) is a direct precursor to glutathione — the liver\'s primary antioxidant. Elevated AST reflects hepatocyte stress; NAC replenishes glutathione to protect liver cells and reduce the transaminase leak from damaged cells.',
+    tudca: 'TUDCA acts as a chemical chaperone that reduces ER stress in hepatocytes. ER stress is a primary driver of elevated transaminases. TUDCA directly addresses this mechanism rather than just treating the symptom.',
+    taurine: 'Taurine supports mitochondrial function and acts as an osmolyte in hepatocytes under metabolic stress. It modulates bile acid toxicity in liver cells, providing a protective effect against the cellular stress that elevates AST.'
+  },
+  alt: {
+    nac: 'ALT is the most liver-specific transaminase. NAC replenishes hepatic glutathione, reducing the oxidative stress that causes hepatocyte membrane permeability and ALT leakage. My ALT dropped from 67 (Serbia, April) to 26 (Quest, May) — the hepatoprotective protocol is working.',
+    tudca: 'TUDCA reduces hepatocyte apoptosis by mitigating ER stress and improving bile acid handling. The dramatic drop from ALT 67 → 26 is consistent with TUDCA\'s hepatoprotective mechanism.',
+    taurine: 'Taurine\'s mitochondrial protective effect in liver cells reduces the energy deficit stress that drives hepatocyte damage and ALT elevation — particularly relevant during high training load.',
+    evoo: 'Oleocanthal in EVOO inhibits COX-1/COX-2 and NF-κB, directly reducing hepatic inflammation. The anti-inflammatory effect on liver tissue is part of why liver enzymes have normalised between the April and May panels.'
+  },
+  ggt: {
+    nac: 'GGT is a key enzyme in the glutathione synthesis pathway — it literally catalyses gamma-glutamyl transfer in glutathione recycling. GGT can rise when the liver is producing more glutathione to handle oxidative stress. NAC (glutathione precursor) feeds this system, reducing the stress signal that drives GGT up.',
+    tudca: 'TUDCA improves bile flow and reduces cholestatic stress in biliary cells — GGT is a biliary brush-border enzyme that rises with bile stasis or oxidative stress in the biliary system. TUDCA addresses both mechanisms.'
+  },
+  alp: {
+    vitd: 'ALP is partly produced by bone-forming cells (osteoblasts). Vitamin D deficiency causes secondary hyperparathyroidism and compensatory bone turnover, which elevates bone-derived ALP. At optimal D levels (54 ng/mL), this mechanism is quieted.',
+    k2: 'Vitamin K2 activates osteocalcin and matrix Gla protein, regulating orderly bone mineralisation. Proper bone turnover supported by K2 keeps bone-derived ALP in the normal range rather than driven up by disorganised osteoblast activity.'
+  },
+  bilirubin: {
+    tudca: 'TUDCA supports hepatic bile metabolism and bilirubin conjugation pathways. My bilirubin is 1.2 mg/dL (upper normal — consistent Gilbert\'s syndrome pattern). TUDCA is here for broader liver support, not as a targeted bilirubin intervention specifically.',
+    nac: 'NAC supports Phase II liver detoxification including glucuronidation — the main route for bilirubin conjugation. It\'s in the stack for overall liver health; any effect on bilirubin is via improved hepatic processing capacity generally.'
+  },
+  albumin: {
+    protein: 'Albumin is synthesised by the liver directly from dietary amino acids. Adequate protein intake is the primary nutritional driver of albumin levels — inadequate intake over weeks lowers albumin even with normal liver function. As a vegan athlete with high protein turnover, supplemental protein ensures the raw material for albumin synthesis is always available.'
+  },
+  creatinine: {
+    creatine: 'This is the direct, important connection: creatine is metabolised to creatinine in muscle. When I supplement creatine (3–5 g/day), serum creatinine rises artifactually — not from kidney dysfunction but from higher creatinine production. This is why Serbia creatinine was elevated and eGFR appeared as 62.2. Cystatin C eGFR of 111 is the ground truth, unaffected by creatine.'
+  },
+  egfr: {
+    creatine: 'The creatinine-based eGFR formula is directly suppressed by creatine supplementation — higher creatinine from creatine metabolism makes the formula calculate a lower filtration rate. This is a measurement artefact, not kidney damage. The Cystatin C eGFR (111) is unaffected by creatine and shows the true picture.'
+  },
+  urea: {
+    creatine: 'At higher doses, creatine can slightly increase protein catabolism and urea production. The urea of 6.4 mmol/L (17.9 mg/dL BUN) is normal, suggesting this effect is minimal at my current dosing. Worth monitoring if dosing increases.',
+    protein: 'Protein metabolism produces urea — every gram of protein catabolised releases nitrogen that must be excreted as urea. The BUN:Cr ratio of 17.4 is normal, confirming protein intake and kidney clearance are in balance.'
+  },
+  uric_acid: {
+    vitc: 'Vitamin C directly competes with uric acid for renal tubular reabsorption — supplemental C increases urinary uric acid excretion. This is one of the few supplements with clear clinical evidence for lowering serum uric acid. My 5.49 mg/dL is in the normal range, partly supported by this mechanism.'
+  },
+  magnesium_bm: {
+    magnesium: 'This is the magnesium level itself. I supplement magnesium glycinate because serum magnesium (0.85 mmol/L) is at the lower optimal boundary — and because 99% of body magnesium is intracellular, making serum a lagging indicator. Supplementing keeps the total-body pool adequate for all the enzymatic reactions magnesium participates in.'
+  },
+  zinc_bm: {
+    zinc: 'This is the zinc level itself. I supplement zinc because plant-food zinc is bound by phytates (in grains and legumes), making it significantly less bioavailable than animal-source zinc. Supplementing corrects for this absorption gap and keeps tissue levels in the optimal zone (18.3 µmol/L).'
+  },
+  potassium: {
+    magnesium: 'Magnesium is required for the Na/K-ATPase pump — the mechanism that keeps potassium inside cells. Low magnesium causes urinary potassium wasting: the kidneys lose the ability to retain potassium, which is why hypomagnesemia is a common cause of low potassium. My potassium of 4.7 is normal partly because magnesium is adequate.'
+  },
+  calcium: {
+    vitd: 'Vitamin D is the primary regulator of calcium absorption in the gut (via vitamin D-dependent calcium-binding proteins). Without adequate D, dietary calcium is poorly absorbed regardless of intake. My D at 54 ng/mL ensures calcium absorption efficiency is maximised.',
+    k2: 'K2 activates matrix Gla protein (MGP), which directs calcium away from arteries and soft tissue and into bone. My calcium is 9.9 mg/dL (upper normal). K2 ensures this calcium is deposited correctly — reducing calcification risk while keeping serum calcium stable.'
+  },
+  iron: {
+    vitc: 'Vitamin C converts Fe³⁺ (the only form in plant foods) to Fe²⁺ (the absorbable form) in the gut lumen. This is the primary mechanism for maintaining iron status on a vegan diet. My iron of 136 mcg/dL is optimal — that\'s partly because C at every meal is doing this conversion reliably.'
+  },
+  ferritin: {
+    vitc: 'Ferritin reflects iron stores built up over weeks to months. Better iron absorption from Vitamin C at meals means more iron enters the body over time, which replenishes and maintains ferritin. My ferritin of 71 ng/mL — stable and healthy — is sustained in part by this mechanism.'
+  },
+  transferrin_sat: {
+    vitc: 'Transferrin saturation = serum iron ÷ TIBC × 100. Vitamin C maintains the serum iron numerator by ensuring adequate daily non-heme iron absorption from plant foods. My 40% saturation (upper-normal) reflects consistently good iron absorption — the result of C at meals over time.'
+  },
+  uibc: {
+    vitc: 'UIBC reflects the empty iron-binding capacity on transferrin. When iron absorption is adequate (supported by Vitamin C), transferrin is well-utilised and UIBC stays in the normal range. If Vitamin C were absent, iron absorption would drop, serum iron would fall, and UIBC would rise as empty transferrin increased.'
+  },
+  testosterone: {
+    tongkat: 'Tongkat Ali modulates the HPG axis — it reduces negative feedback on GnRH/LH signalling, supporting the body\'s own testosterone production. Multiple RCTs show modest but consistent testosterone increases. My 603 ng/dL is partly attributed to this stack.',
+    boron: 'Boron supplementation reduces SHBG in clinical trials, releasing more testosterone from binding and into the active pool. It works synergistically with Tongkat to keep SHBG at 30 nmol/L (down from 53.42 in Serbia) — indirectly boosting total and free testosterone.',
+    zinc: 'Zinc is a direct cofactor for enzymes in the steroidogenesis pathway. Deficiency suppresses testosterone production significantly. My zinc is in the optimal range (partly due to supplementation) — keeping this substrate available for T synthesis.',
+    ashwagandha: 'Ashwagandha (KSM-66) has demonstrated testosterone-raising effects in multiple RCTs. The mechanism appears to be via cortisol reduction — chronically high cortisol directly suppresses testosterone synthesis. By lowering cortisol, ashwagandha creates a more favourable hormonal environment.'
+  },
+  free_testosterone: {
+    tongkat: 'Tongkat lowers SHBG and supports total testosterone production, so the free fraction increases with both. Free T at 89.7 pg/mL reflects the combined effect of adequate total T (603) and well-managed SHBG (30 nmol/L).',
+    boron: 'Boron lowers SHBG, directly increasing the free fraction of testosterone. With SHBG at 30 nmol/L (vs 53.42 in Serbia), significantly more testosterone circulates unbound and biologically active.',
+    zinc: 'Zinc supports the total testosterone pool from which free T is derived. Without adequate zinc, total T drops and free T follows proportionally.'
+  },
+  shbg: {
+    tongkat: 'This is the most direct connection: Tongkat Ali has demonstrated SHBG-lowering in clinical trials. My SHBG dropped from 53.42 nmol/L (Serbia, April 2026) to 30 nmol/L (Quest, May 2026) — a large change in 4 weeks. Tongkat + Boron are the primary interventions targeting SHBG.',
+    boron: 'Boron is one of the most evidence-backed natural SHBG modulators. The mechanism appears to involve inhibition of SHBG synthesis or glycosylation in the liver. Clinical trials show meaningful SHBG reductions within days of supplementation.'
+  },
+  estradiol: {
+    dutasteride: 'Dutasteride blocks 5α-reductase (T→DHT). This slightly shifts testosterone metabolism — some testosterone that would have become DHT may instead aromatise to estradiol. My estradiol of 30 pg/mL (upper-normal for men) is being monitored in this context.',
+    zinc: 'Zinc is a mild aromatase inhibitor — it modestly reduces the conversion of testosterone to estradiol. At my dosing, this is a gentle regulatory effect rather than pharmacological suppression.'
+  },
+  dht: {
+    dutasteride: 'Dutasteride is a dual 5α-reductase inhibitor (Type 1 and Type 2) — it directly blocks testosterone-to-DHT conversion. This is exactly why I take it. The pending DHT result will quantify how much suppression is occurring.'
+  },
+  lh: {
+    tongkat: 'Tongkat modulates the HPG feedback loop at the hypothalamic-pituitary level, supporting normal LH pulsatility. It sensitises the system to upstream GnRH signalling, maintaining LH drive for testosterone production.',
+    zinc: 'Zinc is required for normal LH synthesis and pituitary gonadotropin function. Deficiency reduces LH pulsatility and amplitude. My LH of 6.26 mIU/mL is solidly normal — zinc adequacy is maintaining normal pituitary signalling.'
+  },
+  fsh: {
+    zinc: 'Zinc is required for normal pituitary gonadotropin function, including FSH synthesis and secretion. Zinc deficiency can suppress FSH. My FSH of 8.25 mIU/mL is normal — consistent with adequate zinc and healthy spermatogenesis signalling.'
+  },
+  prolactin: {
+    zinc: 'Zinc modulates dopaminergic signalling in the pituitary. Dopamine is the primary inhibitor of prolactin secretion — adequate zinc helps maintain normal dopamine tone, keeping prolactin in range. Elevated prolactin suppresses testosterone, so managing this is part of the hormonal picture.',
+    ashwagandha: 'Ashwagandha has adaptogenic effects on pituitary signalling and may modestly reduce prolactin through its stress-reducing and dopaminergic modulatory properties. My prolactin of 6.7 ng/mL is normal — this is maintenance rather than intervention.'
+  },
+  dhea_s: {
+    ashwagandha: 'Ashwagandha supports adrenal function through its adaptogenic effects on the HPA axis. DHEA-S is produced by the adrenal cortex, and chronic cortisol excess (HPA overactivation) can suppress adrenal DHEA production. By moderating the stress response, ashwagandha protects adrenal DHEA output.'
+  },
+  igf1: {
+    protein: 'Dietary protein — particularly leucine from complete proteins — is the primary nutritional stimulus for hepatic IGF-1 production. Adequate protein intake is required to maintain IGF-1 in the normal range, especially as a vegan athlete where protein needs are elevated. My IGF-1 of 146.8 ng/mL reflects this.',
+    creatine: 'Some studies show creatine supplementation modestly increases IGF-1, possibly via its effects on muscle growth signalling and mTOR pathway activation. The mechanism is indirect — creatine supports the training stimulus that drives IGF-1 upward.'
+  },
+  cortisol: {
+    ashwagandha: 'This is ashwagandha\'s primary evidence-based mechanism: KSM-66 has multiple RCTs showing 15–25% cortisol reduction. I take it specifically to reduce the cortisol burden from hard training and daily stress. High cortisol directly suppresses testosterone and disrupts recovery — managing it is a direct performance lever.',
+    tongkat: 'Tongkat Ali has secondary adaptogenic properties alongside its HPG axis effects. Some evidence suggests it modulates cortisol by competing at glucocorticoid receptor binding sites or by improving stress resilience. My AM cortisol of 7.24 µg/dL is well within normal range.',
+    magnesium: 'Magnesium has an inhibitory effect on the HPA axis — it reduces hypothalamic CRH release and pituitary ACTH secretion under stress. Low magnesium = heightened cortisol response. I supplement partly to buffer the cortisol spike from heavy training and heat exposure (sauna).'
+  },
+  tsh: {
+    iodine: 'TSH rises when the thyroid is iodine-deficient — the pituitary releases more TSH to drive the thyroid harder with limited iodine. Adequate iodine keeps TSH in the normal range. As a vegan avoiding dairy and seafood, iodine is a real dietary gap that supplementation fills.',
+    zinc: 'Zinc is required for normal thyroid hormone production and for the function of TSH receptors on thyroid cells. Deficiency impairs the thyroid\'s response to TSH signalling.',
+    selenium: 'Selenium is a cofactor for iodothyronine deiodinases — the enzymes that convert T4 to active T3. It also protects the thyroid from oxidative damage during hormone synthesis. Low selenium impairs thyroid function and can elevate TSH compensatorily.'
+  },
+  free_t3: {
+    iodine: 'T3 (tri-iodothyronine) literally contains three iodine atoms per molecule. Iodine is the raw material for T3 synthesis. Without adequate iodine, T3 production is rate-limited. My fT3 of 2.72 pg/mL is normal — iodine supplementation keeps the substrate available.',
+    zinc: 'Zinc is a cofactor for 5\'-deiodinase — the enzyme in peripheral tissues that converts inactive T4 to active T3. Low zinc impairs this conversion, reducing fT3 even when T4 is normal.'
+  },
+  free_t4: {
+    iodine: 'T4 (thyroxine) contains four iodine atoms per molecule. Iodine is the primary raw material for T4 synthesis in the thyroid. As a vegan without dairy or seafood, iodine supplementation is the direct prerequisite for maintaining fT4 in the normal range.'
+  },
+  anti_tpo: {
+    iodine: 'Excess iodine can trigger or worsen autoimmune thyroiditis in susceptible individuals — which is why dose matters. My anti-TPO of 0.24 IU/mL (optimal, <5.61) confirms no autoimmune thyroid reaction, indicating the iodine dose I\'m taking is appropriate and not provoking TPO antibody production.'
+  },
+  anti_tg: {
+    iodine: 'Same consideration as anti-TPO: excess iodine can provoke anti-Tg antibodies in susceptible individuals. At 2.76 IU/mL (well within range), anti-Tg antibodies are not elevated — confirming that my iodine dose is appropriate and not triggering thyroid autoimmunity.'
+  },
+  crp: {
+    fishoil: 'EPA/DHA directly inhibit arachidonic acid conversion to pro-inflammatory eicosanoids (PGE2, LTB4) — the biochemical pathway that stimulates hepatic CRP synthesis. This is fish oil\'s strongest anti-inflammatory mechanism. My CRP of <0.2 mg/L is partly attributable to this.',
+    ginger: 'Gingerols in ginger inhibit both COX-2 and 5-LOX enzymes — the dual-pathway suppression reduces both prostaglandin and leukotriene production, directly reducing the inflammatory signal that stimulates CRP in the liver.',
+    garlic: 'Organosulfur compounds in garlic inhibit NF-κB — the master transcription factor driving production of inflammatory cytokines (IL-6, TNF-α) that stimulate hepatic CRP synthesis. Garlic acts upstream of CRP production.',
+    fisetin: 'Fisetin is a flavonoid with senolytic and anti-inflammatory properties. It inhibits mTOR and NF-κB signalling, reducing the senescence-associated secretory phenotype (SASP) — a major driver of low-grade chronic inflammation and elevated CRP with aging.',
+    evoo: 'Oleocanthal in EVOO inhibits COX-1 and COX-2 — the same mechanism as ibuprofen, from a dietary compound. This is a direct anti-inflammatory action on the same prostaglandin pathway that generates the signal behind CRP elevation.',
+    vitc: 'Vitamin C reduces oxidative stress by scavenging free radicals that would otherwise activate NF-κB and inflammatory pathways. Its contribution to CRP is antioxidant-mediated rather than direct enzyme inhibition — complementary to the other anti-inflammatory interventions.'
+  },
+  homocysteine: {
+    tmg: 'TMG directly donates a methyl group via the BHMT pathway, converting homocysteine back to methionine. This is one of the most direct homocysteine-lowering interventions available. I take it specifically because homocysteine is 10.2 µmol/L — borderline; the optimal target is <9.',
+    b12: 'B12 is the cofactor for methionine synthase — the main enzyme that remethylates homocysteine to methionine via the folate pathway. Low B12 directly causes homocysteine to rise. My B12 of 531 pg/mL combined with TMG keeps homocysteine from climbing higher despite the vegan diet.',
+    p5p: 'P5P (active B6) is the cofactor for cystathionine beta-synthase — the enzyme that clears homocysteine via the transsulfuration pathway (converting it to cystathionine). This is the second route for homocysteine clearance alongside the B12/TMG remethylation route. P5P provides a second arrow at the 10.2 µmol/L level.',
+    folate: 'Folate provides the methyl group (as 5-MTHF) that B12 uses to remethylate homocysteine. Without adequate folate, the B12-dependent route stalls even if B12 is sufficient. My folate of 10.7 ng/mL is mid-normal — adequate, but the combination of TMG+B12+P5P+folate is targeting this result from all four angles.'
+  },
+  fibrinogen: {
+    fishoil: 'EPA/DHA reduce fibrinogen by suppressing hepatic fibrinogen synthesis through their anti-inflammatory effects — lower inflammatory signalling means the liver produces less of this acute-phase protein. My fibrinogen of 3.4 g/L is normal; fish oil helps keep it there.',
+    garlic: 'Garlic has antiplatelet and anti-fibrinogen properties via inhibition of platelet aggregation and fibrin polymerisation. It also modestly reduces hepatic fibrinogen synthesis through its organosulfur anti-inflammatory compounds.'
+  },
+  vitd_bm: {
+    vitd: 'This IS the vitamin D measurement. I supplement 5000 IU/day because my baseline was critically low (31.58 ng/mL in July 2025). The result — 54.7 ng/mL — is the direct consequence of this protocol. Target is 50–80 ng/mL for optimal immune and musculoskeletal function.',
+    k2: 'K2 (MK-7) is co-supplemented with D because high-dose vitamin D increases calcium absorption, and K2 ensures that calcium is directed to bone rather than soft tissue via activation of matrix Gla protein. Taking high-dose D without K2 risks calcium ending up in arteries. They function as a required co-pair.'
+  },
+  b12_bm: {
+    b12: 'This IS the B12 measurement. I supplement methylcobalamin because the vegan diet contains zero B12 — there is no reliable plant source. My level of 531 pg/mL reflects the supplementation directly. Without it, B12 would deplete over 2–5 years leading to irreversible nerve damage and megaloblastic anemia.'
+  },
+  folate: {
+    b12: 'B12 and folate are metabolically inseparable — B12 is required to "unlock" folate from the methylfolate trap. Without B12, folate is stuck in its methylated form (5-MTHF) and cannot re-enter the folate cycle for nucleotide synthesis. Low B12 can cause functional folate deficiency even when folate levels look normal.',
+    tmg: 'TMG provides methyl groups via the BHMT pathway, reducing demand on the folate-B12 methylation cycle. When TMG handles part of the homocysteine remethylation burden, it effectively spares folate for its other roles in nucleotide synthesis and cell division.',
+    p5p: 'P5P enables the transsulfuration pathway for homocysteine clearance — the metabolic alternative to the folate-B12 remethylation route. By supporting this alternate pathway, P5P reduces the metabolic pressure on the folate cycle.'
+  },
+  ldl_particle_num: {
+    fishoil: 'Fish oil lowers LDL-P indirectly: by reducing TG and VLDL output, it reduces the CETP-mediated exchange of TG into LDL in return for cholesterol — a process that creates smaller, more numerous LDL particles. Lower TG → less CETP activity → fewer LDL particles overall.',
+    evoo: 'EVOO\'s MUFA and polyphenols reduce hepatic VLDL output and the downstream CETP-mediated LDL remodelling that increases particle count. Effect is modest but consistent with a Mediterranean-style dietary pattern.'
+  },
+  ldl_small: {
+    fishoil: 'This is fish oil\'s most mechanistically direct effect on LDL fractionation. TG-lowering via EPA/DHA → less TG available for CETP-mediated exchange with LDL → fewer small dense LDL particles. High TG is the primary driver of LDL Small elevation, and fish oil targets the root cause.',
+    evoo: 'Oleic acid replaces dietary carbohydrate, reducing hepatic TG output. Lower TG → less CETP exchange → less small dense LDL formation. EVOO addresses the same TG/CETP mechanism as fish oil from the dietary side.'
+  },
+  ldl_medium: {
+    fishoil: 'Same CETP mechanism as LDL Small: lower TG from fish oil reduces the TG-cholesterol exchange that creates medium-density LDL. LDL Medium 269 (elevated) reflects the TG levels — fish oil targets this at the root.',
+    evoo: 'Reduction of hepatic TG output via MUFA → less CETP exchange → less medium LDL formation. Same mechanism as for LDL Small.'
+  },
+  hdl_large: {
+    fishoil: 'This is the most important fish oil connection for my lipid profile. EPA/DHA promote large HDL particle formation by upregulating ApoA-I expression and supporting the lipidation of nascent HDL into mature large particles. HDL Large 4921 (low; optimal >6729) is the primary lipid gap fish oil is specifically targeting.',
+    evoo: 'EVOO polyphenols upregulate ApoA-I gene expression and support HDL particle maturation. Combined with fish oil, EVOO contributes to the dietary foundation for improving HDL Large particle numbers over time through sustained use.'
+  },
+  ldl_peak_size: {
+    fishoil: 'LDL peak size rises as TG falls — lower TG means less CETP-mediated LDL downsizing, allowing particles to maintain larger Pattern A diameters. Fish oil\'s TG-lowering is the direct mechanism protecting LDL peak size at the Pattern A boundary.',
+    evoo: 'EVOO reduces hepatic TG output (via MUFA replacing carbohydrate), which feeds the same TG→CETP→LDL size mechanism. TG 60 mg/dL (partly from this dietary pattern) is what keeps LDL at the Pattern A boundary despite the elevated particle count.'
+  },
+  hematocrit: {
+    b12: 'B12 is the direct rate-limiting cofactor for RBC maturation in bone marrow — it\'s required for the DNA replication that allows red cell precursors to divide and produce mature erythrocytes. If B12 is limited at the cellular level, fewer mature RBCs are produced and hematocrit falls. Serum B12 of 531 pg/mL looks fine, but vegans can have suboptimal delivery of the active form (methylcobalamin) to cells even with normal serum levels. Supplementing methylcobalamin keeps this step from being the bottleneck.',
+    vitc: 'Vitamin C\'s connection is indirect but real: it converts non-heme iron (the only form in plant foods) into the absorbable form at each meal. My iron markers are currently good — that\'s partly because C is already doing this reliably. Without it, iron absorption on a vegan diet degrades over months, which would pull hematocrit down via reduced hemoglobin synthesis. It\'s maintenance for the iron supply chain that keeps this number stable.'
+  },
+  hemoglobin: {
+    b12: 'Same mechanism as hematocrit: B12 is required for RBC maturation in bone marrow. Fewer mature RBCs from B12 insufficiency means less total hemoglobin in circulation — Hgb and hematocrit track together. My borderline 13.3 g/dL and the B12 supplementation are directly connected via this erythropoiesis step.',
+    vitc: 'Iron is at the centre of the heme ring in every hemoglobin molecule — iron is required to synthesise hemoglobin. Vitamin C maintains iron absorption from plant foods, sustaining the iron supply that feeds hemoglobin production. Without adequate C, iron absorption degrades over time and hemoglobin follows.'
+  },
+  wbc: {
+    vitc: 'Vitamin C concentrates in white blood cells at ~50× plasma levels — immune cells are among the highest-C tissues in the body. It\'s directly required for neutrophil motility, chemotaxis, and oxidative burst (the mechanism for killing bacteria). Adequate C ensures WBC function is high-quality even when count is low-normal.',
+    zinc: 'Zinc is essential for the maturation and proliferation of white blood cells. It\'s required for thymulin (the thymic hormone driving T-cell development) and for general immune cell production. Deficiency is a recognised cause of leukopenia — adequate zinc supports maintaining WBC in the normal range.'
+  },
+  rbc: {
+    b12: 'RBC count directly reflects the erythropoiesis output that B12 enables. B12 is required for DNA synthesis in bone marrow — without it, red cell precursors cannot complete the divisions needed to produce mature erythrocytes. My RBC of 4.37 (low-normal) shares the same vegan pattern as mild hematocrit and hemoglobin.',
+    vitc: 'Vitamin C maintains the iron supply chain that provides iron for heme synthesis in developing RBCs. Adequate C at meals → adequate iron absorption → adequate heme production → adequate RBC maturation. The effect on RBC count is indirect but sustained on a vegan diet.'
+  },
+  abs_neutrophils: {
+    vitc: 'Neutrophils are the highest-vitamin-C cells in the body — they accumulate C at 80–100× plasma levels and use it for chemotaxis (navigating to infection sites) and oxidative burst (producing reactive oxygen species to kill bacteria). Adequate C ensures each neutrophil functions at full capacity even at low-normal count.',
+    zinc: 'Zinc is required for neutrophil production from bone marrow precursors and for their function — including cytokine production and activation of neutrophil extracellular traps (NETs). Zinc deficiency is one of the most common nutritional causes of neutropenia.'
+  },
+  abs_lymphocytes: {
+    vitd: 'Vitamin D receptors are present on T and B lymphocytes — it\'s directly required for lymphocyte activation, proliferation, and differentiation. Low D is associated with reduced lymphocyte count and impaired adaptive immune responses. At 54 ng/mL, D is supporting normal lymphocyte numbers and function.',
+    zinc: 'Zinc is the critical cofactor for thymulin — the thymic hormone that drives lymphocyte maturation in the thymus. Without adequate zinc, T-cell development is impaired and lymphocyte counts can fall. Zinc adequacy is essential for the adaptive immune reserve this number represents.'
+  },
+  non_hdl: {
+    evoo: 'EVOO\'s MUFA reduces hepatic VLDL output — VLDL is a component of non-HDL cholesterol. Its polyphenols also reduce LDL oxidation. The combined effect keeps non-HDL near the optimal <100 mg/dL threshold; at 102, it\'s working.',
+    fishoil: 'Fish oil lowers non-HDL primarily through its TG-lowering mechanism: lower TG → less VLDL output → less VLDL-derived remnants contributing to non-HDL. With non-HDL at 102, fish oil is part of maintaining it at this threshold.'
+  },
+  bioavail_t: {
+    tongkat: 'Tongkat Ali\'s SHBG-lowering is the primary driver here. As SHBG dropped from 53.42 (Serbia) to 30 (Quest), more testosterone was released from the SHBG-bound inert pool into the bioavailable active pool. Bioavail-T of 192.4 directly reflects this SHBG correction.',
+    boron: 'Boron directly lowers SHBG — the main binding protein that locks testosterone away from tissues. Less SHBG = more bioavailable T, independent of total T levels. Boron and Tongkat work synergistically on SHBG, which is why bioavail-T stayed above 150 despite the total T being slightly lower than Oct 2025.',
+    zinc: 'Zinc supports total testosterone production (as a steroidogenesis cofactor) and modestly inhibits aromatase. More total testosterone in the pool means more available as bioavailable T once SHBG is managed.'
+  },
+  ldl_pattern: {
+    evoo: 'LDL pattern is driven primarily by triglycerides — high TG causes CETP-mediated exchange that creates small dense Pattern B LDL. EVOO reduces TG through MUFA replacing carbohydrate (less de novo lipogenesis). TG 60 mg/dL is what keeps the pattern at A.',
+    fishoil: 'Fish oil\'s TG-lowering is the most direct nutritional intervention for maintaining Pattern A. Lower TG → less CETP activity → larger LDL particles → Pattern A classification. TG 60 is the key number here, and fish oil is a major reason it\'s that low.'
+  }
+};

@@ -115,6 +115,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;hei
 .mk-badge.warn{color:var(--gold);background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.3)}
 .mk-badge.hi{color:var(--danger);background:rgba(255,68,68,0.12);border:1px solid rgba(255,68,68,0.3)}
 .mk-badge.lo{color:var(--blue);background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.3)}
+.drawer-sup-tag.has-conn{cursor:pointer}
+.drawer-sup-tag.has-conn:active{opacity:0.75}
+.drawer-sup-tag.conn-active{background:rgba(200,245,66,0.15)!important;border-color:var(--accent)!important;color:var(--fg)!important}
+.sup-conn-card{margin-top:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;display:none}
+.sup-conn-card.open{display:block}
+.sup-conn-title{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px;font-family:'DM Mono',monospace;font-weight:600}
+.sup-conn-body{font-size:13px;line-height:1.6}
+.stack-section{border-top:1px solid rgba(255,255,255,0.08);margin-top:4px;padding-top:16px}
 .mk-note{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4;font-family:'DM Mono',monospace}
 .mk-range{margin-top:12px}
 .mk-range-bar{height:5px;background:rgba(255,255,255,0.07);border-radius:3px;position:relative;margin-bottom:6px}
@@ -725,6 +733,27 @@ if (window.BLOOD_TESTS) {
 }
 
 // ── Marker Detail Drawer ──────────────────────────────────────────────────────
+let _currentDrawerBm = null;
+
+function showSupConn(sid, tagEl) {
+  const card = document.getElementById('sup-conn-card');
+  const SUPPS = (window.HSA && window.HSA.SUPPLEMENTS) || [];
+  const SC = (window.HSA && window.HSA.SUPPLEMENT_CONNECTIONS) || {};
+  const isActive = tagEl.classList.contains('conn-active');
+  document.querySelectorAll('.drawer-sup-tag.conn-active').forEach(t => t.classList.remove('conn-active'));
+  card.classList.remove('open');
+  if (isActive) return;
+  const bmId = _currentDrawerBm && _currentDrawerBm.id;
+  const conn = SC[bmId] && SC[bmId][sid];
+  if (!conn) return;
+  const sup = SUPPS.find(s => s.id === sid);
+  const supLabel = sup ? `${sup.emoji} ${sup.name}` : sid;
+  const bmName = _currentDrawerBm ? _currentDrawerBm.name : '';
+  tagEl.classList.add('conn-active');
+  card.innerHTML = `<div class="sup-conn-title">${supLabel} × ${bmName}</div><div class="sup-conn-body">${conn}</div>`;
+  card.classList.add('open');
+}
+
 function openDrawer(markerId) {
   const BM = (window.HSA && window.HSA.BIOMARKERS) || [];
   const SUPPS = (window.HSA && window.HSA.SUPPLEMENTS) || [];
@@ -733,6 +762,7 @@ function openDrawer(markerId) {
   let bm = BM.find(b => b.id === markerId);
   if (!bm) bm = BM.find(b => b.id === markerId + '_bm');
   if (!bm) bm = BM.find(b => b.id === markerId.replace('_bm',''));
+  _currentDrawerBm = bm || null;
 
   // Find the marker value from blood tests
   const BD = window.BLOOD_TESTS;
@@ -763,11 +793,15 @@ function openDrawer(markerId) {
     if (bm.myContextNote)
       sectionsHtml += `<div class="drawer-section"><div class="drawer-section-label">My result</div><div class="drawer-section-text context">${bm.myContextNote}</div></div>`;
     if (bm.relatedSupplements && bm.relatedSupplements.length) {
+      const SC = (window.HSA && window.HSA.SUPPLEMENT_CONNECTIONS) || {};
+      const bioConn = SC[bm.id] || {};
       const tags = bm.relatedSupplements.map(sid => {
         const sup = SUPPS.find(s => s.id === sid);
-        return `<span class="drawer-sup-tag">${sup ? sup.emoji + ' ' + sup.name : sid}</span>`;
+        const label = sup ? sup.emoji + ' ' + sup.name : sid;
+        const hasConn = !!bioConn[sid];
+        return `<span class="drawer-sup-tag${hasConn ? ' has-conn' : ''}"${hasConn ? ` onclick="showSupConn('${sid}',this)"` : ''}>${label}</span>`;
       }).join('');
-      sectionsHtml += `<div class="drawer-section"><div class="drawer-section-label">In my stack</div><div class="drawer-sup-row">${tags}</div></div>`;
+      sectionsHtml += `<div class="drawer-section stack-section"><div class="drawer-section-label">In my stack — tap to learn why</div><div class="drawer-sup-row">${tags}</div><div class="sup-conn-card" id="sup-conn-card"></div></div>`;
     }
   }
 
