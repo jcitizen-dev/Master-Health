@@ -593,7 +593,9 @@ async function handleSignIn() {
   } catch(e) {
     // Popup blocked (iOS PWA) — open stack app directly in top window for redirect
     if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
-      window.top.location.href = window.location.href + '?signin=1';
+      const dest = new URL(window.location.href);
+      dest.search = '?signin=1';
+      window.top.location.href = dest.toString();
     } else {
       console.warn('Sign-in error', e);
     }
