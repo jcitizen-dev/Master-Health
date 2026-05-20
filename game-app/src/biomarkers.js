@@ -667,8 +667,8 @@ window.HSA.BIOMARKERS = [
   // ── CBC / BLOOD COUNT ─────────────────────────────────────────────────────
   {
     id: 'hematocrit', name: 'Hematocrit', panel: 'cbc', myValue: 38.8, unit: '%',
-    referenceRange: { low: 36.0, optimal_low: 40.0, optimal_high: 50.0, high: 52.0 },
-    status: 'borderline',
+    referenceRange: { low: 36.0, optimal_low: 39.4, optimal_high: 51.1, high: 53.0 },
+    status: 'low',
     whatItMeasures: 'The percentage of total blood volume made up of red blood cells — the primary measure of blood\'s oxygen-carrying capacity and RBC mass.',
     whyItMatters: 'Low hematocrit (anaemia) means less oxygen reaching muscles and brain, causing fatigue and impaired performance. In male athletes, ≥40% is the functional target. Hematocrit below 36% in males = anaemia by WHO definition.',
     myContextNote: '38.8% is just below the male optimal zone (40–50%). Critically, iron is completely normal: ferritin 71, serum iron 136 mcg/dL, saturation 40%. This is NOT iron deficiency anaemia. The most likely causes: (1) vegan athlete pattern — some plant-based athletes run mildly lower erythrocyte mass; (2) hemodilution from training and high hydration; (3) borderline B12 utilisation at the cellular level. Worth monitoring at next panel before any intervention.',
