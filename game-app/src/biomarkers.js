@@ -686,5 +686,309 @@ window.HSA.BIOMARKERS = [
     relatedSupplements: ['b12', 'vitc'],
     mnemonic: 'Hemoglobin 13.3 — THIRTEEN-three. Borderline but not iron-deficient. Vegan pattern — watch.',
     xpValue: 20
+  },
+
+  // ── CBC INDICES ──────────────────────────────────────────────────────────
+  {
+    id: 'wbc', name: 'WBC', panel: 'cbc', myValue: 4.6, unit: '10³/µL',
+    referenceRange: { low: 3.8, optimal_low: 4.5, optimal_high: 10.0, high: 10.8 },
+    status: 'normal',
+    whatItMeasures: 'Total white blood cell count — the master count of all immune surveillance cells circulating in blood.',
+    whyItMatters: 'Low WBC (leukopenia <3.8) signals immune suppression; high WBC (leukocytosis >10.8) signals active infection or inflammatory stress. Vegan and endurance athletes consistently run low-normal counts due to reduced baseline inflammatory signaling — this is a feature, not a bug.',
+    myContextNote: '4.6 is low-normal — identical pattern to Cedars Jul 2025 (4.3) and consistent across all panels. No infection signal anywhere (CRP <0.2, no fever, no elevated neutrophils). This is my vegan athlete baseline.',
+    relatedSupplements: ['vitc', 'zinc'],
+    mnemonic: 'WBC 4.6 — FOUR-six. Low-normal vegan pattern. No infection signal — CRP <0.2 confirms.',
+    xpValue: 15
+  },
+  {
+    id: 'rbc', name: 'RBC', panel: 'cbc', myValue: 4.37, unit: '10⁶/µL',
+    referenceRange: { low: 4.2, optimal_low: 4.7, optimal_high: 5.8, high: 6.1 },
+    status: 'normal',
+    whatItMeasures: 'Total red blood cell count — the number of oxygen-carrying erythrocytes per microliter of blood.',
+    whyItMatters: 'RBC count combined with hemoglobin and hematocrit describes total oxygen-carrying capacity. Low count with normal MCV and normal MCHC means fewer cells, not deficient cells — the distinction changes the clinical interpretation entirely.',
+    myContextNote: '4.37 is slightly below the male median (~5.0) but above the reference low (4.2). Consistent with hemoglobin 13.3 and hematocrit 38.8 — all three trend together as a mild vegan/athlete pattern. Iron, ferritin, and B12 are all normal.',
+    relatedSupplements: ['b12', 'vitc'],
+    mnemonic: 'RBC 4.37 — FOUR-thirty-seven. Low-end but in range. Same vegan pattern as Hgb and Hct.',
+    xpValue: 15
+  },
+  {
+    id: 'mcv', name: 'MCV', panel: 'cbc', myValue: 88.8, unit: 'fL',
+    referenceRange: { low: 81.4, optimal_low: 85.0, optimal_high: 98.0, high: 101.7 },
+    status: 'normal',
+    whatItMeasures: 'Mean corpuscular volume — the average physical size of a red blood cell; the primary diagnostic tool for classifying anaemia type.',
+    whyItMatters: 'MCV is the anaemia sorter: low MCV (<80 fL) = microcytic = iron deficiency or thalassemia; normal MCV = normocytic = chronic disease or early mixed deficiency; high MCV (>100 fL) = macrocytic = B12 or folate deficiency. Normal MCV with mild anaemia points toward hemodilution, not nutritional deficiency.',
+    myContextNote: '88.8 fL is solidly normocytic — definitively rules out both iron-deficiency anaemia (microcytic) AND B12-deficiency anaemia (macrocytic). With ferritin 71, iron 136, and B12 531, this confirms the mild anaemia is structural/hemodilution, not nutritional.',
+    relatedSupplements: [],
+    mnemonic: 'MCV 88.8 — EIGHTY-eight. Normocytic — rules out iron-deficiency AND B12 deficiency anaemia.',
+    xpValue: 20
+  },
+  {
+    id: 'mch', name: 'MCH', panel: 'cbc', myValue: 30.4, unit: 'pg',
+    referenceRange: { low: 27.0, optimal_low: 28.0, optimal_high: 33.0, high: 33.0 },
+    status: 'normal',
+    whatItMeasures: 'Mean corpuscular hemoglobin — the average mass of hemoglobin per red blood cell in picograms; measures how much hemoglobin each cell contains.',
+    whyItMatters: 'Low MCH (hypochromic, <27 pg) = iron deficiency or chronic disease — cells are pale and underfilled. High MCH (>33 pg) = macrocytic (B12/folate deficiency). Normal MCH with low total Hgb means cells are well-filled — there are just fewer of them.',
+    myContextNote: '30.4 pg is solidly normal — cells are normochromic (normally colored and filled). The mild anaemia is a count problem, not a quality problem. Iron repletion is completely confirmed.',
+    relatedSupplements: [],
+    mnemonic: 'MCH 30.4 — THIRTY-point-FOUR. Normochromic — cells are well-filled with hemoglobin.',
+    xpValue: 15
+  },
+  {
+    id: 'mchc', name: 'MCHC', panel: 'cbc', myValue: 34.3, unit: 'g/dL',
+    referenceRange: { low: 31.6, optimal_low: 32.5, optimal_high: 35.4, high: 35.4 },
+    status: 'normal',
+    whatItMeasures: 'Mean corpuscular hemoglobin concentration — the hemoglobin concentration per unit volume within RBCs; the most specific indicator of intracellular hemoglobin packing density.',
+    whyItMatters: 'MCHC is the gold-standard test for iron-deficiency hypochromia. Low MCHC = cells are pale from inadequate hemoglobin (iron deficiency); high MCHC = hereditary spherocytosis. Normal MCHC with low Hgb = cells have correct packing but there are fewer of them.',
+    myContextNote: '34.3 g/dL is normal — cells have correct hemoglobin density. Third consecutive normal iron marker alongside MCV 88.8 and MCH 30.4. The mild anaemia is definitively NOT iron deficiency. It is a mild count deficit only.',
+    relatedSupplements: [],
+    mnemonic: 'MCHC 34.3 — THIRTY-four. Normal density. It\'s a cell-count issue, not a pale-cell issue.',
+    xpValue: 15
+  },
+  {
+    id: 'rdw', name: 'RDW', panel: 'cbc', myValue: 12.7, unit: '%',
+    referenceRange: { low: 11.0, optimal_low: 11.5, optimal_high: 14.0, high: 15.0 },
+    status: 'normal',
+    whatItMeasures: 'Red cell distribution width — a measure of variation in RBC sizes (coefficient of variation); low RDW = uniform cells; high RDW = mixed small/large cells (anisocytosis).',
+    whyItMatters: 'High RDW (>14.5%) suggests mixed nutritional deficiency (iron + B12/folate together) or active recovery from deficiency. RDW rises in iron deficiency before MCV drops — making it an early diagnostic signal. Low RDW = uniform, healthy erythropoiesis.',
+    myContextNote: '12.7% is low-normal — RBC sizes are very uniform. No mixed deficiency picture. No recovery-from-deficiency pattern. This is clean, consistent erythropoiesis.',
+    relatedSupplements: [],
+    mnemonic: 'RDW 12.7 — TWELVE-seven. Tight, uniform RBCs. No mixed nutritional deficiency signal.',
+    xpValue: 15
+  },
+  {
+    id: 'platelets', name: 'Platelet Count', panel: 'cbc', myValue: 226, unit: '10³/µL',
+    referenceRange: { low: 140, optimal_low: 150, optimal_high: 400, high: 400 },
+    status: 'normal',
+    whatItMeasures: 'The number of platelets (thrombocytes) per microliter — the cellular components responsible for primary hemostasis and clot formation.',
+    whyItMatters: 'Low platelets (thrombocytopenia <150k) = bleeding risk; high platelets (thrombocytosis >450k) = clotting/inflammatory risk. Platelet count also reflects bone marrow production capacity and can drop with hemodilution in athletes.',
+    myContextNote: '226k is solidly mid-normal — down slightly from 272k (Cedars Jul 2025) but well within excellent range. No bleeding or clotting risk. Consistent with overall mild hemodilution pattern in other CBC markers.',
+    relatedSupplements: [],
+    mnemonic: 'Platelets 226 — TWO-twenty-six. Mid-range, stable. Excellent clotting capacity.',
+    xpValue: 15
+  },
+  {
+    id: 'mpv', name: 'MPV', panel: 'cbc', myValue: 10.6, unit: 'fL',
+    referenceRange: { low: 7.5, optimal_low: 9.5, optimal_high: 12.0, high: 12.5 },
+    status: 'normal',
+    whatItMeasures: 'Mean platelet volume — the average size of platelets; larger platelets are younger, metabolically more active, and have greater hemostatic capacity.',
+    whyItMatters: 'High MPV with low platelet count = high turnover (immune destruction or bone marrow recovery); low MPV = older, less active platelets. Mid-range MPV with normal count = healthy platelet lifecycle and no excessive inflammatory activation.',
+    myContextNote: '10.6 fL is optimal — platelets are a healthy size and metabolically active. No evidence of platelet stress, inflammatory activation, or immune destruction. Pairs with count 226k for a reassuringly clean picture.',
+    relatedSupplements: [],
+    mnemonic: 'MPV 10.6 — TEN-point-SIX. Healthy platelet size — young, active, and functional.',
+    xpValue: 15
+  },
+
+  // ── CBC DIFFERENTIAL ─────────────────────────────────────────────────────
+  {
+    id: 'abs_neutrophils', name: 'Absolute Neutrophils', panel: 'cbc', myValue: 2176, unit: 'cells/µL',
+    referenceRange: { low: 1500, optimal_low: 1800, optimal_high: 7800, high: 8000 },
+    status: 'normal',
+    whatItMeasures: 'Absolute neutrophil count (ANC) — the total number of neutrophils per µL; neutrophils are the primary first-responder immune cells deployed against bacterial infections.',
+    whyItMatters: 'ANC below 1500 = neutropenia — clinically significant infection risk. Below 500 = severe neutropenia requiring isolation. Neutrophilia (>7800) = active bacterial infection or glucocorticoid stress. Vegan athletes characteristically run lower ANC due to reduced inflammatory baseline.',
+    myContextNote: '2176 cells/µL is above the clinical neutropenia threshold (1500) — safe range. Low-normal pattern consistent with WBC 4.6 and overall vegan immune phenotype. CRP <0.2 confirms no active infection.',
+    relatedSupplements: ['vitc', 'zinc'],
+    mnemonic: 'Neutrophils 2176 — TWO-one-seven-six. Above safety threshold. Vegan low-normal, no infection.',
+    xpValue: 15
+  },
+  {
+    id: 'abs_lymphocytes', name: 'Absolute Lymphocytes', panel: 'cbc', myValue: 1904, unit: 'cells/µL',
+    referenceRange: { low: 850, optimal_low: 1000, optimal_high: 3900, high: 4500 },
+    status: 'normal',
+    whatItMeasures: 'Absolute lymphocyte count — the total number of lymphocytes (T-cells, B-cells, NK cells) per µL; the cellular foundation of adaptive immunity.',
+    whyItMatters: 'Lymphocytes are the strategic immune system: they recognize pathogens, produce antibodies (B-cells), kill infected cells (cytotoxic T), and maintain immune memory. Low lymphocytes = impaired adaptive immunity; high = viral infection or lymphoproliferative disease.',
+    myContextNote: '1904 cells/µL is solidly normal — well above lymphopenia threshold (850). The adaptive immune system is intact and robust. This is the most directly relevant immune metric to vaccine response and viral defense.',
+    relatedSupplements: ['vitd', 'zinc'],
+    mnemonic: 'Lymphocytes 1904 — ONE-nine-OH-four. Robust adaptive immune reserve. Well above threshold.',
+    xpValue: 15
+  },
+  {
+    id: 'abs_monocytes', name: 'Absolute Monocytes', panel: 'cbc', myValue: 331, unit: 'cells/µL',
+    referenceRange: { low: 200, optimal_low: 200, optimal_high: 950, high: 1000 },
+    status: 'normal',
+    whatItMeasures: 'Absolute monocyte count — monocytes differentiate into macrophages in tissue and are key mediators of chronic inflammation and tissue repair.',
+    whyItMatters: 'Elevated monocytes suggest persistent chronic inflammatory signaling (atherosclerosis, autoimmune, occult infection). Normal monocytes combined with near-zero CRP = inflammatory biology is genuinely quiet — not just masked.',
+    myContextNote: '331 cells/µL is normal. Combined with CRP <0.2 mg/L and fibrinogen 3.4 g/L (normal), this confirms zero chronic inflammation across every possible metric.',
+    relatedSupplements: [],
+    mnemonic: 'Monocytes 331 — THREE-thirty-one. Normal macrophage pool. CRP <0.2 confirms: zero inflammation.',
+    xpValue: 15
+  },
+  {
+    id: 'abs_eosinophils', name: 'Absolute Eosinophils', panel: 'cbc', myValue: 170, unit: 'cells/µL',
+    referenceRange: { low: 15, optimal_low: 15, optimal_high: 500, high: 500 },
+    status: 'normal',
+    whatItMeasures: 'Absolute eosinophil count — eosinophils mediate allergic responses, parasitic defense, and tissue remodeling.',
+    whyItMatters: 'Eosinophilia (>500 cells/µL) suggests allergic disease, parasitic infection, drug reactions, or autoimmune disease. In Jul 2025, eosinophils were 5.1% (flagged high). Resolution to below 500 absolute indicates the inciting trigger resolved.',
+    myContextNote: '170 cells/µL = 3.7% of WBC — solidly normal. The Jul 2025 eosinophilia (5.1%) was either a transient allergic response or resolved parasitic exposure. Current value confirms full resolution.',
+    relatedSupplements: [],
+    mnemonic: 'Eosinophils 170 — ONE-seventy. Normal. Jul 2025 eosinophilia fully resolved.',
+    xpValue: 15
+  },
+  {
+    id: 'abs_basophils', name: 'Absolute Basophils', panel: 'cbc', myValue: 18, unit: 'cells/µL',
+    referenceRange: { low: 0, optimal_low: 0, optimal_high: 200, high: 200 },
+    status: 'normal',
+    whatItMeasures: 'Absolute basophil count — the rarest white cell, involved in immediate allergic hypersensitivity (IgE-mediated reactions) and cross-talk with T-helper 2 cells.',
+    whyItMatters: 'Basophils are always rare in normal blood. Extremely high basophils (>200) can indicate myeloproliferative disease. Low/near-zero basophils is completely normal and expected — basophilia is the red flag, not basopenia.',
+    myContextNote: '18 cells/µL — basophils are meant to be rare. No concern. The leukemia/lymphoma panel from Jul 2025 confirmed no hematologic malignancy.',
+    relatedSupplements: [],
+    mnemonic: 'Basophils 18 — EIGHTEEN. Rare by design — exactly right. No hematologic signal.',
+    xpValue: 10
+  },
+
+  // ── BASIC METABOLIC ───────────────────────────────────────────────────────
+  {
+    id: 'bun', name: 'BUN', panel: 'metabolic', myValue: 20, unit: 'mg/dL',
+    referenceRange: { low: 7, optimal_low: 10, optimal_high: 20, high: 25 },
+    status: 'normal',
+    whatItMeasures: 'Blood Urea Nitrogen — the nitrogen content of urea in blood; a downstream product of protein catabolism (amino acids → ammonia → urea in liver → filtered by kidneys).',
+    whyItMatters: 'BUN reflects both protein intake/catabolism AND kidney clearance. The BUN:Creatinine ratio is the key clinical tool: ratio >20 = prerenal (dehydration, high protein); ratio 10–20 = normal; ratio <10 = low protein or liver disease.',
+    myContextNote: 'BUN 20, creatinine 1.15 → BUN:Cr ratio = 17.4 — perfectly normal. Protein metabolism is healthy and kidneys are clearing efficiently. Serbia urea carry-forward (6.4 mmol/L = 17.9 mg/dL BUN) is essentially identical — consistent across labs.',
+    relatedSupplements: [],
+    mnemonic: 'BUN 20 — TWENTY. BUN:Cr ratio 17.4 — normal. Protein and kidney clearance in balance.',
+    xpValue: 15
+  },
+
+  // ── KIDNEY ────────────────────────────────────────────────────────────────
+  {
+    id: 'egfr_cystatin', name: 'eGFR (Cystatin C)', panel: 'kidney', myValue: 111, unit: 'mL/min/1.73m²',
+    referenceRange: { low: 60, optimal_low: 90, optimal_high: 120, high: 150 },
+    status: 'normal',
+    whatItMeasures: 'Estimated GFR using Cystatin C — a non-creatinine-based kidney function test unaffected by muscle mass or creatine supplementation; the gold standard for athletes.',
+    whyItMatters: 'Cystatin C is produced at a constant rate by all nucleated cells regardless of diet or muscle mass. Standard creatinine-based eGFR is artifactually reduced by creatine supplementation — Cystatin C cuts through this noise and gives the true kidney filtration picture.',
+    myContextNote: '111 mL/min/1.73m² = excellent supranormal kidney function. This definitively disproves Serbia\'s eGFR 62.2 — that was 100% a creatine artifact. Kidneys confirmed excellent: Cystatin C 0.79 (optimal), eGFR-Cystatin 111, urine ACR 2 mg/g. Three-angle confirmation.',
+    relatedSupplements: [],
+    mnemonic: 'eGFR-Cystatin 111 — ONE-eleven. The real kidney number. Serbia 62.2 = creatine noise.',
+    xpValue: 25
+  },
+  {
+    id: 'urine_acr', name: 'Urine ACR', panel: 'kidney', myValue: 2, unit: 'mg/g',
+    referenceRange: { low: null, optimal_low: null, optimal_high: 3, high: 30 },
+    status: 'normal',
+    whatItMeasures: 'Albumin/Creatinine Ratio in a spot urine sample — the most sensitive early marker of glomerular microinjury; albumin leaks into urine when the kidney filtration barrier is damaged.',
+    whyItMatters: 'Even tiny albumin in urine (microalbuminuria 30–300 mg/g) signals early kidney damage — often appearing years before creatinine rises. Below 3 mg/g is essentially undetectable. Elevated ACR is one of the earliest signals of diabetic nephropathy.',
+    myContextNote: '2 mg/g is essentially zero — the gold-standard confirmation of no glomerular damage. Alongside eGFR-Cystatin 111 and Cystatin C 0.79, this creates a three-point confirmation of excellent kidney health. Kidneys are pristine.',
+    relatedSupplements: [],
+    mnemonic: 'Urine ACR 2 — TWO mg/g. Near-zero albumin leak. Kidneys confirmed healthy from every angle.',
+    xpValue: 20
+  },
+
+  // ── ELECTROLYTES ──────────────────────────────────────────────────────────
+  {
+    id: 'sodium', name: 'Sodium', panel: 'electrolytes', myValue: 141, unit: 'mmol/L',
+    referenceRange: { low: 136, optimal_low: 138, optimal_high: 144, high: 146 },
+    status: 'normal',
+    whatItMeasures: 'The primary extracellular cation — the osmotic anchor of plasma volume, regulator of nerve impulse transmission, and principal determinant of blood pressure and fluid balance.',
+    whyItMatters: 'Sodium drives water distribution between body compartments. Hyponatremia (<136) = risk of cerebral edema — especially dangerous in endurance athletes who over-hydrate with plain water. Hypernatremia (>146) = dehydration or renal concentrating failure.',
+    myContextNote: '141 mmol/L is identical in both Serbia Apr 2026 and Quest May 2026 — perfectly stable across two labs and one month. Textbook homeostasis for an endurance athlete.',
+    relatedSupplements: [],
+    mnemonic: 'Sodium 141 — ONE-forty-one. Identical across two panels. Perfect fluid regulation.',
+    xpValue: 15
+  },
+  {
+    id: 'chloride', name: 'Chloride', panel: 'electrolytes', myValue: 103, unit: 'mmol/L',
+    referenceRange: { low: 98, optimal_low: 100, optimal_high: 108, high: 110 },
+    status: 'normal',
+    whatItMeasures: 'The principal extracellular anion — maintains electrical neutrality with sodium, regulates acid-base balance via anion gap, and is the primary component of hydrochloric acid in the stomach.',
+    whyItMatters: 'Chloride moves inversely with bicarbonate (CO2) in the anion gap. Low chloride = metabolic alkalosis (vomiting, diuretics); high chloride = metabolic acidosis (diarrhea, kidney disease). Combined with sodium 141 and CO2 27, the electrolyte triad confirms perfect balance.',
+    myContextNote: '103 mmol/L is normal. Together with sodium 141 and CO2 27, the electrolyte picture is textbook — no acid-base disturbance, no dehydration signal, no renal electrolyte-handling problem.',
+    relatedSupplements: [],
+    mnemonic: 'Chloride 103 — ONE-OH-three. Na/Cl/CO2 triad perfectly balanced.',
+    xpValue: 10
+  },
+  {
+    id: 'co2', name: 'CO2 (Bicarbonate)', panel: 'electrolytes', myValue: 27, unit: 'mmol/L',
+    referenceRange: { low: 20, optimal_low: 22, optimal_high: 29, high: 32 },
+    status: 'normal',
+    whatItMeasures: 'Serum bicarbonate (HCO3⁻), reported as "CO2" on metabolic panels — the primary base buffer of blood pH and the main metabolic acid-base regulator.',
+    whyItMatters: 'Bicarbonate is the kidneys\' primary buffer against metabolic acidosis. Low CO2 (<22) = metabolic acidosis (DKA, renal tubular acidosis, lactic acidosis from intense exercise); high CO2 (>30) = metabolic alkalosis (vomiting, diuretics). Athletes can transiently drop CO2 during heavy training.',
+    myContextNote: '27 mmol/L is squarely in the optimal zone — no acid-base disturbance. Given high-intensity training and sauna use, this confirms the body is managing acid load perfectly. Kidneys and respiratory system in balance.',
+    relatedSupplements: [],
+    mnemonic: 'CO2 (HCO3) 27 — TWENTY-seven. Optimal buffer. No acid-base disturbance.',
+    xpValue: 10
+  },
+
+  // ── LIVER PROTEINS ────────────────────────────────────────────────────────
+  {
+    id: 'total_protein', name: 'Total Protein', panel: 'liver', myValue: 7.0, unit: 'g/dL',
+    referenceRange: { low: 6.1, optimal_low: 6.5, optimal_high: 8.1, high: 8.5 },
+    status: 'normal',
+    whatItMeasures: 'Total serum protein — the combined concentration of albumin and globulin; reflects overall nutritional protein status and the liver\'s synthetic capacity.',
+    whyItMatters: 'Low total protein = malnutrition, malabsorption, or liver synthetic failure; high total protein = dehydration (hemoconcentration) or monoclonal protein. The A/G ratio (albumin ÷ globulin) derived from this split is a key nutritional and immune health metric.',
+    myContextNote: '7.0 g/dL (albumin 4.7 + globulin 2.3 = 7.0). A/G ratio = 2.04 — optimal (target >1.0). For a vegan athlete, protein synthesis is well-maintained. Serbia showed albumin 52 g/L alone — hemoconcentration from sauna/training. Quest fasting baseline is cleaner.',
+    relatedSupplements: [],
+    mnemonic: 'Total Protein 7.0 — SEVEN. A/G ratio 2.04 optimal. Vegan protein synthesis healthy.',
+    xpValue: 15
+  },
+  {
+    id: 'globulin', name: 'Globulin', panel: 'liver', myValue: 2.3, unit: 'g/dL',
+    referenceRange: { low: 1.9, optimal_low: 2.0, optimal_high: 3.5, high: 3.7 },
+    status: 'normal',
+    whatItMeasures: 'The non-albumin protein fraction — includes immunoglobulins (IgG, IgA, IgM), complement proteins, acute phase reactants, and transport proteins; calculated as total protein minus albumin.',
+    whyItMatters: 'High globulin (>3.5) = chronic inflammation, chronic infection, autoimmune disease, or monoclonal protein (multiple myeloma). Low globulin = immunodeficiency. The A/G ratio should be >1.0 — a ratio <1.0 is a red flag for chronic disease or liver failure.',
+    myContextNote: '2.3 g/dL → A/G ratio = 4.7 ÷ 2.3 = 2.04 — excellent. Normal globulin (not elevated) confirms no chronic immune activation, no hidden inflammatory state. Combined with CRP <0.2 and fibrinogen 3.4 — zero chronic disease signal.',
+    relatedSupplements: [],
+    mnemonic: 'Globulin 2.3 — TWO-point-THREE. A/G ratio 2.04 ideal. No immune-protein excess.',
+    xpValue: 15
+  },
+
+  // ── LIPIDS EXTENDED ───────────────────────────────────────────────────────
+  {
+    id: 'non_hdl', name: 'Non-HDL Cholesterol', panel: 'lipids', myValue: 102, unit: 'mg/dL',
+    referenceRange: { low: null, optimal_low: null, optimal_high: 100, high: 130 },
+    status: 'normal',
+    whatItMeasures: 'Total cholesterol minus HDL — captures ALL atherogenic lipoprotein particles in one number: LDL, VLDL, IDL, and Lp(a); a more complete CV risk metric than LDL-C alone.',
+    whyItMatters: 'Non-HDL includes all atherogenic particles — VLDL remnants are excluded from standard LDL-C but captured here. AHA/ACC longevity threshold: <100 mg/dL. Non-HDL closely tracks ApoB and is the most accessible atherogenic particle burden metric on standard panels.',
+    myContextNote: '102 mg/dL — just 2 points above the longevity target of 100, well below clinical cutoff 130. With ApoB 80 mg/dL (below 90 optimal), atherogenic particle burden is excellent. Down from 114 (Cedars Jul 2025). The extra 2 over 100 is noise, not risk.',
+    relatedSupplements: ['evoo', 'fishoil'],
+    mnemonic: 'Non-HDL 102 — ONE-OH-two. 2 over longevity target 100. ApoB 80 confirms: excellent.',
+    xpValue: 20
+  },
+  {
+    id: 'tibc', name: 'Iron Binding Capacity (TIBC)', panel: 'iron', myValue: 341, unit: 'mcg/dL',
+    referenceRange: { low: 250, optimal_low: 270, optimal_high: 380, high: 425 },
+    status: 'normal',
+    whatItMeasures: 'Total Iron Binding Capacity — the maximum amount of iron that transferrin (the blood\'s iron transport protein) can carry; reflects the total transferrin reserve available to bind and transport iron.',
+    whyItMatters: 'TIBC moves inversely with iron stores: rises in iron deficiency (empty transferrin reserves); falls in iron overload (transferrin saturated) or chronic disease. Combined with serum iron, TIBC calculates transferrin saturation (iron ÷ TIBC × 100).',
+    myContextNote: '341 mcg/dL is solidly mid-normal (250–425). Not elevated (rules out iron deficiency) and not low (rules out iron overload). Transferrin saturation = 136 ÷ 341 = 40% — upper-normal, confirming iron replete status. Consistent with ferritin 71 and serum iron 136.',
+    relatedSupplements: [],
+    mnemonic: 'TIBC 341 — THREE-forty-one. Mid-range. Iron 136 ÷ TIBC 341 = 40% sat. Iron fully replete.',
+    xpValue: 15
+  },
+
+  // ── HORMONES EXTENDED ─────────────────────────────────────────────────────
+  {
+    id: 'bioavail_t', name: 'Bioavailable Testosterone', panel: 'hormones', myValue: 192.4, unit: 'ng/dL',
+    referenceRange: { low: 110, optimal_low: 150, optimal_high: 400, high: 575 },
+    status: 'normal',
+    whatItMeasures: 'The biologically active fraction of testosterone — free T plus albumin-bound T (but NOT SHBG-bound T); represents the testosterone that can actually enter target cells and exert hormonal effects.',
+    whyItMatters: 'SHBG binds testosterone tightly, rendering it biologically inert. As SHBG rises — common on vegan/high-fiber diets — bioavailable T drops even when total T is normal. This is why SHBG management matters as much as total T in optimizing hormonal health.',
+    myContextNote: '192.4 ng/dL is well above the 150 optimal floor. The SHBG spiral was interrupted: Serbia Apr 2026 SHBG was 53.42 nmol/L (borderline); Tongkat Ali + Boron dropped it back to 30 nmol/L by May 2026. Bioavail-T 192 vs 206 (Oct 2025) — modest expected decrease with total T at 603 vs 654. Protocol is working.',
+    relatedSupplements: ['tongkat', 'boron', 'zinc'],
+    mnemonic: 'Bioavail-T 192.4 — ONE-ninety-TWO. Above optimal floor 150. Tongkat+Boron defended SHBG.',
+    xpValue: 25
+  },
+  {
+    id: 'psa', name: 'PSA, Total', panel: 'hormones', myValue: 0.22, unit: 'ng/mL',
+    referenceRange: { low: null, optimal_low: null, optimal_high: 1.5, high: 4.0 },
+    status: 'normal',
+    whatItMeasures: 'Prostate-Specific Antigen — a glycoprotein secreted by prostate epithelial cells; the primary screening biomarker for prostate cancer, BPH, and prostatitis.',
+    whyItMatters: 'PSA rises with prostate cancer, BPH, prostatitis, and vigorous activity. Dutasteride (5-alpha reductase inhibitor that blocks DHT) suppresses PSA by ~50%. On dutasteride, the clinical correction factor is ×2 — multiply reported PSA by 2 for risk interpretation. Age target for men under 60: <2.5 ng/mL.',
+    myContextNote: '0.22 ng/mL on dutasteride → corrected ~0.44 ng/mL. Pre-dutasteride baseline was 0.3 ng/mL (Cedars Jul 2025) — essentially unchanged when correction applied. Extremely low. No PSA acceleration. No prostate concern.',
+    relatedSupplements: [],
+    mnemonic: 'PSA 0.22 — ZERO-two-two. On dutasteride: corrected ~0.44. Extremely low. No prostate signal.',
+    xpValue: 20
+  },
+
+  // ── LDL PATTERN (CATEGORICAL) ─────────────────────────────────────────────
+  {
+    id: 'ldl_pattern', name: 'LDL Pattern', panel: 'lipids', myValue: null, unit: null,
+    referenceRange: { low: null, optimal_low: null, optimal_high: null, high: null },
+    status: 'normal',
+    whatItMeasures: 'LDL particle pattern classification: Pattern A = predominantly large, buoyant LDL (less atherogenic); Pattern B = predominantly small, dense LDL (more atherogenic). Determined by LDL Peak Size: ≥222 Å = Pattern A; <222 Å = Pattern B.',
+    whyItMatters: 'LDL pattern fundamentally changes the cardiovascular risk interpretation of any LDL-C value. Pattern B LDL carries ~3–5× higher CV risk than Pattern A at the same LDL-C. The strongest predictor of pattern is triglycerides — low TG drives Pattern A; high TG (>150 mg/dL) drives Pattern B.',
+    myContextNote: 'Quest officially classifies as Pattern A — favorable. LDL Peak Size 218 Å is technically at the A/B boundary but the official call is A. TG 60 mg/dL strongly supports Pattern A physics. ApoB 80, CRP <0.2, Pattern A = favorable lipid phenotype despite mildly elevated LDL-P 1176.',
+    relatedSupplements: ['evoo', 'fishoil'],
+    mnemonic: 'LDL Pattern A — the good phenotype. TG 60 drives large fluffy LDL. Favorable physics.',
+    xpValue: 20
   }
 ];
