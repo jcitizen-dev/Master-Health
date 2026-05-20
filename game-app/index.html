@@ -263,7 +263,7 @@ function RangeBar({ marker }) {
     setTimeout(() => setDotPos(pct), 300);
   }, [myValue, r]);
   const statusColor = { optimal:'var(--accent)', borderline:'var(--xp-gold)', elevated:'var(--danger)', low:'var(--danger)' }[status] || 'var(--muted)';
-  const statusLabel = { optimal:'✓ OPTIMAL', borderline:'⚠ BORDERLINE', elevated:'↑ ELEVATED', low:'↓ LOW' }[status] || status;
+  const statusLabel = { optimal:'✓ OPTIMAL', borderline:'⚠ BORDERLINE', elevated:'⚑ FLAGGED', low:'⚑ FLAGGED' }[status] || status;
   return (
     <div style={{ marginTop:8 }}>
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
@@ -447,8 +447,8 @@ function FlashCard({ supplement, onSwipe }) {
 function BiomarkerFlashCard({ marker, onSwipe }) {
   const [flipped, setFlipped] = useState$c(false);
 
-  const statusColor = marker.status === 'optimal' ? 'var(--accent)' : marker.status === 'elevated' ? 'var(--danger)' : 'var(--xp-gold)';
-  const statusLabel = { optimal:'OPTIMAL', elevated:'ELEVATED', low:'LOW', borderline:'BORDERLINE' }[marker.status] || 'BORDERLINE';
+  const statusColor = marker.status === 'optimal' ? 'var(--accent)' : (marker.status === 'elevated' || marker.status === 'low') ? 'var(--danger)' : 'var(--xp-gold)';
+  const statusLabel = { optimal:'OPTIMAL', elevated:'FLAGGED', low:'FLAGGED', borderline:'BORDERLINE' }[marker.status] || 'BORDERLINE';
   const panelLabel = { glucose:'Glucose', metabolic:'Cardiovascular', liver:'Liver', kidney:'Kidney', minerals:'Minerals', hormones:'Hormones', thyroid:'Thyroid', inflammation:'Inflammation', vitamins:'Vitamins', lipids:'Advanced Lipids', cbc:'Blood Count' }[marker.panel] || marker.panel;
 
   const r = marker.referenceRange;
@@ -1223,7 +1223,14 @@ function LearnScreen({ progressHook }) {
       </>}
 
       {mode==='bloodwork' && <>
-        <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginBottom:12 }}>{markers.length} markers {panelFilter?'· '+panelLabel(panelFilter):''}</div>
+        <div style={{ display:'flex', gap:16, marginBottom:12, padding:'10px 14px', background:'var(--surface)', borderRadius:'var(--radius)', border:'1px solid var(--border)' }}>
+          {(function(){ var flagged=markers.filter(function(m){return m.status==='elevated'||m.status==='low';}).length; var borderline=markers.filter(function(m){return m.status==='borderline';}).length; var optimal=markers.filter(function(m){return m.status==='optimal';}).length; return [
+            {label:'Flagged', value:flagged, color:'var(--danger)'},
+            {label:'Borderline', value:borderline, color:'var(--xp-gold)'},
+            {label:'Optimal', value:optimal, color:'var(--accent)'},
+            {label:'Total', value:markers.length, color:'var(--muted)'},
+          ].map(function(s){ return <div key={s.label} style={{ flex:1, textAlign:'center' }}><div style={{ fontFamily:'DM Mono, monospace', fontSize:16, fontWeight:500, color:s.color }}>{s.value}</div><div style={{ fontFamily:'DM Mono, monospace', fontSize:9, color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.06em', marginTop:2 }}>{s.label}</div></div>; }); })()}
+        </div>
         <div style={{ display:'flex', gap:6, overflowX:'auto', paddingBottom:4, marginBottom:16, scrollbarWidth:'none' }}>
           <button onClick={() => setPanelFilter(null)} style={{ flexShrink:0, padding:'7px 14px', borderRadius:'40px', border:`1px solid ${!panelFilter?'var(--accent)':'var(--border)'}`, background:!panelFilter?'var(--accent)':'transparent', color:!panelFilter?'#0e0e0f':'var(--muted)', fontFamily:'DM Mono, monospace', fontSize:11, cursor:'pointer' }}>All</button>
           {PANELS.map(function(p){
