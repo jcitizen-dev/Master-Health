@@ -825,7 +825,7 @@ function Dashboard({ progressHook }) {
 function BiomarkersScreen({ progressHook }) {
   const { markMarkerOpened } = progressHook;
   const navigate = useNavigate();
-  const panels = ['metabolic','glucose','liver','kidney','minerals','hormones','thyroid','inflammation','vitamins'];
+  const panels = ['metabolic','glucose','liver','kidney','minerals','hormones','thyroid','inflammation','vitamins','lipids','cbc'];
   const [activePanel, setActivePanel] = useState('liver');
   const [expanded, setExpanded] = useState(null);
   const markers = window.HSA.BIOMARKERS.filter(function(m){return m.panel===activePanel;});
@@ -1047,7 +1047,7 @@ function LearnScreen({ progressHook }) {
     {id:'thyroid',label:'Thyroid'},{id:'inflammation',label:'Inflam.'},{id:'vitamins',label:'Vitamins'},
     {id:'lipids',label:'Lipids'},{id:'cbc',label:'CBC'},
   ];
-  const statusColor = function(s){ return s==='optimal'?'var(--accent)':s==='elevated'?'var(--danger)':'var(--xp-gold)'; };
+  const statusColor = function(s){ return s==='optimal'?'var(--accent)':s==='elevated'||s==='low'?'var(--danger)':'var(--xp-gold)'; };
   const panelLabel = function(p){ return {glucose:'Glucose',metabolic:'Cardiovascular',liver:'Liver',kidney:'Kidney',minerals:'Minerals',hormones:'Hormones',thyroid:'Thyroid',inflammation:'Inflammation',vitamins:'Vitamins',lipids:'Advanced Lipids',cbc:'Blood Count'}[p]||p; };
 
   const ModeToggle = (
@@ -1183,7 +1183,8 @@ function LearnScreen({ progressHook }) {
 
   // ── List views ──
   const supplements = window.HSA.SUPPLEMENTS.filter(function(s){return !categoryFilter||s.category===categoryFilter;});
-  const markers = window.HSA.BIOMARKERS.filter(function(m){return !panelFilter||m.panel===panelFilter;});
+  const statusPriority = { elevated:0, low:1, borderline:2, optimal:3 };
+  const markers = window.HSA.BIOMARKERS.filter(function(m){return !panelFilter||m.panel===panelFilter;}).slice().sort(function(a,b){return (statusPriority[a.status]||3)-(statusPriority[b.status]||3);});
 
   return (
     <div style={{ maxWidth:480, margin:'0 auto', padding:'16px 16px 100px' }}>
