@@ -1507,6 +1507,7 @@ function App() {
       {!disclaimerAccepted && <DisclaimerModal onAccept={handleAccept} />}
       <Routes>
         <Route path="/" element={<Dashboard progressHook={progressHook} />} />
+        <Route path="/learn" element={<LearnScreen progressHook={progressHook} />} />
         <Route path="/biomarkers" element={<BiomarkersScreen progressHook={progressHook} />} />
         <Route path="/quiz" element={<QuizScreen progressHook={progressHook} />} />
         <Route path="/flashcards" element={<FlashcardsScreen progressHook={progressHook} />} />
