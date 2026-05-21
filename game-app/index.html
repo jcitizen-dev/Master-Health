@@ -821,77 +821,6 @@ function Dashboard({ progressHook }) {
   );
 }
 
-// ── BiomarkersScreen ──────────────────────────────────────────────────────────
-function BiomarkersScreen({ progressHook }) {
-  const { markMarkerOpened } = progressHook;
-  const navigate = useNavigate();
-  const panels = ['metabolic','glucose','liver','kidney','minerals','hormones','thyroid','inflammation','vitamins','lipids','cbc'];
-  const [activePanel, setActivePanel] = useState('liver');
-  const [expanded, setExpanded] = useState(null);
-  const markers = window.HSA.BIOMARKERS.filter(function(m){return m.panel===activePanel;});
-  const handleExpand = function(id) { setExpanded(function(e){return e===id?null:id;}); markMarkerOpened(id); };
-  const statusPriority = { elevated:0, borderline:1, low:2, optimal:3 };
-  const sortedMarkers = markers.slice().sort(function(a,b){return (statusPriority[a.status]||3)-(statusPriority[b.status]||3);});
-
-  return (
-    <div style={{ maxWidth:480, margin:'0 auto', padding:'16px 16px 100px' }}>
-      <div style={{ paddingTop:'env(safe-area-inset-top, 16px)', marginBottom:16 }}>
-        <h1 style={{ fontSize:22, fontWeight:300 }}>My Bloodwork</h1>
-        <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginTop:4 }}>April 2026 · Serbia</div>
-      </div>
-      <div style={{ display:'flex', gap:6, overflowX:'auto', paddingBottom:4, marginBottom:16, scrollbarWidth:'none' }}>
-        {panels.map(function(p) {
-          return (
-            <button key={p} onClick={function(){setActivePanel(p);setExpanded(null);}} style={{ flexShrink:0, padding:'7px 14px', borderRadius:'40px', border:`1px solid ${activePanel===p?'var(--accent)':'var(--border)'}`, background:activePanel===p?'var(--accent)':'transparent', color:activePanel===p?'#0e0e0f':'var(--muted)', fontFamily:'DM Mono, monospace', fontSize:11, cursor:'pointer', letterSpacing:'0.04em', textTransform:'capitalize' }}>{p}</button>
-          );
-        })}
-      </div>
-      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-        {sortedMarkers.map(function(m) {
-          var isExpanded = expanded===m.id;
-          var statusColor = {optimal:'var(--accent)',borderline:'var(--xp-gold)',elevated:'var(--danger)',low:'var(--danger)'}[m.status];
-          return (
-            <div key={m.id} onClick={function(){handleExpand(m.id);}} style={{ background:'var(--surface)', borderRadius:'var(--radius)', border:`1px solid ${isExpanded?statusColor:'var(--border)'}`, overflow:'hidden', cursor:'pointer', transition:'border-color 0.2s' }}>
-              <div style={{ padding:'14px 16px' }}>
-                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:isExpanded?8:0 }}>
-                  <span style={{ fontSize:14, fontWeight:500 }}>{m.name}</span>
-                  <span style={{ fontFamily:'DM Mono, monospace', fontSize:14, fontWeight:500, color:statusColor }}>{m.myValue} <span style={{ fontSize:10, color:'var(--muted)' }}>{m.unit}</span></span>
-                </div>
-                <RangeBar marker={m} />
-              </div>
-              {isExpanded && (
-                <div className="anim-fade-in" style={{ padding:'0 16px 16px', borderTop:'1px solid var(--border)' }}>
-                  <div style={{ marginTop:12 }}>
-                    <div style={{ fontFamily:'DM Mono, monospace', fontSize:9, color:'var(--muted)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:6 }}>WHAT IT MEASURES</div>
-                    <p style={{ fontSize:13, lineHeight:1.5, color:'var(--muted)' }}>{m.whatItMeasures}</p>
-                  </div>
-                  <div style={{ marginTop:12, padding:12, background:statusColor+'11', borderRadius:10, borderLeft:`3px solid ${statusColor}` }}>
-                    <div style={{ fontFamily:'DM Mono, monospace', fontSize:9, color:statusColor, letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:6 }}>MY CONTEXT</div>
-                    <p style={{ fontSize:13, lineHeight:1.6, color:'var(--text)' }}>{m.myContextNote}</p>
-                  </div>
-                  {m.relatedSupplements.length > 0 && (
-                    <div style={{ marginTop:10, display:'flex', flexWrap:'wrap', gap:6 }}>
-                      {m.relatedSupplements.map(function(sid) {
-                        var sup = window.HSA.SUPPLEMENTS.find(function(s){return s.id===sid;});
-                        if (!sup) return null;
-                        return <PillTag key={sid} label={sup.emoji+' '+sup.name} color={window.HSA.CATEGORIES[sup.category]&&window.HSA.CATEGORIES[sup.category].color} onClick={function(){navigate('/learn?supp='+sid);}} />;
-                      })}
-                    </div>
-                  )}
-                  <div style={{ marginTop:10, fontFamily:'DM Mono, monospace', fontSize:10, color:'var(--muted)', padding:'6px 10px', background:'var(--surface2)', borderRadius:8 }}>💡 {m.mnemonic}</div>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-      <div style={{ position:'sticky', bottom:80, marginTop:16 }}>
-        <button onClick={() => navigate('/quiz?type=my_value')} style={{ width:'100%', padding:'14px', borderRadius:'var(--radius)', background:'var(--accent)', color:'#0e0e0f', border:'none', fontFamily:'DM Mono, monospace', fontSize:13, fontWeight:500, letterSpacing:'0.06em', cursor:'pointer', boxShadow:'0 4px 20px rgba(200,245,66,0.3)' }}>⚡ KNOW YOUR NUMBERS — QUIZ</button>
-      </div>
-    </div>
-  );
-}
-
 // ── QuizScreen ────────────────────────────────────────────────────────────────
 function QuizTopicPicker({ progressHook, navigate }) {
   const { progress } = progressHook;
@@ -1036,31 +965,12 @@ function LearnScreen({ progressHook }) {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const categoryFilter = params.get('category');
-  const [mode, setMode] = useState('supplements');
   const [view, setView] = useState('list');
   const [selected, setSelected] = useState(null);
-  const [panelFilter, setPanelFilter] = useState(null);
-
-  const PANELS = [
-    {id:'glucose',label:'Glucose'},{id:'metabolic',label:'Cardio'},{id:'liver',label:'Liver'},
-    {id:'kidney',label:'Kidney'},{id:'minerals',label:'Minerals'},{id:'hormones',label:'Hormones'},
-    {id:'thyroid',label:'Thyroid'},{id:'inflammation',label:'Inflam.'},{id:'vitamins',label:'Vitamins'},
-    {id:'lipids',label:'Lipids'},{id:'cbc',label:'CBC'},
-  ];
   const statusColor = function(s){ return s==='optimal'?'var(--accent)':s==='elevated'||s==='low'?'var(--danger)':'var(--xp-gold)'; };
-  const panelLabel = function(p){ return {glucose:'Glucose',metabolic:'Cardiovascular',liver:'Liver',kidney:'Kidney',minerals:'Minerals',hormones:'Hormones',thyroid:'Thyroid',inflammation:'Inflammation',vitamins:'Vitamins',lipids:'Advanced Lipids',cbc:'Blood Count'}[p]||p; };
-
-  const ModeToggle = (
-    <div style={{ display:'flex', background:'var(--surface2)', borderRadius:20, padding:3, gap:2, marginBottom:16 }}>
-      {[['supplements','💊 Supplements'],['bloodwork','🩸 Bloodwork']].map(function([m,label]){
-        const active = mode===m;
-        return <button key={m} onClick={function(){if(!active){setMode(m);setView('list');setSelected(null);setPanelFilter(null);}}} style={{ flex:1, padding:'7px 0', borderRadius:18, background:active?'var(--accent)':'transparent', color:active?'#0e0e0f':'var(--muted)', border:'none', fontFamily:'DM Mono, monospace', fontSize:11, fontWeight:active?500:400, cursor:'pointer', transition:'all 0.2s', letterSpacing:'0.04em' }}>{label}</button>;
-      })}
-    </div>
-  );
 
   // ── Supplement detail ──
-  if (mode==='supplements' && view==='detail' && selected) {
+  if (view==='detail' && selected) {
     var cat = window.HSA.CATEGORIES[selected.category] || {};
     var glowClass = {uncommon:'glow-uncommon',rare:'glow-rare',legendary:'glow-legendary'}[selected.rarity] || '';
     return (
@@ -1112,88 +1022,16 @@ function LearnScreen({ progressHook }) {
     );
   }
 
-  // ── Bloodwork detail ──
-  if (mode==='bloodwork' && view==='detail' && selected) {
-    var r = selected.referenceRange;
-    var pct = Math.round(((Math.min(Math.max(selected.myValue,r.low),r.high)-r.low)/(r.high-r.low))*100);
-    var optLowPct = Math.round(((r.optimal_low-r.low)/(r.high-r.low))*100);
-    var optHighPct = Math.round(((r.optimal_high-r.low)/(r.high-r.low))*100);
-    var sc = statusColor(selected.status);
-    var relatedSupps = (selected.relatedSupplements||[]).map(function(id){return window.HSA.SUPPLEMENTS.find(function(s){return s.id===id;});}).filter(Boolean);
-    return (
-      <div style={{ maxWidth:480, margin:'0 auto', padding:'16px 16px 100px' }}>
-        <button onClick={() => setView('list')} style={{ background:'none', border:'none', color:'var(--muted)', cursor:'pointer', fontFamily:'DM Mono, monospace', fontSize:11, marginBottom:16, paddingTop:'env(safe-area-inset-top, 0px)', letterSpacing:'0.04em' }}>← BACK</button>
-        <div className="anim-slide-up" style={{ background:'var(--surface)', borderRadius:'var(--radius)', border:`1px solid ${sc}44`, padding:20, marginBottom:12 }}>
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:12 }}>
-            <div>
-              <div style={{ fontSize:22, fontWeight:300 }}>{selected.name}</div>
-              <div style={{ fontFamily:'DM Mono, monospace', fontSize:12, color:'var(--muted)', marginTop:2 }}>{panelLabel(selected.panel)}</div>
-            </div>
-            <span style={{ fontFamily:'DM Mono, monospace', fontSize:12, color:sc, border:`1px solid ${sc}`, borderRadius:20, padding:'3px 12px', letterSpacing:'0.08em' }}>{selected.status.toUpperCase()}</span>
-          </div>
-          <div style={{ marginBottom:6, display:'flex', justifyContent:'space-between', alignItems:'baseline' }}>
-            <span style={{ fontFamily:'DM Mono, monospace', fontSize:13, color:'var(--muted)' }}>YOUR RESULT</span>
-            <span style={{ fontFamily:'DM Mono, monospace', fontSize:24, color:sc, fontWeight:500 }}>{selected.myValue} <span style={{ fontSize:13, color:'var(--muted)' }}>{selected.unit}</span></span>
-          </div>
-          <div style={{ position:'relative', height:10, borderRadius:5, background:'var(--surface2)', overflow:'visible', marginBottom:6 }}>
-            <div style={{ position:'absolute', left:`${optLowPct}%`, width:`${optHighPct-optLowPct}%`, height:'100%', background:'rgba(200,245,66,0.25)', borderRadius:5 }} />
-            <div style={{ position:'absolute', left:`${pct}%`, top:'50%', transform:'translate(-50%,-50%)', width:14, height:14, borderRadius:'50%', background:sc, boxShadow:`0 0 10px ${sc}` }} />
-          </div>
-          <div style={{ display:'flex', justifyContent:'space-between' }}>
-            <span style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)' }}>{r.low}</span>
-            <span style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--accent)', opacity:0.7 }}>optimal {r.optimal_low}–{r.optimal_high}</span>
-            <span style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)' }}>{r.high}</span>
-          </div>
-        </div>
-        {[
-          { title:'What This Test Measures', content: selected.whatItMeasures },
-          { title:'Your Result in Context', content: selected.myContextNote, accent: true },
-        ].map(function(section) {
-          return (
-            <div key={section.title} style={{ marginBottom:10, padding:16, background:'var(--surface)', borderRadius:'var(--radius)', border:'1px solid var(--border)', borderLeft:section.accent?`3px solid ${sc}`:'1px solid var(--border)' }}>
-              <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:section.accent?sc:'var(--muted)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:8 }}>{section.title}</div>
-              <p style={{ fontSize:14, lineHeight:1.7, color:'var(--text)' }}>{section.content}</p>
-            </div>
-          );
-        })}
-        <div style={{ marginBottom:10, padding:16, background:'var(--surface)', borderRadius:'var(--radius)', border:'1px solid var(--border)', borderLeft:'3px solid var(--rare)' }}>
-          <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--rare)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:8 }}>Memory Hook</div>
-          <p style={{ fontSize:14, lineHeight:1.6, color:'var(--rare)', fontFamily:'DM Mono, monospace' }}>{selected.mnemonic}</p>
-        </div>
-        {relatedSupps.length > 0 && (
-          <div style={{ padding:16, background:'var(--surface)', borderRadius:'var(--radius)', border:'1px solid var(--border)', marginBottom:10 }}>
-            <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:10 }}>Supplements Targeting This</div>
-            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-              {relatedSupps.map(function(s){ return (
-                <div key={s.id} style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 0', borderBottom:'1px solid var(--border)' }}>
-                  <span style={{ fontSize:22 }}>{s.emoji}</span>
-                  <div>
-                    <div style={{ fontSize:14, fontWeight:500 }}>{s.name}</div>
-                    <div style={{ fontFamily:'DM Mono, monospace', fontSize:12, color:'var(--muted)', marginTop:2 }}>{s.dosage}</div>
-                  </div>
-                </div>
-              ); })}
-            </div>
-          </div>
-        )}
-        <button onClick={() => { addXP(20, selected.panel); setView('list'); }} style={{ width:'100%', padding:'14px', borderRadius:'var(--radius)', background:'var(--accent)', color:'#0e0e0f', border:'none', fontFamily:'DM Mono, monospace', fontSize:13, fontWeight:500, letterSpacing:'0.06em', cursor:'pointer', marginTop:8 }}>✓ GOT IT (+20 XP)</button>
-      </div>
-    );
-  }
-
-  // ── List views ──
+  // ── List view ──
   const supplements = window.HSA.SUPPLEMENTS.filter(function(s){return !categoryFilter||s.category===categoryFilter;});
-  const statusPriority = { elevated:0, low:1, borderline:2, optimal:3 };
-  const markers = window.HSA.BIOMARKERS.filter(function(m){return !panelFilter||m.panel===panelFilter;}).slice().sort(function(a,b){return (statusPriority[a.status]||3)-(statusPriority[b.status]||3);});
 
   return (
     <div style={{ maxWidth:480, margin:'0 auto', padding:'16px 16px 100px' }}>
       <div style={{ paddingTop:'env(safe-area-inset-top, 16px)', marginBottom:12 }}>
         <h1 style={{ fontSize:22, fontWeight:300 }}>Learn</h1>
       </div>
-      {ModeToggle}
 
-      {mode==='supplements' && <>
+      <>
         <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginBottom:12 }}>{supplements.length} supplements {categoryFilter?'· '+categoryFilter:''}</div>
         <div style={{ display:'flex', gap:6, overflowX:'auto', paddingBottom:4, marginBottom:16, scrollbarWidth:'none' }}>
           <button onClick={() => navigate('/learn')} style={{ flexShrink:0, padding:'7px 14px', borderRadius:'40px', border:`1px solid ${!categoryFilter?'var(--accent)':'var(--border)'}`, background:!categoryFilter?'var(--accent)':'transparent', color:!categoryFilter?'#0e0e0f':'var(--muted)', fontFamily:'DM Mono, monospace', fontSize:11, cursor:'pointer' }}>All</button>
@@ -1220,39 +1058,7 @@ function LearnScreen({ progressHook }) {
             );
           })}
         </div>
-      </>}
-
-      {mode==='bloodwork' && <>
-        <div style={{ display:'flex', gap:16, marginBottom:12, padding:'10px 14px', background:'var(--surface)', borderRadius:'var(--radius)', border:'1px solid var(--border)' }}>
-          {(function(){ var flagged=markers.filter(function(m){return m.status==='elevated'||m.status==='low';}).length; var borderline=markers.filter(function(m){return m.status==='borderline';}).length; var optimal=markers.filter(function(m){return m.status==='optimal';}).length; return [
-            {label:'Flagged', value:flagged, color:'var(--danger)'},
-            {label:'Borderline', value:borderline, color:'var(--xp-gold)'},
-            {label:'Optimal', value:optimal, color:'var(--accent)'},
-            {label:'Total', value:markers.length, color:'var(--muted)'},
-          ].map(function(s){ return <div key={s.label} style={{ flex:1, textAlign:'center' }}><div style={{ fontFamily:'DM Mono, monospace', fontSize:16, fontWeight:500, color:s.color }}>{s.value}</div><div style={{ fontFamily:'DM Mono, monospace', fontSize:9, color:'var(--muted)', textTransform:'uppercase', letterSpacing:'0.06em', marginTop:2 }}>{s.label}</div></div>; }); })()}
-        </div>
-        <div style={{ display:'flex', gap:6, overflowX:'auto', paddingBottom:4, marginBottom:16, scrollbarWidth:'none' }}>
-          <button onClick={() => setPanelFilter(null)} style={{ flexShrink:0, padding:'7px 14px', borderRadius:'40px', border:`1px solid ${!panelFilter?'var(--accent)':'var(--border)'}`, background:!panelFilter?'var(--accent)':'transparent', color:!panelFilter?'#0e0e0f':'var(--muted)', fontFamily:'DM Mono, monospace', fontSize:11, cursor:'pointer' }}>All</button>
-          {PANELS.map(function(p){
-            return <button key={p.id} onClick={() => setPanelFilter(p.id)} style={{ flexShrink:0, padding:'7px 14px', borderRadius:'40px', border:`1px solid ${panelFilter===p.id?'var(--accent)':'var(--border)'}`, background:panelFilter===p.id?'var(--accent)':'transparent', color:panelFilter===p.id?'#0e0e0f':'var(--muted)', fontFamily:'DM Mono, monospace', fontSize:11, cursor:'pointer' }}>{p.label}</button>;
-          })}
-        </div>
-        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-          {markers.map(function(m) {
-            var sc = statusColor(m.status);
-            return (
-              <div key={m.id} onClick={() => { setSelected(m); setView('detail'); }} style={{ padding:16, background:'var(--surface)', borderRadius:'var(--radius)', border:`1px solid ${sc}33`, cursor:'pointer', display:'flex', alignItems:'center', gap:14 }}>
-                <div style={{ width:10, height:10, borderRadius:'50%', background:sc, flexShrink:0, boxShadow:`0 0 6px ${sc}` }} />
-                <div style={{ flex:1 }}>
-                  <div style={{ fontSize:15, fontWeight:500, marginBottom:3 }}>{m.name}</div>
-                  <div style={{ fontFamily:'DM Mono, monospace', fontSize:12, color:'var(--muted)' }}>{m.myValue} {m.unit} · {panelLabel(m.panel)}</div>
-                </div>
-                <span style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:sc, border:`1px solid ${sc}`, borderRadius:20, padding:'2px 10px' }}>{ m.status==='elevated'||m.status==='low' ? 'FLAGGED' : m.status==='borderline' ? 'BORDERLINE' : 'OPTIMAL' }</span>
-              </div>
-            );
-          })}
-        </div>
-      </>}
+      </>
     </div>
   );
 }
@@ -1517,7 +1323,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard progressHook={progressHook} />} />
         <Route path="/learn" element={<LearnScreen progressHook={progressHook} />} />
-        <Route path="/biomarkers" element={<BiomarkersScreen progressHook={progressHook} />} />
         <Route path="/quiz" element={<QuizScreen progressHook={progressHook} />} />
         <Route path="/flashcards" element={<FlashcardsScreen progressHook={progressHook} />} />
         <Route path="/boss" element={<BossSelectScreen progressHook={progressHook} />} />
