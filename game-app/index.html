@@ -742,15 +742,12 @@ function Dashboard({ progressHook }) {
 
   return (
     <div style={{ maxWidth:480, margin:'0 auto', padding:'16px 16px 100px' }}>
-      <div style={{ display:'flex', alignItems:'center', gap:16, marginBottom:24, paddingTop:'env(safe-area-inset-top, 16px)' }}>
-        <RankBadge rank={rank.rank} size={56} pulse />
+      <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:24, paddingTop:'env(safe-area-inset-top, 16px)' }}>
+        <svg viewBox="0 0 24 24" style={{ width:36, height:36, stroke:'var(--accent)', fill:'none', strokeWidth:1.6, strokeLinecap:'round', strokeLinejoin:'round', flexShrink:0 }}><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 12h.01M18 12h.01"/></svg>
         <div style={{ flex:1 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <h1 style={{ fontSize:22, fontWeight:300 }}>Health Stack Academy</h1>
-            <StreakFlame streak={progress.streak} />
-          </div>
-          <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginTop:2 }}>{rank.icon} {rank.title} · {progress.streak} day streak</div>
+          <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)' }}>{rank.icon} {rank.title} · {progress.streak} day streak</div>
         </div>
+        <StreakFlame streak={progress.streak} />
       </div>
       <XPBar xp={progress.xp} getRank={getRank} getNextRank={getNextRank} />
       <div style={{ display:'flex', justifyContent:'space-around', padding:'20px 0', background:'var(--surface)', borderRadius:'var(--radius)', border:'1px solid var(--border)', marginTop:12 }}>
