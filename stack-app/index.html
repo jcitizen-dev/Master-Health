@@ -131,7 +131,6 @@
       <div class="date" id="date-label"></div>
       <div class="streak" id="streak-label"></div>
     </div>
-    <button id="auth-btn" onclick="handleSignIn()" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(240,240,238,0.55);padding:6px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis;">Sign in</button>
     <div class="prog-ring-wrap">
       <svg width="52" height="52" viewBox="0 0 52 52">
         <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
@@ -144,6 +143,7 @@
   <div id="schedule"></div>
   <div class="all-done" id="all-done">✦ all done for today</div>
   <button class="reset-btn" onclick="resetDay()">Reset day</button>
+  <button id="auth-btn" onclick="handleSignIn()" style="width:100%;margin-top:6px;padding:9px;border:none;background:transparent;color:rgba(240,240,238,0.2);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Sign in</button>
 </div>
 
 <div id="log-view">
@@ -470,6 +470,7 @@ function renderSchedule() {
   const c = document.getElementById('schedule'); c.innerHTML='';
   sched.forEach((section,si) => {
     if (!section.items.length) return;
+    if (section.time === 'Skip') return;
     if (si>0) { const dv=document.createElement('div'); dv.className='divider'; c.appendChild(dv); }
     const sec=document.createElement('div'); sec.className='section';
     const lbl=document.createElement('div'); lbl.className='section-label'; lbl.textContent=section.time; sec.appendChild(lbl);
