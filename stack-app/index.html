@@ -68,6 +68,22 @@
   .reset-btn { width: 100%; padding: 13px; border-radius: var(--radius); border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 8px; }
   .reset-btn:active { background: var(--surface2); }
 
+  /* SUPPLEMENT DETAIL SHEET */
+  .supp-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0); z-index: 300; display: none; }
+  .supp-backdrop.open { display: block; background: rgba(0,0,0,0.55); }
+  .supp-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: #2c2c2e; border-radius: 22px 22px 0 0; border-top: 1px solid rgba(255,255,255,0.1); z-index: 301; padding: 0 20px calc(env(safe-area-inset-bottom,0px) + 36px); transform: translateY(100%); transition: transform .3s cubic-bezier(.32,1,.72,1); max-height: 82dvh; overflow-y: auto; }
+  .supp-sheet.open { transform: translateY(0); }
+  .supp-sheet-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin: 14px auto 22px; }
+  .supp-sheet-emoji { font-size: 36px; margin-bottom: 6px; line-height: 1; }
+  .supp-sheet-name { font-size: 24px; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .supp-sheet-dose { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 22px; line-height: 1.6; }
+  .supp-sheet-sec { margin-bottom: 20px; }
+  .supp-sheet-sec-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .supp-sheet-sec-body { font-size: 14px; line-height: 1.7; color: var(--text); }
+  .supp-sheet-timing-chip { display: inline-block; padding: 5px 13px; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .supp-sheet-divider { height: 1px; background: var(--border); margin: 4px 0 20px; }
+  .pill.has-detail { position: relative; }
+
   /* AUTH MODAL */
   .auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; }
   .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; width: 100%; max-width: 320px; }
@@ -163,6 +179,28 @@
   <button class="nav-btn" id="nav-log" onclick="showView('log')">Log</button>
 </div>
 
+<!-- Supplement detail bottom sheet -->
+<div class="supp-backdrop" id="supp-backdrop" onclick="closeSuppSheet()"></div>
+<div class="supp-sheet" id="supp-sheet">
+  <div class="supp-sheet-handle"></div>
+  <div class="supp-sheet-emoji" id="ss-emoji"></div>
+  <div class="supp-sheet-name" id="ss-name"></div>
+  <div class="supp-sheet-dose" id="ss-dose"></div>
+  <div class="supp-sheet-divider"></div>
+  <div class="supp-sheet-sec">
+    <div class="supp-sheet-sec-label">Why I take it</div>
+    <div class="supp-sheet-sec-body" id="ss-why"></div>
+  </div>
+  <div class="supp-sheet-sec">
+    <div class="supp-sheet-sec-label">How it works</div>
+    <div class="supp-sheet-sec-body" id="ss-mech"></div>
+  </div>
+  <div class="supp-sheet-sec">
+    <div class="supp-sheet-sec-label">Timing</div>
+    <div class="supp-sheet-timing-chip" id="ss-timing"></div>
+  </div>
+</div>
+
 <script>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -221,6 +259,69 @@ const SCHEDULE = {
     {time:'Skip', items:['NAC','Tongkat','TUDCA','Garlic','Ginger'], skip:['NAC','Tongkat','TUDCA','Garlic','Ginger']},
   ],
 };
+
+// --- Supplement detail sheet ---
+const SUPP_MAP = {
+  'NMN':'nmn','TMG':'tmg','B12':'b12','NAC':'nac',
+  'Matcha':'matcha','Citrulline':'citrulline',
+  'Protein':'protein','Creatine':'creatine','EVOO':'evoo',
+  '🐟':'fishoil','Taurine':'taurine',
+  'Tongkat':'tongkat','TUDCA':'tudca',
+  'Garlic':'garlic','Ginger':'ginger','Vit C':'vitc',
+  'P5P':'p5p','Probiotic':'probiotic','Duta':'dutasteride',
+  'Boron':'boron','Mag':'magnesium','Zinc':'zinc',
+  'Ash/Api':'ashwagandha','Glycine':'glycine','Fisetin':'fisetin',
+  'Vit D':'vitd','K2':'k2'
+};
+
+function getSuppData(name) {
+  const id = SUPP_MAP[name];
+  if (!id) return null;
+  const SUPPS = (window.parent && window.parent.HSA && window.parent.HSA.SUPPLEMENTS) || [];
+  return SUPPS.find(s => s.id === id) || null;
+}
+
+function openSuppSheet(name) {
+  const s = getSuppData(name);
+  if (!s) return;
+  document.getElementById('ss-emoji').textContent = s.emoji || '';
+  document.getElementById('ss-name').textContent = s.name;
+  document.getElementById('ss-dose').textContent = s.dosage + (s.dosageNote ? '\n' + s.dosageNote : '');
+  document.getElementById('ss-why').textContent = s.whyITakeIt || s.whatItIs || '';
+  document.getElementById('ss-mech').textContent = s.mechanism || s.whatItIs || '';
+  document.getElementById('ss-timing').textContent = '⏱ ' + (s.timing || s.dosageNote || 'See schedule');
+  document.getElementById('supp-backdrop').classList.add('open');
+  document.getElementById('supp-sheet').classList.add('open');
+}
+
+function closeSuppSheet() {
+  document.getElementById('supp-backdrop').classList.remove('open');
+  document.getElementById('supp-sheet').classList.remove('open');
+}
+
+let _lpTimer = null;
+let _lpFired = false;
+
+function attachLongPress(el, name) {
+  if (!SUPP_MAP[name]) return; // no data, skip
+  el.classList.add('has-detail');
+  function onStart(e) {
+    _lpFired = false;
+    _lpTimer = setTimeout(() => {
+      _lpFired = true;
+      // Provide haptic feedback on iOS
+      if (navigator.vibrate) navigator.vibrate(10);
+      openSuppSheet(name);
+    }, 480);
+  }
+  function onCancel() { clearTimeout(_lpTimer); }
+  el.addEventListener('touchstart', onStart, { passive: true });
+  el.addEventListener('touchend', onCancel);
+  el.addEventListener('touchmove', onCancel, { passive: true });
+  el.addEventListener('mousedown', onStart);
+  el.addEventListener('mouseup', onCancel);
+  el.addEventListener('mouseleave', onCancel);
+}
 
 // --- Date helpers ---
 function dateStr(d) {
@@ -378,7 +479,8 @@ function renderSchedule() {
       const pill=document.createElement('div');
       pill.className='pill'+(isSkip?' skip':isChecked(ds,item)?' checked':'');
       if (!isSkip) {
-        pill.onclick=()=>toggle(ds,item);
+        pill.onclick=()=>{ if(_lpFired){_lpFired=false;return;} toggle(ds,item); };
+        attachLongPress(pill, item);
         const dot=document.createElement('div'); dot.className='dot'; pill.appendChild(dot);
       }
       const txt=document.createElement('span'); txt.textContent=item; pill.appendChild(txt);
