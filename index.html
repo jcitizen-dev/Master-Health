@@ -18,9 +18,9 @@
   --nav-h: 50px; --safe-top: env(safe-area-inset-top,0px);
   --safe-bot: env(safe-area-inset-bottom,0px);
 }
-html{overflow:hidden;height:100dvh}
+html{overflow:hidden;height:100%}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;height:100dvh;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;height:100%;}
 
 /* ── Sections ── */
 .section{
@@ -31,7 +31,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;hei
 
 /* Stack iframe */
 #s-stack{padding:0}
-#s-stack iframe{width:100%;height:calc(100dvh - var(--nav-h) - env(safe-area-inset-bottom, 0px));border:none;display:block}
+#s-stack iframe{position:absolute;inset:0;width:100%;border:none;display:block}
 
 /* ── Bottom nav ── */
 .bottom-nav{
@@ -182,7 +182,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;hei
 .marker-card:active{opacity:0.85}
 
 #s-game{padding:0}
-#s-game iframe{width:100%;height:calc(100dvh - var(--nav-h) - env(safe-area-inset-bottom, 0px));border:none;display:block}
+#s-game iframe{position:absolute;inset:0;width:100%;border:none;display:block}
 </style>
 </head>
 <body>
@@ -245,10 +245,10 @@ let latestFilter = null;
 let latestSort = 'grouped';
 
 document.getElementById('s-stack').innerHTML =
-  `<iframe id="stack-frame" src="stack-app/index.html" title="Stack" style="width:100%;height:calc(100dvh - var(--nav-h) - env(safe-area-inset-bottom, 0px));border:none;display:block"></iframe>`;
+  `<iframe id="stack-frame" src="stack-app/index.html" title="Stack" style="position:absolute;inset:0;width:100%;border:none;display:block"></iframe>`;
 
 document.getElementById('s-game').innerHTML =
-  `<iframe id="game-frame" src="game-app/index.html" title="Game" style="width:100%;height:calc(100dvh - var(--nav-h) - env(safe-area-inset-bottom, 0px));border:none;display:block"></iframe>`;
+  `<iframe id="game-frame" src="game-app/index.html" title="Game" style="position:absolute;inset:0;width:100%;border:none;display:block"></iframe>`;
 
 function setLatestSort(s) {
   latestSort = s;
