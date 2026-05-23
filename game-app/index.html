@@ -447,8 +447,8 @@ function FlashCard({ supplement, onSwipe }) {
 function BiomarkerFlashCard({ marker, onSwipe }) {
   const [flipped, setFlipped] = useState$c(false);
 
-  const statusColor = marker.status === 'optimal' ? 'var(--accent)' : marker.status === 'elevated' ? 'var(--danger)' : 'var(--xp-gold)';
-  const statusLabel = marker.status === 'optimal' ? 'OPTIMAL' : marker.status === 'elevated' ? 'ELEVATED' : 'BORDERLINE';
+  const statusColor = marker.status === 'optimal' || marker.status === 'normal' ? 'var(--accent)' : (marker.status === 'elevated' || marker.status === 'high') ? 'var(--danger)' : marker.status === 'low' ? '#60a5fa' : 'var(--xp-gold)';
+  const statusLabel = marker.status === 'optimal' || marker.status === 'normal' ? 'OPTIMAL' : (marker.status === 'elevated' || marker.status === 'high') ? 'ELEVATED' : marker.status === 'low' ? 'LOW' : 'BORDERLINE';
   const panelLabel = { glucose:'Glucose', metabolic:'Cardiovascular', liver:'Liver', kidney:'Kidney', minerals:'Minerals', hormones:'Hormones', thyroid:'Thyroid', inflammation:'Inflammation', vitamins:'Vitamins' }[marker.panel] || marker.panel;
 
   const r = marker.referenceRange;
@@ -836,7 +836,7 @@ function BiomarkersScreen({ progressHook }) {
     <div style={{ maxWidth:480, margin:'0 auto', padding:'16px 16px 100px' }}>
       <div style={{ paddingTop:'env(safe-area-inset-top, 16px)', marginBottom:16 }}>
         <h1 style={{ fontSize:22, fontWeight:300 }}>My Bloodwork</h1>
-        <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginTop:4 }}>April 2026 · Serbia</div>
+        <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginTop:4 }}>May 2026 · Quest</div>
       </div>
       <div style={{ display:'flex', gap:6, overflowX:'auto', paddingBottom:4, marginBottom:16, scrollbarWidth:'none' }}>
         {panels.map(function(p) {

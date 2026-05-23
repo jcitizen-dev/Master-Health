@@ -185,14 +185,14 @@ window.HSA.BIOMARKERS = [
     xpValue: 10
   },
   {
-    id: 'bilirubin', name: 'Total Bilirubin', panel: 'liver', myValue: 13.4, unit: 'µmol/L',
+    id: 'bilirubin', name: 'Total Bilirubin', panel: 'liver', myValue: 20.5, unit: 'µmol/L',
     referenceRange: { low: 3, optimal_low: 5, optimal_high: 17, high: 21 },
-    status: 'optimal',
+    status: 'borderline',
     whatItMeasures: 'Breakdown product of haemoglobin — elevated in haemolysis, liver disease, or bile duct obstruction.',
     whyItMatters: 'Bilirubin tells you if the liver can conjugate and excrete waste. Normal = liver conjugation is working. Very elevated = jaundice.',
-    myContextNote: '13.4 µmol/L is optimal. Normal bilirubin alongside normal GGT confirms the elevated AST/ALT is NOT due to impaired liver excretory function or bile duct issues.',
+    myContextNote: '20.5 µmol/L (1.2 mg/dL) is borderline — above the optimal ceiling of 17 µmol/L but within the lab reference range (21 max). Up from 13.4 µmol/L (optimal) in April 2026 Serbia. Elevated bilirubin without elevated liver enzymes (ALT/AST/GGT all normal) is the classic pattern for Gilbert\'s syndrome — a benign genetic variant. Not a cause for concern but worth monitoring at next draw.',
     relatedSupplements: ['tudca', 'nac'],
-    mnemonic: 'Bilirubin 13.4 — THIRTEEN-point-FOUR, no jaundice, not a score to be sore.',
+    mnemonic: 'Bilirubin 20.5 — TWENTY-point-FIVE, borderline but not a crisis. Gilbert\'s pattern — benign, not ominous.',
     xpValue: 10
   },
   {
@@ -263,6 +263,17 @@ window.HSA.BIOMARKERS = [
     relatedSupplements: ['creatine'],
     mnemonic: 'Cystatin C 0.79 — ZERO-seventy-NINE, the true kidney test. eGFR 111 — kidneys at their best.',
     xpValue: 25
+  },
+  {
+    id: 'co2', name: 'CO₂ / Bicarbonate', panel: 'kidney', myValue: 27, unit: 'mmol/L',
+    referenceRange: { low: 20, optimal_low: 22, optimal_high: 28, high: 32 },
+    status: 'optimal',
+    whatItMeasures: 'Serum bicarbonate (HCO₃⁻) — the primary blood buffer that maintains acid-base balance. Reported as "CO₂" on metabolic panels because bicarbonate converts to CO₂ in the assay.',
+    whyItMatters: 'Low bicarbonate (<22) signals metabolic acidosis — the kidneys are failing to excrete acid or the body is overproducing it. High bicarbonate (>28) signals metabolic alkalosis, often from vomiting, diuretics, or antacid overuse. Both extremes are clinically important.',
+    myContextNote: '27 mmol/L is comfortably mid-range optimal (range 20–32, optimal 22–28). Acid-base balance is normal — kidneys are managing homeostasis correctly. No metabolic acidosis or alkalosis. Consistent with all other kidney markers being optimal.',
+    relatedSupplements: ['magnesium'],
+    mnemonic: 'CO₂ 27 — TWENTY-SEVEN, mid-range and fine. Acid-base balance: right within the line.',
+    xpValue: 10
   },
 
   // ── MINERALS ──────────────────────────────────────────────────────────────

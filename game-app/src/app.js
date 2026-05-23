@@ -254,7 +254,7 @@ function BiomarkersScreen({ progressHook }) {
     <div style={{ maxWidth:480, margin:'0 auto', padding:'16px 16px 100px' }}>
       <div style={{ paddingTop:'env(safe-area-inset-top, 16px)', marginBottom:16 }}>
         <h1 style={{ fontSize:22, fontWeight:300 }}>My Bloodwork</h1>
-        <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginTop:4 }}>April 2026 · Serbia</div>
+        <div style={{ fontFamily:'DM Mono, monospace', fontSize:11, color:'var(--muted)', marginTop:4 }}>May 2026 · Quest</div>
       </div>
 
       {/* Panel tabs */}
