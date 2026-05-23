@@ -34,14 +34,15 @@
     font-family: 'DM Sans', sans-serif;
     min-height: 100dvh;
     padding-top: calc(var(--safe-top) + 16px);
-    padding-bottom: calc(var(--safe-bottom) + 72px);
+    padding-bottom: calc(var(--safe-bottom) + 24px);
     padding-left: 16px;
     padding-right: 16px;
   }
   .header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
   .header-left h1 { font-size: 28px; font-weight: 300; letter-spacing: -0.02em; line-height: 1; }
   .header-left .date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
-  .prog-ring-wrap { position: relative; width: 52px; height: 52px; }
+  .prog-ring-wrap { position: relative; width: 52px; height: 52px; cursor: pointer; }
+  .prog-ring-wrap:active { opacity: 0.7; }
   .prog-ring-wrap svg { transform: rotate(-90deg); }
   .prog-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 3; }
   .prog-ring-fill { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset .4s ease; }
@@ -131,7 +132,7 @@
       <div class="date" id="date-label"></div>
       <div class="streak" id="streak-label"></div>
     </div>
-    <div class="prog-ring-wrap">
+    <div class="prog-ring-wrap" onclick="showView('log')">
       <svg width="52" height="52" viewBox="0 0 52 52">
         <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
         <circle class="prog-ring-fill" id="prog-ring" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2"/>
@@ -142,13 +143,12 @@
   <div class="day-tabs" id="day-tabs"></div>
   <div id="schedule"></div>
   <div class="all-done" id="all-done">✦ all done for today</div>
-  <button class="reset-btn" onclick="resetDay()">Reset day</button>
-  <button id="auth-btn" onclick="handleSignIn()" style="width:100%;margin-top:6px;padding:9px;border:none;background:transparent;color:rgba(240,240,238,0.2);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Sign in</button>
 </div>
 
 <div id="log-view">
   <div class="header" style="margin-bottom:16px;">
     <div class="header-left">
+      <button onclick="showView('today')" style="background:none;border:none;color:var(--accent);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.06em;cursor:pointer;padding:0;margin-bottom:6px;display:block;">← back</button>
       <h1>Log</h1>
       <div class="date" id="log-subtitle"></div>
     </div>
@@ -159,6 +159,7 @@
     <button onclick="document.getElementById('import-input').click()" style="flex:1;padding:12px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(240,240,238,0.55);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.05em;cursor:pointer;">↑ Restore Backup</button>
     <input id="import-input" type="file" accept=".json" style="display:none" onchange="importBackup(this)">
   </div>
+  <button id="auth-btn" onclick="handleSignIn()" style="width:100%;margin-top:8px;padding:9px;border:none;background:transparent;color:rgba(240,240,238,0.2);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;">Sign in</button>
 </div>
 
 <div id="auth-overlay" class="auth-overlay" style="display:none">
@@ -174,10 +175,6 @@
   </div>
 </div>
 
-<div class="bottom-nav">
-  <button class="nav-btn active" id="nav-today" onclick="showView('today')">Today</button>
-  <button class="nav-btn" id="nav-log" onclick="showView('log')">Log</button>
-</div>
 
 <!-- Supplement detail bottom sheet -->
 <div class="supp-backdrop" id="supp-backdrop" onclick="closeSuppSheet()"></div>
@@ -410,9 +407,8 @@ function showView(v) {
   currentView = v;
   document.getElementById('today-view').style.display = v==='today'?'':'none';
   document.getElementById('log-view').style.display = v==='log'?'block':'none';
-  document.getElementById('nav-today').classList.toggle('active', v==='today');
-  document.getElementById('nav-log').classList.toggle('active', v==='log');
   if (v==='log') renderLog();
+  if (v==='log') document.documentElement.scrollTop = 0;
 }
 
 // --- Streak ---
