@@ -467,15 +467,15 @@ window.HSA.SUPPLEMENTS = [
   {
     id: 'sauna', name: 'Sauna', emoji: '🧖', dosage: '15–30 min/session',
     dosageNote: '3–5 sessions per week — Finnish-style (80–100°C) or infrared (50–60°C)',
-    rarity: 'uncommon', category: 'training',
+    rarity: 'uncommon', category: 'longevity',
     whatItIs: 'Heat therapy that mimics the physiological effects of moderate aerobic exercise — triggering heat shock proteins, cardiovascular adaptation, and growth hormone release.',
     whyITakeIt: 'Sauna use 3–5x/week is associated with dose-dependent reductions in cardiovascular mortality (Finnish cohort studies). Activates heat shock proteins (HSPs) which refold damaged proteins. Stimulates growth hormone release (up to 16x baseline in some studies). Improves cardiovascular reserve and supports recovery from training.',
     mechanism: 'Heat stress triggers your body to adapt in ways similar to exercise. Heat shock proteins (HSP70, HSP90) are produced — these are molecular chaperones that refold damaged proteins before they can cause harm. Your cardiovascular system adapts by increasing plasma volume and cardiac output. Growth hormone surges in response to the thermal stress. Blood flow to muscles increases. Over time, repeated sauna sessions improve heat adaptation, cardiovascular efficiency, and may support muscle preservation.',
     relatedMarkers: ['igf1', 'cortisol'],
     timing: 'Post-workout or separate session, 3–5x/week',
     veganRelevance: 'No animal products. Universal wellness tool.',
-    risks: 'Dehydration risk — drink water before and after. Avoid if cardiovascular disease or hypertension without medical clearance. Blood draw dehydration artifact (potassium 5.2, albumin 52 in April 2026 — both normalised when properly hydrated by May 2026). Never use alcohol before sauna.',
-    expertNotes: 'Important note: the April 2026 Serbia labs showed artifactually elevated potassium (5.2) and albumin (52) — both consistent with pre-draw sauna-related dehydration. Both normalised to 4.7 and 47 g/L by May 2026 with a better-hydrated draw. The sauna itself is beneficial; timing the blood draw away from it matters.',
+    risks: 'Dehydration risk — drink water before and after. Avoid if cardiovascular disease or hypertension without medical clearance. Never use alcohol before sauna. General reminder: dehydration before any blood draw can artificially elevate potassium and albumin — stay well hydrated in the 24 hours before labs regardless of sauna use.',
+    expertNotes: 'The Finnish KIHD cohort study (Laukkanen et al.) is the gold-standard longevity data: men using sauna 4–7x/week had a 40% lower risk of all-cause mortality and 50% lower cardiovascular mortality vs. once-weekly users. Heat shock proteins (HSP70, HSP90) are the key molecular mechanism — they refold damaged and misfolded proteins, preventing the protein aggregation associated with aging and neurodegeneration. Sauna is a hormetic stressor in the same family as HBOT and Zone 2 cardio: controlled stress → adaptive overreaction → stronger baseline. Growth hormone response: some studies show up to 16x GH spike with repeated sauna exposure. Note: the April 2026 Serbia labs showed elevated potassium (5.2) and albumin (52) — these were dehydration artifacts from travel and inadequate pre-draw hydration, not sauna-related. Both normalised by May 2026.',
     xpValue: 20, unlockLevel: 1
   },
   {
