@@ -35,6 +35,7 @@ window.HSA.CATEGORIES = {
   vegan:       { label:'Vegan Gaps',              emoji:'🌱', bossName:'The Deficiency Specter',   color:'#84CC16' },
   lipids:      { label:'Advanced Lipids',         emoji:'🫀', bossName:'The Particle Phantom',     color:'#EC4899' },
   cardio:      { label:'Zone 2 & Cardio',         emoji:'🏃', bossName:'The Mitochondrial Wraith', color:'#06B6D4' },
+  longevity:   { label:'Longevity Protocols',     emoji:'⏳', bossName:'The Senescent Reaper',     color:'#F97316' },
 };
 
 window.HSA.BOSSES = [
@@ -148,6 +149,17 @@ window.HSA.BOSSES = [
     quizIds:['q149','q150','q151','q152','q159','q160','q163','q164','q2','q21'],
     xpReward:150, badgeId:'cardio_builder'
   },
+  {
+    id:'boss_longevity', category:'longevity', name:'The Senescent Reaper', emoji:'⏳', hp:10,
+    dialogueLines:[
+      '"Senescent cells accumulate silently — secreting SASP. What does that stand for, and why does it matter?"',
+      '"Telomeres shorten with every cell division. But one intervention reversed this in 60 sessions at 2 ATA. Name it."',
+      '"Your hemoglobin trends borderline low across every panel. HBOT stimulates the same hormone as altitude training. Name it."',
+      '"The Senescent Reaper retreats. You have mapped the longevity terrain — zombie cells yield to knowledge."',
+    ],
+    quizIds:['q166','q167','q168','q169','q170','q171','q172','q173','q174','q175'],
+    xpReward:200, badgeId:'longevity_scholar'
+  },
 ];
 
 window.HSA.BADGES = [
@@ -180,6 +192,7 @@ window.HSA.BADGES = [
   { id:'cardio_builder',   name:'Cardio Builder',     emoji:'🏃', description:'Defeated The Mitochondrial Wraith',   rarity:'rare',      unlockCondition:'Defeat The Mitochondrial Wraith' },
   { id:'particle_expert',  name:'Particle Expert',    emoji:'🔬', description:'Mastered the advanced lipid panel',   rarity:'epic',      unlockCondition:'All lipid panel quiz questions answered correctly' },
   { id:'zone2_master',     name:'Zone 2 Master',      emoji:'🫀', description:'Completed all Zone 2 cardio lessons', rarity:'uncommon',  unlockCondition:'100% mastery in Zone 2 & Cardio category' },
+  { id:'longevity_scholar',name:'Longevity Scholar',  emoji:'⏳', description:'Defeated The Senescent Reaper',       rarity:'epic',      unlockCondition:'Defeat The Senescent Reaper' },
 ];
 
 // Daily challenge pool — seeded by date

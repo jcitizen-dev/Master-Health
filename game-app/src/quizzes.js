@@ -1217,4 +1217,114 @@ window.HSA.QUIZZES = [
     ], answer:'CAC scan (coronary artery calcium score) and carotid ultrasound (CIMT) — non-invasive tests that directly image plaque burden in arteries, independent of blood marker predictions',
     explanation:'Blood markers (LDL-P, ApoB, CRP) predict cardiovascular risk but don\'t directly measure what\'s happening in your arteries. A CAC scan (coronary artery calcium score) directly images calcified plaque in the coronary arteries — a CAC score of 0 in someone with mildly elevated LDL-P is highly reassuring. Carotid intima-media thickness (CIMT) ultrasound measures arterial wall thickness. Both tests provide objective data on actual arterial health status that blood markers alone cannot give.',
     xpReward:20 },
+
+  { id:'q166', type:'concept', category:'longevity', difficulty:2,
+    question:'What is a "senescent cell" (zombie cell), and what makes it harmful?',
+    options:[
+      'A cancer cell that mutates rapidly and spreads to other tissues',
+      'An aged or damaged cell that stops dividing but refuses to die — instead secreting a chronic inflammatory cocktail called SASP (Senescence-Associated Secretory Phenotype)',
+      'A cell depleted of NAD+ due to mitochondrial dysfunction',
+      'A white blood cell that becomes overactive during immune responses'
+    ], answer:'An aged or damaged cell that stops dividing but refuses to die — instead secreting a chronic inflammatory cocktail called SASP (Senescence-Associated Secretory Phenotype)',
+    explanation:'Senescent cells accumulate with age and chronic stress. They\'re stuck in a "zombie" state — not dead, not functional, but pumping out inflammatory cytokines (IL-6, TNF-α, MMP-9) that damage surrounding tissue and drive systemic inflammation. SASP (Senescence-Associated Secretory Phenotype) is the term for this toxic secretion pattern. Clearing these cells is one of the core targets of the longevity stack — both HBOT and Fisetin address it through different mechanisms.',
+    xpReward:20, supplementId:'hbot' },
+
+  { id:'q167', type:'concept', category:'longevity', difficulty:2,
+    question:'What did the landmark Shamir Medical Center HBOT studies (Efrati et al., 2020–2022) demonstrate?',
+    options:[
+      'HBOT doubles testosterone and IGF-1 after 20 sessions',
+      'HBOT at 2 ATA for 60 sessions produced 20–38% telomere elongation and 37% reduction in senescent T-cells — measured directly in human subjects',
+      'HBOT eliminates cardiovascular disease risk when combined with statins',
+      'Home soft-chambers at 1.3 ATA produce identical results to clinical 2 ATA chambers'
+    ], answer:'HBOT at 2 ATA for 60 sessions produced 20–38% telomere elongation and 37% reduction in senescent T-cells — measured directly in human subjects',
+    explanation:'Published in the journal Aging, these are the most compelling HBOT longevity studies to date. 65 healthy older adults. Protocol: 60 sessions, 90 min each at 2 ATA breathing 100% oxygen with five-minute air breaks (the air breaks cycle HIF-1α, amplifying the adaptive response). Telomere length was measured via flow cytometry in peripheral blood immune cells. The same study also showed significant improvements in cognitive function — processing speed, attention, and executive function. Dr. Shai Efrati leads the research at Tel Aviv University / Shamir Medical Center.',
+    xpReward:25, supplementId:'hbot' },
+
+  { id:'q168', type:'concept', category:'longevity', difficulty:1,
+    question:'What is the core mechanism that makes HBOT a "hormetic" intervention?',
+    options:[
+      'It kills damaged cells directly with high-pressure oxygen',
+      'The hyperoxic burst is a controlled stressor — the body\'s adaptive overreaction to the brief oxidative signal is what produces the repair benefits, not the oxygen itself',
+      'It floods the bloodstream with antioxidants that neutralise free radicals',
+      'High pressure compresses the spine and joints, improving posture and circulation'
+    ], answer:'The hyperoxic burst is a controlled stressor — the body\'s adaptive overreaction to the brief oxidative signal is what produces the repair benefits, not the oxygen itself',
+    explanation:'Hormesis: a beneficial response to a low-level stressor. HBOT delivers brief hyperoxia (10–15x normal tissue oxygen) — the body interprets this as a threat and mounts a powerful adaptive response: upregulating antioxidants, mobilising stem cells, activating repair pathways. Then oxygen returns to normal, and the adaptive response "overshoots" — leaving the system stronger than before. This is the same principle as Zone 2 cardio (metabolic hormesis), cold plunge (thermal hormesis), and fasting (nutrient-deprivation hormesis).',
+    xpReward:20, supplementId:'hbot' },
+
+  { id:'q169', type:'concept', category:'longevity', difficulty:2,
+    question:'How does HBOT address my consistently borderline-low hemoglobin (13.9 in Jul 2025, 13.3 in May 2026)?',
+    options:[
+      'HBOT directly adds iron to the bloodstream to raise hemoglobin synthesis',
+      'HBOT stimulates EPO (erythropoietin) production via HIF-1α activation, promoting red blood cell synthesis — the same mechanism altitude training uses',
+      'HBOT has no effect on red blood cell production — hemoglobin must be addressed through diet alone',
+      'HBOT reduces hemoglobin breakdown by protecting red blood cells from oxidative damage'
+    ], answer:'HBOT stimulates EPO (erythropoietin) production via HIF-1α activation, promoting red blood cell synthesis — the same mechanism altitude training uses',
+    explanation:'EPO (erythropoietin) is the hormone that tells bone marrow to produce more red blood cells. Altitude training camps exploit this — lower ambient oxygen triggers EPO, building the RBC count athletes return home with. HBOT activates HIF-1α (Hypoxia-Inducible Factor 1-alpha) via the post-session normoxic transition, which upregulates EPO. For consistently borderline-low hemoglobin across multiple panels, HBOT is one of the few non-supplemental interventions with a credible mechanism for improvement alongside dietary iron and B12 optimisation.',
+    xpReward:25, supplementId:'hbot' },
+
+  { id:'q170', type:'concept', category:'longevity', difficulty:2,
+    question:'Both HBOT and Fisetin target senescent cells — what makes them complementary rather than redundant?',
+    options:[
+      'They are redundant — you only need one senolytic in your protocol',
+      'They work through completely different mechanisms: Fisetin inhibits Bcl-2 anti-apoptotic proteins; HBOT triggers senescent cell apoptosis via oxygen hormesis (p53 activation + oxidative stress pathway)',
+      'Fisetin works on muscle cells; HBOT works on brain cells — they have no overlap',
+      'HBOT is only needed when Fisetin causes side effects'
+    ], answer:'They work through completely different mechanisms: Fisetin inhibits Bcl-2 anti-apoptotic proteins; HBOT triggers senescent cell apoptosis via oxygen hormesis (p53 activation + oxidative stress pathway)',
+    explanation:'Senescent cells survive because they hijack anti-apoptotic proteins (especially Bcl-2 and Bcl-xL) to resist normal cell death signals. Fisetin disables this survival mechanism directly — inhibiting Bcl-2 so the cell\'s own death program can proceed. HBOT uses a completely different route: the hyperoxic oxidative burst activates p53 (the cell\'s own tumour suppressor / death signal) and generates reactive oxygen species that overwhelm senescent cells\' already-compromised defences. Different doors into the same room — combining them likely achieves broader senolytic coverage than either alone.',
+    xpReward:25, supplementId:'hbot' },
+
+  { id:'q171', type:'concept', category:'longevity', difficulty:2,
+    question:'How does HBOT specifically relate to my elevated liver enzymes (ALT 67, AST 39)?',
+    options:[
+      'HBOT lowers liver enzymes by reducing protein synthesis demands in the liver',
+      'HBOT activates HIF-1α and VEGF, which accelerate hepatocyte regeneration and tissue repair — a direct complement to the NAC + TUDCA hepatoprotective protocol',
+      'HBOT has no hepatic effects — liver recovery is purely dietary',
+      'HBOT raises liver enzymes temporarily before normalising them'
+    ], answer:'HBOT activates HIF-1α and VEGF, which accelerate hepatocyte regeneration and tissue repair — a direct complement to the NAC + TUDCA hepatoprotective protocol',
+    explanation:'The April 2026 Serbia panel showed ALT 67 (high) and AST 39 (high), likely from heavy training load and creatine. The current protocol addresses this with NAC (antioxidant protection) and TUDCA (bile acid displacement + ER stress reduction). HBOT adds a regenerative layer: hyperoxia activates VEGF (Vascular Endothelial Growth Factor) driving angiogenesis to improve hepatic blood flow, while the HIF-1α pathway upregulates growth factors that accelerate hepatocyte repair. Emerging clinical evidence in NAFLD (non-alcoholic fatty liver disease) shows enzyme normalisation with repeated HBOT courses.',
+    xpReward:20, supplementId:'hbot' },
+
+  { id:'q172', type:'concept', category:'longevity', difficulty:1,
+    question:'What pressure and session length does the research-backed HBOT longevity protocol use?',
+    options:[
+      '30 min at 1.0 ATA breathing room air (21% oxygen)',
+      '60–90 min at 2 ATA breathing 100% oxygen, with five-minute air breaks per session — as used in the Shamir telomere studies',
+      '20 min at 4 ATA — higher pressure is always better',
+      '2 hours at 1.1 ATA breathing 30% oxygen'
+    ], answer:'60–90 min at 2 ATA breathing 100% oxygen, with five-minute air breaks per session — as used in the Shamir telomere studies',
+    explanation:'The Efrati protocol: 90-minute sessions, 2 ATA (atmospheres absolute), 100% oxygen, with five-minute air breaks at 21% oxygen every 20 minutes. The air breaks are deliberate — cycling between hyperoxia and normoxia maximises the HIF-1α activation/deactivation cycle, which is what drives the adaptive response. Home soft-chambers typically operate at 1.3 ATA — lower pressure, lower risk, but the evidence base is at 2 ATA. The gap between 1.3 ATA and 2 ATA in terms of biological effect is not fully characterised, though lower-pressure use is still biologically active.',
+    xpReward:15, supplementId:'hbot' },
+
+  { id:'q173', type:'concept', category:'longevity', difficulty:2,
+    question:'Why does HBOT synergise specifically well with the NMN/NAD+ protocol?',
+    options:[
+      'HBOT metabolises NMN faster, increasing its bioavailability',
+      'Both are taken fasted — the shared timing creates synergy',
+      'HBOT activates PGC-1α, driving mitochondrial biogenesis (more mitochondria); NMN/NAD+ fuels those mitochondria — quantity + quality mitochondrial strategy',
+      'HBOT and NMN both target the same SIRT1 pathway — one oral, one physical'
+    ], answer:'HBOT activates PGC-1α, driving mitochondrial biogenesis (more mitochondria); NMN/NAD+ fuels those mitochondria — quantity + quality mitochondrial strategy',
+    explanation:'PGC-1α (Peroxisome proliferator-activated receptor gamma coactivator 1-alpha) is the master switch for mitochondrial biogenesis — it tells cells to make more mitochondria. HBOT\'s hyperoxic stress activates PGC-1α powerfully. NMN then ensures those new and existing mitochondria have adequate NAD+ to generate ATP. NAD+ declines ~1% per year after age 30, impairing mitochondrial efficiency even if the mitochondria are physically present. HBOT addresses quantity; NMN addresses quality and fuel. Zone 2 cardio also activates PGC-1α — creating a triple synergy: HBOT + NMN + Zone 2.',
+    xpReward:25, supplementId:'hbot' },
+
+  { id:'q174', type:'concept', category:'longevity', difficulty:1,
+    question:'What does SASP stand for, and why does clearing senescent cells lower systemic inflammation?',
+    options:[
+      'Systemic Autophagy Suppression Protocol — a cellular process that blocks waste clearance',
+      'Senescence-Associated Secretory Phenotype — the chronic inflammatory cocktail (IL-6, TNF-α, MMPs) that zombie cells secrete, which drives systemic CRP elevation and tissue damage',
+      'Supplemental Antioxidant Support Programme — a therapeutic strategy for longevity',
+      'Serum Albumin Synthesis Pathway — a liver function indicator'
+    ], answer:'Senescence-Associated Secretory Phenotype — the chronic inflammatory cocktail (IL-6, TNF-α, MMPs) that zombie cells secrete, which drives systemic CRP elevation and tissue damage',
+    explanation:'SASP is why senescent cells are dangerous even when they\'re not dividing. Each zombie cell continuously secretes pro-inflammatory cytokines (IL-6, IL-8), tumour necrosis factor-alpha (TNF-α), and matrix metalloproteinases (MMPs) that degrade the extracellular matrix. Locally, SASP damages surrounding healthy cells and accelerates tissue aging. Systemically, the aggregate SASP output raises CRP, drives low-grade inflammation, and impairs immune function. Clearing senescent cells (via Fisetin, HBOT) directly removes the SASP source — which is why senolytic protocols can measurably lower CRP and inflammatory markers.',
+    xpReward:20, supplementId:'hbot' },
+
+  { id:'q175', type:'concept', category:'longevity', difficulty:3,
+    question:'What is the full longevity mechanism chain from HBOT → HIF-1α → downstream repair?',
+    options:[
+      'HBOT → more oxygen → more ATP → cells live longer → longevity',
+      'HBOT (hyperoxia) → paradoxical HIF-1α activation during post-session normoxic rebound → VEGF (angiogenesis) + EPO (RBC production) + PGC-1α (mitochondrial biogenesis) + apoptosis of senescent cells → systemic regeneration',
+      'HBOT → NF-κB activation → inflammation → immune boost → longevity',
+      'HBOT → stem cells released → travel to damage sites → replace all aging cells'
+    ], answer:'HBOT (hyperoxia) → paradoxical HIF-1α activation during post-session normoxic rebound → VEGF (angiogenesis) + EPO (RBC production) + PGC-1α (mitochondrial biogenesis) + apoptosis of senescent cells → systemic regeneration',
+    explanation:'The key insight is that HIF-1α (Hypoxia-Inducible Factor 1-alpha) is named for hypoxia, but HBOT activates it through a different route: the transition from hyperoxia BACK to normal oxygen. This normoxic rebound is interpreted by sensors as a relative "hypoxic" shift, triggering HIF-1α. From there: VEGF drives new blood vessel formation (healing ischemic and damaged tissue); EPO stimulates red blood cell production in bone marrow; PGC-1α turns on mitochondrial biogenesis. Simultaneously, the oxidative burst of hyperoxia triggers p53 and overwhelms senescent cells\' Bcl-2 defences — clearing SASP-secreting zombie cells. Four mechanisms, one session.',
+    xpReward:30, supplementId:'hbot' },
 ];
