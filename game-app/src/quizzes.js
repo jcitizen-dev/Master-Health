@@ -657,7 +657,7 @@ window.HSA.QUIZZES = [
     question:'In April 2026, potassium was 5.2 (barely elevated) and albumin was 52 (mildly elevated). What likely connected these two findings — and was this confirmed?',
     options:['Both are elevated by the high-protein diet','Both are elevated by dehydration and hemoconcentration — concentrated blood has higher levels of both proteins (albumin) and electrolytes (potassium), especially if the draw was slightly hemolysed','Both are driven by high SHBG levels','Both are biomarkers of kidney dysfunction confirmed by eGFR 62.2'],
     answer:'Both are elevated by dehydration and hemoconcentration — concentrated blood has higher levels of both proteins (albumin) and electrolytes (potassium), especially if the draw was slightly hemolysed',
-    explanation:'Blood draw timing relative to sauna and training matters enormously. Dehydration concentrates the blood sample — albumin (a serum protein) appears elevated because less water = more concentrated protein. Hemolysis during draw (even mild) releases intracellular potassium into the sample. Both findings point to pre-draw conditions rather than true pathology. Confirmed by May 2026: potassium returned to 4.7 (optimal) and albumin to 4.7 g/dL (47 g/L) — both normalised.',
+    explanation:'Dehydration concentrates the blood sample — albumin (a serum protein) appears elevated because less water = more concentrated protein. Hemolysis during draw (even mild) releases intracellular potassium into the sample. Both findings point to pre-draw hydration status rather than true pathology — travel, jetlag, and inadequate fluid intake before the Serbia draw are the likely causes. Confirmed by May 2026: potassium returned to 4.7 (optimal) and albumin to 4.7 g/dL (47 g/L) — both normalised.',
     xpReward:30, markerId:'albumin' },
 
   { id:'q108', type:'combo', category:'vegan', difficulty:3, streakBonus:true,
@@ -703,7 +703,7 @@ window.HSA.QUIZZES = [
   { id:'q114', type:'true_false', category:'hormones', difficulty:2,
     question:'TRUE or FALSE: High albumin (52 g/L) in my panel indicates liver failure.',
     options:['True','False'], answer:'False',
-    explanation:'False. Liver failure causes LOW albumin (the damaged liver can\'t produce enough). HIGH albumin is the opposite problem — typically dehydration and hemoconcentration. My high albumin (52 vs ref 35–50, April 2026) is almost certainly from sauna use and intense training creating a concentrated blood sample at draw time. Confirmed by May 2026: albumin returned to 4.7 g/dL (47 g/L) — the dehydration artifact is gone.',
+    explanation:'False. Liver failure causes LOW albumin (the damaged liver can\'t produce enough). HIGH albumin is the opposite problem — typically dehydration and hemoconcentration. My high albumin (52 vs ref 35–50, April 2026) is almost certainly from travel-related dehydration and inadequate fluid intake before the draw — not any pathological process. Confirmed by May 2026: albumin returned to 4.7 g/dL (47 g/L) — the dehydration artifact is gone.',
     xpReward:15 },
 
   { id:'q115', type:'true_false', category:'methylation', difficulty:2,
@@ -872,7 +872,7 @@ window.HSA.QUIZZES = [
       'High albumin indicates liver disease because a stressed liver overworks to produce it',
       'Albumin elevation is always clinically insignificant and can be ignored'
     ], answer:'Dehydration — when blood volume shrinks, the same amount of albumin becomes more concentrated',
-    explanation:'Albumin is made by the liver and is normally stable. The liver doesn\'t suddenly overproduce it. When albumin reads HIGH, it\'s usually because there\'s less plasma water to dilute it — the same amount of albumin squeezed into less fluid looks more concentrated. Common causes: dehydration, sauna use, or intense exercise before the blood draw. Low albumin (not high) is the worrying sign of liver disease.',
+    explanation:'Albumin is made by the liver and is normally stable. The liver doesn\'t suddenly overproduce it. When albumin reads HIGH, it\'s usually because there\'s less plasma water to dilute it — the same amount of albumin squeezed into less fluid looks more concentrated. Common causes: dehydration, travel, or intense exercise before the blood draw. Low albumin (not high) is the worrying sign of liver disease.',
     xpReward:15 },
 
   { id:'q133', type:'concept', category:'minerals', difficulty:2,
