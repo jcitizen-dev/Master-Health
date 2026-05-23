@@ -34,14 +34,15 @@
     font-family: 'DM Sans', sans-serif;
     min-height: 100dvh;
     padding-top: calc(var(--safe-top) + 16px);
-    padding-bottom: calc(var(--safe-bottom) + 72px);
+    padding-bottom: calc(var(--safe-bottom) + 20px);
     padding-left: 16px;
     padding-right: 16px;
   }
   .header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
   .header-left h1 { font-size: 28px; font-weight: 300; letter-spacing: -0.02em; line-height: 1; }
   .header-left .date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
-  .prog-ring-wrap { position: relative; width: 52px; height: 52px; }
+  .prog-ring-wrap { position: relative; width: 52px; height: 52px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .prog-ring-wrap:active { opacity: 0.7; }
   .prog-ring-wrap svg { transform: rotate(-90deg); }
   .prog-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 3; }
   .prog-ring-fill { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset .4s ease; }
@@ -65,13 +66,9 @@
   .all-done { text-align: center; padding: 12px 0 4px; font-size: 13px; color: var(--accent); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; opacity: 0; transition: opacity .4s; }
   .all-done.show { opacity: 1; }
   .streak { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); margin-top: 3px; letter-spacing: 0.04em; min-height: 16px; }
-  .reset-btn { width: 100%; padding: 13px; border-radius: var(--radius); border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 8px; }
-  .reset-btn:active { background: var(--surface2); }
-
-  /* BOTTOM NAV */
-  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: rgba(28,28,30,0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.08); padding-bottom: env(safe-area-inset-bottom, 0px); }
-  .nav-btn { flex: 1; padding: 14px 0; background: transparent; border: none; color: rgba(240,240,238,0.45); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
-  .nav-btn.active { color: #c8f542; }
+  /* LOG BACK BUTTON */
+  .log-back { display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 40px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+  .log-back:active { background: var(--surface2); }
 
   /* LOG */
   #log-view { display: none; }
@@ -103,7 +100,7 @@
       <div class="streak" id="streak-label"></div>
     </div>
     <button id="auth-btn" onclick="handleSignIn()" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(240,240,238,0.55);padding:6px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis;">Sign in</button>
-    <div class="prog-ring-wrap">
+    <div class="prog-ring-wrap" onclick="showView('log')" title="View log">
       <svg width="52" height="52" viewBox="0 0 52 52">
         <circle class="prog-ring-bg" cx="26" cy="26" r="22"/>
         <circle class="prog-ring-fill" id="prog-ring" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="138.2"/>
@@ -114,7 +111,6 @@
   <div class="day-tabs" id="day-tabs"></div>
   <div id="schedule"></div>
   <div class="all-done" id="all-done">✦ all done for today</div>
-  <button class="reset-btn" onclick="resetDay()">Reset day</button>
 </div>
 
 <div id="log-view">
@@ -123,6 +119,7 @@
       <h1>Log</h1>
       <div class="date" id="log-subtitle"></div>
     </div>
+    <button class="log-back" onclick="showView('today')">← back</button>
   </div>
   <div id="log-content"></div>
   <div style="display:flex;gap:8px;padding:20px 0 8px;">
@@ -132,10 +129,6 @@
   </div>
 </div>
 
-<div class="bottom-nav">
-  <button class="nav-btn active" id="nav-today" onclick="showView('today')">Today</button>
-  <button class="nav-btn" id="nav-log" onclick="showView('log')">Log</button>
-</div>
 
 <script>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -283,9 +276,7 @@ function showView(v) {
   currentView = v;
   document.getElementById('today-view').style.display = v==='today'?'':'none';
   document.getElementById('log-view').style.display = v==='log'?'block':'none';
-  document.getElementById('nav-today').classList.toggle('active', v==='today');
-  document.getElementById('nav-log').classList.toggle('active', v==='log');
-  if (v==='log') renderLog();
+  if (v==='log') { renderLog(); window.scrollTo(0,0); }
 }
 
 // --- Streak ---
@@ -341,9 +332,10 @@ function renderSchedule() {
   document.getElementById('all-done').classList.toggle('show', total>0&&done===total);
 
   const c = document.getElementById('schedule'); c.innerHTML='';
-  sched.forEach((section,si) => {
+  const visibleSections = sched.filter(s => s.time !== 'Skip' && s.items.some(it => !s.skip.includes(it)));
+  visibleSections.forEach((section,si) => {
     if (!section.items.length) return;
-    if (si>0) { const dv=document.createElement('div'); dv.className='divider'; c.appendChild(dv); }
+    if (si > 0) { const dv=document.createElement('div'); dv.className='divider'; c.appendChild(dv); }
     const sec=document.createElement('div'); sec.className='section';
     const lbl=document.createElement('div'); lbl.className='section-label'; lbl.textContent=section.time; sec.appendChild(lbl);
     const row=document.createElement('div'); row.className='pill-row';
@@ -609,6 +601,16 @@ auth.onAuthStateChanged(async user => {
     if (currentView === 'log') renderLog();
   }
 });
+
+// --- Swipe-down to dismiss log ---
+(function() {
+  let startY = 0;
+  const logEl = document.getElementById('log-view');
+  logEl.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+  logEl.addEventListener('touchend', e => {
+    if (currentView === 'log' && e.changedTouches[0].clientY - startY > 70) showView('today');
+  }, { passive: true });
+})();
 
 // --- Boot ---
 (async () => {
