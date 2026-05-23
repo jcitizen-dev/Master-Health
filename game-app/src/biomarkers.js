@@ -185,14 +185,14 @@ window.HSA.BIOMARKERS = [
     xpValue: 10
   },
   {
-    id: 'bilirubin', name: 'Total Bilirubin', panel: 'liver', myValue: 13.4, unit: 'µmol/L',
-    referenceRange: { low: 3, optimal_low: 5, optimal_high: 17, high: 21 },
-    status: 'optimal',
+    id: 'bilirubin', name: 'Total Bilirubin', panel: 'liver', myValue: 1.2, unit: 'mg/dL',
+    referenceRange: { low: 0.1, optimal_low: 0.2, optimal_high: 1.0, high: 1.2 },
+    status: 'borderline',
     whatItMeasures: 'Breakdown product of haemoglobin — elevated in haemolysis, liver disease, or bile duct obstruction.',
     whyItMatters: 'Bilirubin tells you if the liver can conjugate and excrete waste. Normal = liver conjugation is working. Very elevated = jaundice.',
-    myContextNote: '13.4 µmol/L is optimal. Normal bilirubin alongside normal GGT confirms the elevated AST/ALT is NOT due to impaired liver excretory function or bile duct issues.',
+    myContextNote: '1.2 mg/dL is at the upper edge of Quest\'s reference range — borderline high. Worth monitoring alongside GGT and ALT. Mild elevation can reflect early liver congestion or slightly increased red cell turnover. Not in jaundice territory, but something to watch.',
     relatedSupplements: ['tudca', 'nac'],
-    mnemonic: 'Bilirubin 13.4 — THIRTEEN-point-FOUR, no jaundice, not a score to be sore.',
+    mnemonic: 'Bilirubin 1.2 — ONE-POINT-TWO, borderline high, keep your liver in view.',
     xpValue: 10
   },
   {
@@ -392,7 +392,7 @@ window.HSA.BIOMARKERS = [
     xpValue: 25
   },
   {
-    id: 'estradiol', name: 'Estradiol', panel: 'hormones', myValue: 20, unit: 'pg/mL',
+    id: 'estradiol', name: 'Estradiol', panel: 'hormones', myValue: 30, unit: 'pg/mL',
     referenceRange: { low: 0, optimal_low: 10, optimal_high: 40, high: 56 },
     status: 'optimal',
     whatItMeasures: 'Primary estrogen in men — arises from testosterone aromatisation; important for bone, libido, and mood.',
