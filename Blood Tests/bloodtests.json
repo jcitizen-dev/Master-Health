@@ -180,7 +180,7 @@
         { "id": "estradiol",      "name": "Estradiol",           "value": 20,    "unit": "pg/mL",  "ref_low": 0,    "ref_high": 56.0,  "status": "normal", "note": "Reported as <20 (at/below detection)" },
         { "id": "testosterone",   "name": "Total Testosterone",  "value": 25.9,  "unit": "nmol/L", "ref_low": 8.33, "ref_high": 30.19, "status": "normal",  "us_value": 746.3, "us_unit": "ng/dL" },
         { "id": "free_testosterone","name": "Free Testosterone", "value": 8.63,  "unit": "pg/mL",  "ref_low": 2.15, "ref_high": 16.5,  "status": "normal",  "note": "ELISA method — not directly comparable to Quest equilibrium dialysis" },
-        { "id": "dht",            "name": "DHT",                 "value": 483.7, "unit": "pg/mL",  "ref_low": 175,  "ref_high": 913,   "status": "normal",  "note": "Within range despite dutasteride" },
+        { "id": "dht",            "name": "DHT",                 "value": 483.7, "unit": "pg/mL",  "ref_low": 175,  "ref_high": 913,   "status": "normal",  "note": "Immunoassay method — within range despite dutasteride. NOTE: superseded by LC/MS/MS result of 7 ng/dL (LOW) from May 2026 panel." },
         { "id": "dhea_s",         "name": "DHEA-S",              "value": 187.6, "unit": "µg/dL",  "ref_low": 44.3, "ref_high": 331.0, "status": "normal" },
         { "id": "cortisol",       "name": "Cortisol (AM)",       "value": 199.8, "unit": "nmol/L", "ref_low": 101.2,"ref_high": 536.7, "status": "normal",  "us_value": 7.24,  "us_unit": "µg/dL" },
         { "id": "homocysteine",   "name": "Homocysteine",        "value": 10.2,  "unit": "µmol/L", "ref_low": 5.5,  "ref_high": 16.2,  "status": "borderline", "note": "Optimal <9; targeted by TMG+B12+P5P" },
@@ -262,7 +262,7 @@
         { "id": "psa",              "name": "PSA, Total",             "value": 0.22,  "unit": "ng/mL",     "ref_low": null,  "ref_high": 4.0,   "status": "normal" },
         { "id": "hba1c",            "name": "Hemoglobin A1c",         "value": 5.3,   "unit": "%",         "ref_low": null,  "ref_high": 5.7,   "status": "normal" },
         { "id": "lpa",              "name": "Lipoprotein (a)",        "value": null,  "unit": "nmol/L",    "ref_low": null,  "ref_high": null,  "status": "see_report", "note": "In progress at time of export" },
-        { "id": "dht",              "name": "Dihydrotestosterone",    "value": null,  "unit": "ng/dL",     "ref_low": null,  "ref_high": null,  "status": "see_report", "note": "In progress at time of export" },
+        { "id": "dht",              "name": "Dihydrotestosterone",    "value": 7,     "unit": "ng/dL",     "ref_low": 12,    "ref_high": 65,    "status": "low",       "flag": "L", "note": "LC/MS/MS assay (gold standard). Below reference range — dutasteride achieving very effective DHT suppression." },
         { "id": "ldl_particles",    "name": "LDL Particle Number",    "value": null,  "unit": "nmol/L",    "ref_low": null,  "ref_high": null,  "status": "see_report", "note": "In progress at time of export" }
       ]
     }
