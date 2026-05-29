@@ -403,14 +403,14 @@ window.HSA.BIOMARKERS = [
     xpValue: 15
   },
   {
-    id: 'dht', name: 'DHT', panel: 'hormones', myValue: 483.7, unit: 'pg/mL',
-    referenceRange: { low: 175, optimal_low: 250, optimal_high: 800, high: 913 },
-    status: 'optimal',
-    whatItMeasures: 'Dihydrotestosterone — the most potent androgen, formed from testosterone by 5-alpha reductase.',
-    whyItMatters: 'DHT drives androgenic alopecia (hair loss). Dutasteride blocks 5-alpha reductase to reduce DHT. DHT level on treatment reflects treatment efficacy.',
-    myContextNote: 'DHT at 483.7 pg/mL is in the mid-range DESPITE dutasteride (which blocks ~90–95% of 5-AR). This is the "surprisingly good" result the doctor flagged — DHT is being suppressed enough for hair preservation while remaining within the normal range for overall androgenic health. Suggests good baseline endogenous production.',
+    id: 'dht', name: 'DHT', panel: 'hormones', myValue: 7, unit: 'ng/dL',
+    referenceRange: { low: 12, optimal_low: 25, optimal_high: 55, high: 65 },
+    status: 'low',
+    whatItMeasures: 'Dihydrotestosterone — the most potent androgen, formed from testosterone by 5-alpha reductase. Measured here by LC/MS/MS (the gold standard assay).',
+    whyItMatters: 'DHT drives androgenic alopecia (hair loss). Dutasteride blocks 5-alpha reductase to reduce DHT. The LC/MS/MS result accurately reflects true DHT suppression — immunoassay methods significantly overestimate DHT.',
+    myContextNote: 'DHT at 7 ng/dL (LC/MS/MS) is below the reference range of 12–65 ng/dL — confirming dutasteride is achieving very effective suppression. A previous immunoassay reading of 483.7 pg/mL was an artifact of that method\'s cross-reactivity; LC/MS/MS is the accurate measurement. Below-reference DHT is the target for hair preservation — the protocol is working. Worth monitoring at the next panel: chronically sub-reference DHT should be noted even when the hair goal is achieved.',
     relatedSupplements: ['dutasteride'],
-    mnemonic: 'DHT 483.7 — FOUR-eighty-THREE, dutasteride working, hair preserved with DHT in range.',
+    mnemonic: 'DHT 7 ng/dL LOW — LC/MS/MS (gold standard) confirms dutasteride is working better than the immunoassay suggested.',
     xpValue: 25
   },
   {
@@ -1137,7 +1137,7 @@ window.HSA.SUPPLEMENT_CONNECTIONS = {
     zinc: 'Zinc is a mild aromatase inhibitor — it modestly reduces the conversion of testosterone to estradiol. At my dosing, this is a gentle regulatory effect rather than pharmacological suppression.'
   },
   dht: {
-    dutasteride: 'Dutasteride is a dual 5α-reductase inhibitor (Type 1 and Type 2) — it directly blocks testosterone-to-DHT conversion. This is exactly why I take it. The pending DHT result will quantify how much suppression is occurring.'
+    dutasteride: 'Dutasteride is a dual 5α-reductase inhibitor (Type 1 and Type 2) — it directly blocks testosterone-to-DHT conversion. The LC/MS/MS DHT of 7 ng/dL (below reference 12–65 ng/dL) confirms very effective suppression — DHT is below the lower limit of normal. This is the goal for hair preservation. Note: the earlier immunoassay reading of 483.7 pg/mL was an overestimate due to cross-reactivity; LC/MS/MS is the accurate picture.'
   },
   lh: {
     tongkat: 'Tongkat modulates the HPG feedback loop at the hypothalamic-pituitary level, supporting normal LH pulsatility. It sensitises the system to upstream GnRH signalling, maintaining LH drive for testosterone production.',

@@ -88,9 +88,9 @@ window.HSA.QUIZZES = [
     xpReward:15, markerId:'albumin' },
 
   { id:'q15', type:'my_value', category:'hormones', difficulty:2,
-    question:'What was my DHT level, and is it notable given my medication?',
-    options:['183.2 pg/mL — very low on dutasteride','483.7 pg/mL — in normal range despite dutasteride','724.1 pg/mL — elevated','912.5 pg/mL — near maximum'], answer:'483.7 pg/mL — in normal range despite dutasteride',
-    explanation:'DHT at 483.7 pg/mL despite dutasteride (which blocks ~90% of 5-AR activity) suggests excellent endogenous testosterone production. DHT remains in the normal range (175–913) — the "surprisingly good" result the doctor flagged.',
+    question:'What was my DHT result on the May 2026 Quest LC/MS/MS (gold standard) assay?',
+    options:['12 ng/dL — at the lower boundary of reference','7 ng/dL — below reference range, LOW by LC/MS/MS','28 ng/dL — mid-range for a treated patient','45 ng/dL — optimal suppression on dutasteride'], answer:'7 ng/dL — below reference range, LOW by LC/MS/MS',
+    explanation:'7 ng/dL (LOW) — below the Quest reference range of 12–65 ng/dL on the LC/MS/MS assay, the gold standard for DHT. This is ideal for the hair protocol: dutasteride is suppressing DHT below the lower reference limit, confirming very effective 5-AR blockade. A previous immunoassay reading of 483.7 pg/mL sounded high but was an artifact of that method\'s cross-reactivity with other steroids. LC/MS/MS is the accurate measurement.',
     xpReward:20, markerId:'dht' },
 
   { id:'q16', type:'my_value', category:'metabolic', difficulty:1,
@@ -559,9 +559,10 @@ window.HSA.QUIZZES = [
     xpReward:30, markerId:'anti_tpo' },
 
   { id:'q93', type:'multiple_choice', category:'hormones', difficulty:3,
-    question:'DHT at 483.7 pg/mL on dutasteride — what does this tell us about endogenous testosterone production?',
-    options:['Dutasteride is not working — DHT should be undetectable','DHT at 483.7 despite 90–95% 5-AR blockade implies very high baseline testosterone → DHT conversion, suggesting robust endogenous T production','Dutasteride only reduces DHT by 50% in reality','483.7 pg/mL is below the normal range for males'], answer:'DHT at 483.7 despite 90–95% 5-AR blockade implies very high baseline testosterone → DHT conversion, suggesting robust endogenous T production',
-    explanation:'If dutasteride reduces DHT by ~90%, and the residual DHT is 483.7 pg/mL (within reference 175–913), then pre-treatment DHT was approximately 4,000–5,000+ pg/mL. This implies exceptionally high endogenous testosterone → DHT conversion driven by strong T production. The hair benefit is real (DHT suppressed for follicles) while systemic androgenic health is maintained.',
+    question:'My immunoassay DHT read 483.7 pg/mL but the LC/MS/MS result is 7 ng/dL (LOW). How do you explain this discrepancy?',
+    options:['The blood samples were drawn at different times, explaining the difference','Dutasteride is only blocking the immunoassay-detectable form of DHT','Immunoassay methods significantly overestimate DHT via cross-reactivity with other steroids — LC/MS/MS physically separates and accurately quantifies only DHT, giving the true lower value. 7 ng/dL (LOW) is the real picture.','The 483.7 pg/mL was in different units — it converts exactly to 7 ng/dL'],
+    answer:'Immunoassay methods significantly overestimate DHT via cross-reactivity with other steroids — LC/MS/MS physically separates and accurately quantifies only DHT, giving the true lower value. 7 ng/dL (LOW) is the real picture.',
+    explanation:'DHT immunoassay tests cross-react with testosterone, androstenedione, and other steroids, producing falsely inflated readings. 483.7 pg/mL by immunoassay is not the same as 483.7 pg/mL of actual DHT. LC/MS/MS physically separates all steroid molecules before measuring — only DHT is counted. The result: 7 ng/dL (below reference 12–65 ng/dL), confirming dutasteride is suppressing DHT very effectively. This is why clinical guidelines increasingly require LC/MS/MS for accurate steroid hormone measurement.',
     xpReward:30, markerId:'dht' },
 
   { id:'q94', type:'multiple_choice', category:'methylation', difficulty:2,
@@ -1327,4 +1328,123 @@ window.HSA.QUIZZES = [
     ], answer:'HBOT (hyperoxia) → paradoxical HIF-1α activation during post-session normoxic rebound → VEGF (angiogenesis) + EPO (RBC production) + PGC-1α (mitochondrial biogenesis) + apoptosis of senescent cells → systemic regeneration',
     explanation:'The key insight is that HIF-1α (Hypoxia-Inducible Factor 1-alpha) is named for hypoxia, but HBOT activates it through a different route: the transition from hyperoxia BACK to normal oxygen. This normoxic rebound is interpreted by sensors as a relative "hypoxic" shift, triggering HIF-1α. From there: VEGF drives new blood vessel formation (healing ischemic and damaged tissue); EPO stimulates red blood cell production in bone marrow; PGC-1α turns on mitochondrial biogenesis. Simultaneously, the oxidative burst of hyperoxia triggers p53 and overwhelms senescent cells\' Bcl-2 defences — clearing SASP-secreting zombie cells. Four mechanisms, one session.',
     xpReward:30, supplementId:'hbot' },
+
+  // ── GUT & IMMUNITY — Additional Questions ────────────────────────────────
+  { id:'q176', type:'concept', category:'gut', difficulty:2,
+    question:'What is allicin, and how does garlic fight inflammation?',
+    options:[
+      'Allicin is formed when raw garlic is crushed — it inhibits NF-κB signalling and suppresses pro-inflammatory cytokine production',
+      'Allicin is a digestive enzyme in garlic that breaks down lectins before they cause gut inflammation',
+      'Allicin is a prebiotic fiber that feeds Bifidobacterium species in the colon',
+      'Allicin blocks histamine receptors, reducing immune-driven gut inflammation'
+    ], answer:'Allicin is formed when raw garlic is crushed — it inhibits NF-κB signalling and suppresses pro-inflammatory cytokine production',
+    explanation:'Allicin is produced when alliinase (released by crushing garlic) acts on alliin. Allicin and its metabolites (diallyl sulfides) suppress NF-κB — the master inflammatory transcription factor controlling dozens of pro-inflammatory cytokines including IL-6 and TNF-α. Garlic also has mild antifungal and antibacterial properties, making it a broad gut-protective agent.',
+    xpReward:15, supplementId:'garlic' },
+
+  { id:'q177', type:'concept', category:'gut', difficulty:1,
+    question:'Why do probiotics survive better when taken with a meal rather than on an empty stomach?',
+    options:[
+      'Food activates digestive enzymes that convert inactive bacteria into live cultures',
+      'Food buffers stomach acid from pH ~2 (fasted) to pH ~4–5, dramatically improving bacterial survival through to the intestine',
+      'Stomach contractions are weaker with food, giving bacteria more time to pass safely',
+      'Probiotics require dietary protein to attach to the intestinal wall before colonising'
+    ], answer:'Food buffers stomach acid from pH ~2 (fasted) to pH ~4–5, dramatically improving bacterial survival through to the intestine',
+    explanation:'The fasted stomach has pH ~1.5–2.5 — close to battery acid. Most probiotic strains cannot survive this. A meal buffers stomach acid toward pH 4–5, and transit time is also longer with food — giving bacteria a far better chance of surviving to reach the colon. Taking probiotics with a meal can increase viable bacteria reaching the gut by 3–4x compared to a fasted dose.',
+    xpReward:10, supplementId:'probiotic' },
+
+  { id:'q178', type:'concept', category:'gut', difficulty:2,
+    question:'Ginger has three distinct mechanisms relevant to gut and inflammation. Which answer covers all three?',
+    options:[
+      'Ginger raises stomach acid, blocks candida growth, and increases bile acid production',
+      'Gingerols and shogaols inhibit COX-1/COX-2 (anti-inflammatory), antagonise 5-HT3 receptors (anti-nausea), and stimulate gastric motility (prokinetic)',
+      'Ginger contains curcumin, allicin, and omega-3 — three anti-inflammatory compounds',
+      'Ginger blocks NF-κB, increases gut mucus production, and raises short-chain fatty acids'
+    ], answer:'Gingerols and shogaols inhibit COX-1/COX-2 (anti-inflammatory), antagonise 5-HT3 receptors (anti-nausea), and stimulate gastric motility (prokinetic)',
+    explanation:'Ginger\'s bioactive compounds — gingerols (fresh) and shogaols (dried/heated) — are potent COX-1 and COX-2 inhibitors (reducing inflammatory prostaglandins). They also antagonise 5-HT3 receptors — the same mechanism as the anti-nausea drug ondansetron. And ginger stimulates gastric motility, reducing bloating and improving gut transit. Three mechanisms: anti-inflammatory, anti-nausea, and prokinetic.',
+    xpReward:15, supplementId:'ginger' },
+
+  { id:'q179', type:'concept', category:'gut', difficulty:2,
+    question:'How does a high-fiber diet feed the gut microbiome and reduce systemic inflammation?',
+    options:[
+      'Fiber directly kills pathogenic bacteria by binding them and preventing their attachment to gut walls',
+      'Fiber feeds beneficial gut bacteria (Bifidobacterium, Lactobacillus) which ferment it into short-chain fatty acids (SCFAs) — especially butyrate, which strengthens the intestinal barrier and suppresses systemic inflammatory signals',
+      'Fiber absorbs dietary toxins before they enter the bloodstream, reducing immune activation',
+      'High-fiber diets acidify the colon, preventing harmful bacterial overgrowth via pH-lowering alone'
+    ], answer:'Fiber feeds beneficial gut bacteria (Bifidobacterium, Lactobacillus) which ferment it into short-chain fatty acids (SCFAs) — especially butyrate, which strengthens the intestinal barrier and suppresses systemic inflammatory signals',
+    explanation:'Prebiotic fiber is fermented by beneficial gut bacteria into short-chain fatty acids — primarily butyrate, acetate, and propionate. Butyrate is the primary fuel for colonocytes (gut lining cells), tightening junctions and reducing intestinal permeability. Butyrate also directly suppresses NF-κB, connecting gut health directly to CRP and systemic inflammation. This is the mechanistic link between a vegan diet\'s high fiber content and lower inflammatory markers — and why CRP dropped from 1.0 (Serbia) to <0.2 (May 2026).',
+    xpReward:15, supplementId:'probiotic' },
+
+  // ── HAIR PROTOCOL — Additional Questions ─────────────────────────────────
+  { id:'q180', type:'concept', category:'hair', difficulty:2,
+    question:'How does minoxidil stimulate hair growth — what is its primary biological mechanism?',
+    options:[
+      'Minoxidil blocks DHT production at the scalp, complementing dutasteride\'s systemic DHT blockade',
+      'Minoxidil is a potassium channel opener that causes vasodilation in scalp blood vessels — increasing blood flow, oxygen, and nutrient delivery to follicles, and prolonging the anagen (growth) phase',
+      'Minoxidil directly stimulates keratin production inside hair follicle cells',
+      'Minoxidil inhibits the 5-AR enzyme specifically in scalp sebaceous glands'
+    ], answer:'Minoxidil is a potassium channel opener that causes vasodilation in scalp blood vessels — increasing blood flow, oxygen, and nutrient delivery to follicles, and prolonging the anagen (growth) phase',
+    explanation:'Minoxidil was originally an oral antihypertensive — its hair-growth side effect led to the topical formulation. Mechanism: it opens ATP-sensitive potassium channels in vascular smooth muscle, causing vasodilation. In the scalp, this increases blood flow to follicles and activates prostaglandin E2 synthesis, which promotes anagen (growth phase) and delays telogen (resting phase). Critically, minoxidil does NOT affect DHT — it works downstream of DHT damage, addressing blood supply and follicle biology.',
+    xpReward:20, supplementId:'rogaine' },
+
+  { id:'q181', type:'concept', category:'hair', difficulty:2,
+    question:'What is the "minoxidil shed" (weeks 4–8 of treatment), and why does it happen?',
+    options:[
+      'The shed is a scalp inflammatory reaction to the alcohol base of minoxidil solution',
+      'DHT temporarily spikes in response to vasodilation, accelerating follicle miniaturisation before the benefit kicks in',
+      'Minoxidil forces resting (telogen) hairs out prematurely to make room for new anagen hairs — the shed is old hairs clearing before stronger growth begins',
+      'The shed indicates an allergic reaction — it means minoxidil should be discontinued immediately'
+    ], answer:'Minoxidil forces resting (telogen) hairs out prematurely to make room for new anagen hairs — the shed is old hairs clearing before stronger growth begins',
+    explanation:'Minoxidil pushes follicles from telogen (resting) into a new anagen (growth) cycle. The old telogen hair must be ejected before the new anagen hair can take its place — creating a paradoxical shedding phase at 4–8 weeks. More hairs falling is a positive sign: follicles are transitioning. Stopping at this stage is the most common mistake. The patients who push through the shed are the ones who see the true benefit.',
+    xpReward:15, supplementId:'rogaine' },
+
+  { id:'q182', type:'concept', category:'hair', difficulty:3,
+    question:'What is GHK-Cu (copper peptide) and why does it complete the three-mechanism hair protocol?',
+    options:[
+      'GHK-Cu is a carrier molecule that improves minoxidil penetration through the scalp barrier',
+      'GHK-Cu is a synthetic DHT analogue that competes with DHT for follicle receptor binding',
+      'GHK-Cu is a naturally occurring copper-binding tripeptide that stimulates follicle stem cell proliferation and promotes angiogenesis — addressing downstream follicle biology that dutasteride and minoxidil don\'t cover',
+      'GHK-Cu raises local DHT at the follicle level, paradoxically stimulating hair growth'
+    ], answer:'GHK-Cu is a naturally occurring copper-binding tripeptide that stimulates follicle stem cell proliferation and promotes angiogenesis — addressing downstream follicle biology that dutasteride and minoxidil don\'t cover',
+    explanation:'GHK-Cu (glycine-histidine-lysine-copper) is abundant in young plasma but declines with age. It stimulates hair follicle stem cell proliferation, promotes angiogenesis via VEGF and FGF-7 upregulation, and may reactivate dormant follicles. The three-layer protocol: dutasteride blocks DHT production (upstream — source), minoxidil increases blood flow (midstream — delivery), GHK-Cu stimulates follicle response (downstream — biology). Multi-mechanism protocols outperform single agents in androgenic alopecia.',
+    xpReward:20, supplementId:'dutasteride' },
+
+  { id:'q183', type:'true_false', category:'hair', difficulty:2,
+    question:'TRUE or FALSE: Stopping dutasteride will cause most hair regained during treatment to be lost within 6–12 months.',
+    options:['True','False'], answer:'True',
+    explanation:'True — and this is one of the most important facts about dutasteride therapy. Hair maintained by DHT suppression is entirely dependent on continued treatment. When dutasteride stops, DHT returns to pre-treatment levels and the miniaturisation process resumes. Most patients lose the benefit within 6–12 months of discontinuation. The decision to start is effectively a long-term commitment — not a short course. This is why the protocol is designed as a sustainable daily dose with medical supervision.',
+    xpReward:15, supplementId:'dutasteride' },
+
+  // ── NEURO & MOOD — Additional Questions ──────────────────────────────────
+  { id:'q184', type:'concept', category:'neuro', difficulty:2,
+    question:'What specific cognitive effects does chronically elevated cortisol produce in the brain?',
+    options:[
+      'Chronic high cortisol sharpens executive function and improves short-term memory — it is evolutionarily designed for peak cognitive performance',
+      'Chronic high cortisol impairs hippocampal neurogenesis, reduces prefrontal cortex function (working memory, executive function), and shifts the brain toward amygdala-driven threat-detection — impairing learning and memory consolidation',
+      'Cortisol elevation only causes cognitive effects at pathological levels (Cushing\'s syndrome) — normal stress responses are cognitively harmless',
+      'High cortisol primarily affects the cerebellum, impairing motor coordination rather than cognitive function'
+    ], answer:'Chronic high cortisol impairs hippocampal neurogenesis, reduces prefrontal cortex function (working memory, executive function), and shifts the brain toward amygdala-driven threat-detection — impairing learning and memory consolidation',
+    explanation:'The hippocampus (learning and memory) and prefrontal cortex (executive function) have the highest density of glucocorticoid receptors — making them especially vulnerable to cortisol excess. Chronic stress measurably reduces hippocampal volume. The amygdala (threat detection) becomes relatively dominant, explaining why chronically stressed people are simultaneously reactive and forgetful. Sleep is when memory consolidation occurs — this is the neurological rationale for ashwagandha + magnesium at night: both buffer HPA axis activity, protecting hippocampal function during the critical consolidation window.',
+    xpReward:20, supplementId:'ashwagandha' },
+
+  { id:'q185', type:'concept', category:'neuro', difficulty:2,
+    question:'My magnesium sits at the borderline-low end of the reference range. What neurological effects can marginal magnesium deficiency produce?',
+    options:[
+      'Marginal magnesium deficiency only affects bone density — no neurological or muscular symptoms occur at borderline blood levels',
+      'Marginal deficiency causes increased neural excitability (anxiety, poor sleep, heightened stress reactivity) and impaired NMDA receptor regulation — because magnesium physically blocks the NMDA channel and low levels reduce this protective effect',
+      'Borderline low magnesium primarily causes thyroid suppression, which secondarily affects mood',
+      'Marginal magnesium deficiency is clinically irrelevant — only severe deficiency (<0.5 mmol/L) produces symptoms'
+    ], answer:'Marginal deficiency causes increased neural excitability (anxiety, poor sleep, heightened stress reactivity) and impaired NMDA receptor regulation — because magnesium physically blocks the NMDA channel and low levels reduce this protective effect',
+    explanation:'Magnesium is the brain\'s natural NMDA antagonist — it physically sits inside the NMDA (excitatory glutamate) channel, blocking it at rest. Low magnesium means less blocking = more excitatory firing = anxiety, hyperreactivity, and difficulty downregulating neural activity. Blood magnesium is tightly regulated, so borderline blood levels often underestimate tissue depletion. Additionally, magnesium cofactors ATP synthesis (brain energy) and HPA axis modulation. This is why 300–400 mg magnesium glycinate at night is one of the highest-yield neuro supplements in the stack.',
+    xpReward:20, supplementId:'magnesium' },
+
+  { id:'q186', type:'concept', category:'neuro', difficulty:2,
+    question:'Beyond its NAD+ synergy with NMN, what direct neurological effects does apigenin have?',
+    options:[
+      'Apigenin has no direct neurological effects — it is purely a NAD+ preservation molecule',
+      'Apigenin crosses the blood-brain barrier, inhibits neuroinflammation via NF-κB suppression, modulates GABA-A receptors producing mild anxiolytic effects, and has shown hippocampal neurogenesis promotion in animal models',
+      'Apigenin directly elevates BDNF by activating TrkB receptors in the prefrontal cortex',
+      'Apigenin raises dopamine synthesis via tyrosine hydroxylase upregulation'
+    ], answer:'Apigenin crosses the blood-brain barrier, inhibits neuroinflammation via NF-κB suppression, modulates GABA-A receptors producing mild anxiolytic effects, and has shown hippocampal neurogenesis promotion in animal models',
+    explanation:'Apigenin is a flavonoid with CNS bioavailability. It inhibits NF-κB directly in brain tissue — reducing neuroinflammation. Its GABA-A receptor modulation (similar to benzodiazepines but far gentler) produces mild anxiolytic effects without dependency risk. Studies in animal models show hippocampal neurogenesis promotion and BDNF upregulation. And the CD38 inhibition that protects NAD+ applies in brain tissue too — NAD+ declines in the brain with age, and this decline is linked to cognitive impairment. Apigenin\'s NMN synergy is primarily about NAD+; its direct brain effects are a meaningful bonus.',
+    xpReward:20, supplementId:'apigenin' },
 ];

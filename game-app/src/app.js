@@ -342,7 +342,7 @@ function QuizScreen({ progressHook }) {
   const params = new URLSearchParams(location.search);
 
   // Determine quiz set
-  const quizIds = useMemo(() => {
+  const baseQuizIds = useMemo(() => {
     const allQ = window.HSA.QUIZZES;
     if (params.get('daily')) {
       const daily = window.HSA.getDailyChallenge();
@@ -368,6 +368,10 @@ function QuizScreen({ progressHook }) {
     return shuffled.slice(0,10).map(q=>q.id);
   }, [location.search]);
 
+  const [replayQuizIds, setReplayQuizIds] = useState(null);
+  const [failedIds, setFailedIds] = useState([]);
+  const quizIds = replayQuizIds !== null ? replayQuizIds : baseQuizIds;
+
   const [idx, setIdx] = useState(0);
   const [answered, setAnswered] = useState(null);
   const [sessionXP, setSessionXP] = useState(0);
@@ -391,6 +395,7 @@ function QuizScreen({ progressHook }) {
     } else {
       resetCombo();
       consumeHeart();
+      setFailedIds(f => [...f, current.id]);
     }
 
     answerQuestion(current.id, correct, earned, current.category);
@@ -431,7 +436,25 @@ function QuizScreen({ progressHook }) {
           <div style={{ fontFamily:'DM Mono, monospace', fontSize:12, color:'var(--xp-gold)' }}>+{sessionXP} XP earned</div>
         </div>
         <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
-          <button onClick={() => { setIdx(0); setAnswered(null); setResults([]); setDone(false); setSessionXP(0); resetCombo(); }} style={{ padding:'12px 24px', borderRadius:'var(--radius)', background:'var(--accent)', color:'#0e0e0f', border:'none', fontFamily:'DM Mono, monospace', fontSize:12, fontWeight:500, cursor:'pointer' }}>Play Again</button>
+          <button onClick={() => {
+            const allQ = window.HSA.QUIZZES;
+            const uniqueFailed = [...new Set(failedIds)];
+            const usedSet = new Set(quizIds);
+            const bufferIds = [];
+            for (const fid of uniqueFailed) {
+              const fq = allQ.find(q => q.id === fid);
+              if (!fq) continue;
+              allQ.filter(q => q.category === fq.category && !usedSet.has(q.id))
+                .sort(() => Math.random() - 0.5).slice(0, 2)
+                .forEach(q => { bufferIds.push(q.id); usedSet.add(q.id); });
+            }
+            const passedIds = quizIds.filter(id => !uniqueFailed.includes(id));
+            const newOrder = uniqueFailed.length
+              ? [...passedIds.sort(() => Math.random() - 0.5), ...bufferIds, ...uniqueFailed]
+              : [...quizIds].sort(() => Math.random() - 0.5);
+            setReplayQuizIds(newOrder); setFailedIds([]);
+            setIdx(0); setAnswered(null); setResults([]); setDone(false); setSessionXP(0); resetCombo();
+          }} style={{ padding:'12px 24px', borderRadius:'var(--radius)', background:'var(--accent)', color:'#0e0e0f', border:'none', fontFamily:'DM Mono, monospace', fontSize:12, fontWeight:500, cursor:'pointer' }}>Play Again</button>
           <button onClick={() => navigate('/flashcards')} style={{ padding:'12px 24px', borderRadius:'var(--radius)', background:'var(--surface)', color:'var(--text)', border:'1px solid var(--border)', fontFamily:'DM Mono, monospace', fontSize:12, cursor:'pointer' }}>Flashcards</button>
         </div>
       </div>
@@ -678,9 +701,12 @@ function BossBattleScreen({ progressHook }) {
   const [timerKey, setTimerKey] = useState(0);
   const [showParticles, setShowParticles] = useState(false);
   const [sessionXP, setSessionXP] = useState(0);
+  const [bossOrder, setBossOrder] = useState(null);
+  const lastFailedIdRef = useRef(null);
 
-  const quizzes = (boss.quizIds || []).map(id => window.HSA.QUIZZES.find(q => q.id === id)).filter(Boolean);
-  const current = quizzes[idx];
+  const baseQuizzes = (boss.quizIds || []).map(id => window.HSA.QUIZZES.find(q => q.id === id)).filter(Boolean);
+  const quizzes = bossOrder !== null ? bossOrder : baseQuizzes;
+  const current = quizzes[idx % (quizzes.length || 1)];
 
   const { answerQuestion } = progressHook;
 
@@ -705,6 +731,7 @@ function BossBattleScreen({ progressHook }) {
     } else {
       resetCombo();
       consumeHeart();
+      lastFailedIdRef.current = current?.id || null;
       if (heartsEmpty) { setPhase('defeat'); return; }
     }
 
@@ -749,7 +776,17 @@ function BossBattleScreen({ progressHook }) {
       <div style={{ fontFamily:'DM Mono, monospace', fontSize:18, color:'var(--danger)', letterSpacing:'0.08em', marginBottom:12 }}>DEFEATED</div>
       <div style={{ fontFamily:'DM Mono, monospace', fontSize:12, color:'var(--muted)', marginBottom:24 }}>The boss overpowered your knowledge today. Study and return stronger.</div>
       <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
-        <button onClick={() => { setPhase('entry'); setHp(boss.hp); setIdx(0); setAnswered(null); resetCombo(); }} style={{ padding:'12px 24px', borderRadius:'var(--radius)', background:'var(--danger)', color:'white', border:'none', fontFamily:'DM Mono, monospace', fontSize:12, cursor:'pointer' }}>Try Again</button>
+        <button onClick={() => {
+          const failedId = lastFailedIdRef.current;
+          if (failedId) {
+            const others = [...baseQuizzes.filter(q => q.id !== failedId)].sort(() => Math.random() - 0.5);
+            const failedQ = baseQuizzes.find(q => q.id === failedId);
+            setBossOrder([...others.slice(0, 2), failedQ, ...others.slice(2)].filter(Boolean));
+          } else {
+            setBossOrder([...baseQuizzes].sort(() => Math.random() - 0.5));
+          }
+          setPhase('entry'); setHp(boss.hp); setIdx(0); setAnswered(null); resetCombo();
+        }} style={{ padding:'12px 24px', borderRadius:'var(--radius)', background:'var(--danger)', color:'white', border:'none', fontFamily:'DM Mono, monospace', fontSize:12, cursor:'pointer' }}>Try Again</button>
         <button onClick={() => navigate('/learn')} style={{ padding:'12px 24px', borderRadius:'var(--radius)', background:'var(--surface)', color:'var(--text)', border:'1px solid var(--border)', fontFamily:'DM Mono, monospace', fontSize:12, cursor:'pointer' }}>Study First</button>
       </div>
     </div>

@@ -80,7 +80,7 @@ window.HSA.BOSSES = [
       '"Glycine at night — is it a sleep aid or a methyl buffer? The Fog accepts only both answers."',
       '"The Fog clears. Your neuro stack is real — the knowledge was the antidote."',
     ],
-    quizIds:['q47','q49','q50','q60','q64','q72','q75','q81','q84','q27'],
+    quizIds:['q47','q49','q50','q60','q64','q72','q81','q27','q185','q186'],
     xpReward:150, badgeId:'neuro_scholar'
   },
   {
@@ -102,7 +102,7 @@ window.HSA.BOSSES = [
       '"Oleocanthal from EVOO — the Parasite trembles. What enzyme does it inhibit?"',
       '"The Gut Parasite flees your fortified microbiome. The stack stands."',
     ],
-    quizIds:['q21','q55','q66','q74','q85','q90','q108','q113','q119','q30'],
+    quizIds:['q21','q55','q66','q74','q85','q90','q108','q177','q178','q179'],
     xpReward:150, badgeId:'gut_guardian'
   },
   {
@@ -113,7 +113,7 @@ window.HSA.BOSSES = [
       '"The Phantom laughs: your minoxidil shed begins in week 4. Will you stop? Or do you know why it happens?"',
       '"The Follicle Phantom vanishes. The three-mechanism protocol stands unchallenged."',
     ],
-    quizIds:['q36','q54','q68','q82','q15','q93','q112','q117','q38','q6'],
+    quizIds:['q36','q54','q68','q82','q15','q93','q180','q181','q183','q6'],
     xpReward:150, badgeId:'follicle_scholar'
   },
   {
